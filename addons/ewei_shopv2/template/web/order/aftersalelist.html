@@ -1,0 +1,128 @@
+{template '_header'}
+<style type='text/css'>
+    .trhead td {  background:#efefef;text-align: center}
+    .trbody td {  text-align: center; vertical-align:top;border-left:1px solid #f2f2f2;overflow: hidden; font-size:12px;}
+    .trorder { background:#f8f8f8;border:1px solid #f2f2f2;text-align:left;}
+    .ops { border-right:1px solid #f2f2f2; text-align: center;}
+    .table-responsive td{text-align: center;}
+</style>
+
+<div class="page-heading">
+
+    <h2>售后服务管理</h2>
+
+    <span>申请数量:  <span class='text-danger'>{$total}</span></span>
+
+</div>
+
+<form action="./index.php" method="get" class="form-horizontal table-search" role="form">
+    <input type="hidden" name="c" value="site" />
+    <input type="hidden" name="a" value="entry" />
+    <input type="hidden" name="m" value="ewei_shopv2" />
+    <input type="hidden" name="do" value="web" />
+    <input type="hidden" name="r" value="order.aftersalelist" />
+    <input type="hidden" name="status" value="{$status}" />
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-7">
+            <div class="btn-group btn-group-sm" style='float:left'>
+                <button class="btn btn-default btn-sm"  type="button" data-toggle='refresh'><i class='fa fa-refresh'></i></button>
+            </div>
+            <select name="status" class="form-control input-sm select-md" style="width:85px;padding:0 5px;">
+                <option value="" {if $_GPC['status']==''}selected{/if}>状态</option>
+                {loop $applystatus $key $type}
+                <option value="{php echo $type['id'] + 1}" {if $_GPC['status']-1 == $type['id']} selected="selected" {/if}>{$type['name']}</option>
+                {/loop}
+            </select>
+            <div class='input-group input-group-sm'   >
+                <select name='searchtime'  class='form-control  input-sm select-md'   style="width:85px;padding:0 5px;"  >
+                    <option value=''>不按时间</option>
+                    <option value='create' {if $_GPC['searchtime']=='create'}selected{/if}>创建时间</option>
+                </select>
+                {php echo tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d H:i', $starttime),'endtime'=>date('Y-m-d H:i', $endtime)),true);}
+            </div>
+        </div>
+        <div class="col-sm-5 pull-right">
+            <select name='searchfield'  class='form-control  input-sm select-md'   style="width:95px;padding:0 5px;"  >
+                <option value='goods_name' {if $_GPC['searchfield']=='goods_name'}selected{/if}>商品名称</option>
+                <option value='goods_model' {if $_GPC['searchfield']=='goods_model'}selected{/if}>商品型号</option>
+                <option value='nickname_wechat' {if $_GPC['searchfield']=='nickname_wechat'}selected{/if}>会员名称</option>
+                <option value='name' {if $_GPC['searchfield']=='name'}selected{/if}>联系人名称</option>
+                <option value='mobile' {if $_GPC['searchfield']=='mobile'}selected{/if}>联系人电话</option>
+                <option value='express_numbers' {if $_GPC['searchfield']=='express_numbers'}selected{/if}>快递单号</option>
+            </select>
+            <div class="input-group">
+                <input type="text" class="form-control input-sm"  name="keyword" value="{$_GPC['keyword']}" placeholder="请输入关键词"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-sm btn-primary" type="submit"> 搜索</button>
+                    <button type="submit" name="export" value="1" class="btn btn-success btn-sm">导出</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+{if count($list)>0}
+<table class='table table-responsive' style='table-layout: fixed;'>
+    <tr style='background:#f8f8f8'>
+        <td style='width:150px;border-left:1px solid #f2f2f2;'>商品名称</td>
+        <td style='width:150px;'>商品型号</td>
+        <td style='width:150px;'>快递单号</td>
+        <td style='width:100px;'>会员名称</td>
+        <td  style='width:100px;'>联系人姓名</td>
+        <td style='width:90px;'>联系人电话</td>
+        <td style='width:140px;'>下单时间</td>
+        <td style='width:80px;'>状态</td>
+        <td style='width:300px;'>操作</td>
+    </tr>
+    {loop $list $item}
+    <tr ><td colspan='8' style='height:20px;padding:0;border-top:none;'>&nbsp;</td></tr>
+    <tr class='trorder'>
+        <td>{$item['goods_name']}</td>
+        <td>{$item['goods_model']}</td>
+        <td>{$item['express_numbers']}</td>
+        <td>{$item['nickname_wechat']}</td>
+        <td>{$item['name']}</td>
+        <td>{$item['mobile']}</td>
+        <td>{php echo date('m-d H:i:s',$item['create_time'])}</td>
+        <td>
+            {loop $applystatus $status}
+                {if $status['id'] == $item['status']}
+                    {$status['name']}
+                    {php break;}
+                {/if}
+            {/loop}
+        </td>
+        <td style='font-size:12px;' class='aops'>
+            {if $item['status'] == $aftersale::STATUS_WAIT}
+                <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/audit',array('id'=>$item['id'],'status' => $aftersale::STATUS_MAINTENANCE))}" >审核订单</a>
+            {/if}
+            {if $item['status'] == $aftersale::STATUS_MAINTENANCE}
+                <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/audit',array('id'=>$item['id'],'status' => $aftersale::STATUS_DELIVER_GOODS))}" >订单发货</a>
+            {/if}
+            {if $item['status'] == $aftersale::STATUS_DELIVER_GOODS}
+                <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/audit',array('id'=>$item['id'],'status' => $aftersale::STATUS_COMPLETED))}" >订单完成</a>
+            {/if}
+            {if $item['status'] != $aftersale::STATUS_COMPLETED && $item['status'] != $aftersale::STATUS_CANCEL && $item['status'] != $aftersale::STATUS_REFUSE}
+                <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/audit',array('id'=>$item['id'],'status' => $aftersale::STATUS_CANCEL))}" >取消订单</a>
+                <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/audit',array('id'=>$item['id'],'status' => $aftersale::STATUS_REFUSE))}" >拒绝订单</a>
+            {/if}
+            <a class='op' href="{php echo webUrl('order/aftersalelist/detail', array('id' => $item['id']))}" >查看详情</a>
+            <a class='op' data-toggle='ajaxPost' href="{php echo webUrl('order/aftersalelist/del', array('id' => $item['id']))}" >删除</a>
+        </td>
+    </tr>
+    {/loop}
+</table>
+<div style="text-align:right;width:100%;">
+    {$pager}
+</div>
+{else}
+
+<div class='panel panel-default'>
+    <div class='panel-body' style='text-align: center;padding:30px;'>
+        暂时没有任何售后订单!
+    </div>
+</div>
+{/if}
+
+{template '_footer'}

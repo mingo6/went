@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>客户</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+	<link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/mescroll.min.css">
+</head>
+<style type="text/css">
+body {background-color: #fff;width: 100%;overflow-x: hidden;}
+.container{margin-bottom: 100px;margin-top: 50px;}
+.date_right{float: right;}
+.date_right2{float: right;padding-top: 5px;color: #666;}
+.tabbar{position: fixed;bottom: 0;}
+.selectdown{width: 15px;height: 10px;}
+.total{text-align: center;padding: 15px;background-color: #F0EFF5;color: #666;}
+.red-color{color: #FC8528;}
+#layer{background-color:gray;left:0; opacity:0.5;position:absolute;top:0; z-index:888;filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity:0.5; }
+.title_item{width: 80%;padding: 10px 0;border:1px solid #FF8427;color: #FF8427;margin-left: auto;margin-right: auto;text-align: center;}
+.layer_content{display: none;z-index: 999; background-color: #fff;width: 100%;position: absolute;top: 50px;padding: 20px 0;}
+.title_active{color: #FF8427;}
+.weui-box{border-bottom: 1px solid #f2f2f2;}
+</style>
+
+<body>
+    <div style="z-index: 999;width: 100%;position: fixed;">
+        <div class="weui-navbar" style="background-color: #fff;">
+            <div class="weui-navbar__item tap_title" onclick="showlayer()">
+				<?php if(!$type){ ?>
+                <span style="color:orange">预计成交率</span>
+				<?php }else{?>
+				 <span style="color:orange">最新添加</span>
+				<?php } ?>
+            </div>
+        </div>
+    </div>
+
+    <!--滑动区域-->
+    <div id="mescroll" class="mescroll" style="margin-top:50px;">
+
+        <!--客户列表-->
+        <div class="weui-panel__bd client-list" style="margin-bottom:60px;">
+        </div>
+    </div>
+
+
+	
+	<div class="weui-tabbar tabbar">
+	<a href="{php echo $this->createMobileUrl('staffer_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" >雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a href="{php echo $this->createMobileUrl('client_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/14.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">客户</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('friend_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">动态</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">我</p>
+	</a>
+</div>
+
+    <div id="layer"></div>
+    <div class="layer_content">
+        <div class="weui-flex">
+            <div class="weui-flex__item"  id="type_0"><div class="placeholder"><div class="title_item">预计成交率</div></div></div>
+            <div class="weui-flex__item"  id="type_1"><div class="placeholder"><div class="title_item">最新添加</div></div></div>
+        </div>
+     
+    </div>
+</body>
+
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script src="../addons/dbs_masclwlcard/template/wxapp/js/mescroll.min.js"></script>
+
+
+
+<script type="text/javascript">
+//分页控件
+function getPager(callback, mescroll_id) {
+    if (mescroll_id == null)
+        mescroll_id = "mescroll";
+    var mescroll = new MeScroll(mescroll_id, {
+        down: {
+            auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            use: false
+        },
+        up: {
+            page: {
+                num: 0, //当前页码,默认0,回调之前加1,即callback(page)从1开始;
+                size: 1, //每页数据的数量; 
+                time: null //加载第一页数据服务器返回的时间 (可空); 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+            },
+            offset: 50, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+            auto: true, //初始化完毕,是否自动触发上拉加载的回调
+            isBoth: false, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+            callback: callback, //上拉加载的回调
+            autoShowLoading: true
+        }
+    });
+    return mescroll;
+}
+	
+    var mescroll = getPager(loadClient);
+
+    $(function () {
+        loadBtn();
+	
+		
+    })
+
+		//跳转页面
+	function to_url(url) {
+		window.location.href = url;
+	}
+	$("#type_0").click(function () {
+		var url = "{php echo $this->createMobileUrl('client_index',array('type'=>0))}";
+		to_url(url);
+	})
+	$("#type_1").click(function () {
+		var url = "{php echo $this->createMobileUrl('client_index',array('type'=>1))}";
+		to_url(url);
+	})
+    function showlayer() {
+        if(!$(".tap_title").hasClass('title_active')){
+            var bh=$(window).height();//获取屏幕高度
+            var bw=$(window).width();//获取屏幕宽度
+            $("#layer").css({
+                height:bh,
+                width:bw,
+                display:"block"
+            });
+            $(".layer_content").show();
+            $(".tap_title").addClass("title_active");
+        }else{
+            $("#layer,.layer_content").hide();
+            $(".tap_title").removeClass("title_active");
+        }
+    }
+
+    function loadBtn() {
+        $(".layer_content").click(function () {
+            $("#layer,.layer_content").hide();
+            $(".tap_title").removeClass("title_active");
+        })
+        $("#layer").click(function () {
+            $("#layer,.layer_content").hide();
+            $(".tap_title").removeClass("title_active");
+        })
+		
+		
+    }
+function getNoDataMsg(page) {
+	if (page != null && page > 1)
+		return "<div class='no-data'>已经到底了</div>";
+	return "<div class='no-data'>没有数据</div>";
+}
+function isNoData(list) {
+	if (list == null || list.length == 0)
+		return true;
+	return false;
+}
+	//客户列表-通讯录信息
+function loadClient(pageObj) {
+    var followName = "";
+    var source;//客户来源
+	var type='{$type}';
+     $.post("{php echo $this->createMobileUrl('client_getlist')}", {page:pageObj.num,type:type}, function(data){
+		
+        if (data.error>0) {
+			alert(data.msg);
+			mescroll.endErr();
+			return;
+		}
+		
+		if (isNoData(data.Data)) {
+		    $(".client-list").append(getNoDataMsg(pageObj.num));
+            mescroll.endSuccess(0);  //设置条数
+            return;	
+	  }
+
+        mescroll.endSuccess(data.Data.length);  //设置条数
+
+        var list = data.Data;
+        var html = "";
+        for (var i = 0; i < list.length; i++) {
+            /*if (list[i].Source == 1) sourece = "扫码";
+            else if (list[i].Source == 2) sourece = "转发";
+            else sourece = "工作交接";*/
+            if (list[i].now_status == 0) {
+                followName = "今天跟进过";
+            } else if (list[i].now_status == 1) {
+                followName = "今日未跟进";
+            } else if (list[i].now_status == -1) {
+                followName = "未跟进过";
+            } else if (list[i].now_status == -2) {
+                followName = "今日新增";
+            }
+			
+            if (list[i].avatarUrl == null || list[i].avatarUrl == "") {
+                $('.weui-media-box__thumb').attr('src', '../addons/dbs_masclwlcard/template/wxapp/images/18.png')
+            }
+			//html += "<div class='weui-box'><a href='{php echo $this->createMobileUrl('boss_client_detail')}&card_mid=" + list[i].id + "&card_id=" + list[i].aid + "' class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + '暂无' + "</span></h4></div></a></div>"
+			html += "<div class='weui-box'><a href='{php echo $this->createMobileUrl('member_detail')}&member_id=" + list[i].id + "&card_id=" + list[i].aid+ "&type=1"+"' class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + list[i].Source_name + "</span></h4></div></a></div>"
+        
+		}
+        $(".client-list").append(html);
+
+   },"json");
+}	
+
+
+</script>
+</html>

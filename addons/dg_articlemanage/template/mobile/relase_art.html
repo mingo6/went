@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+	<title>我的课程</title>
+	<link rel="stylesheet" href="{RES}new_style/css/article.css">
+	<script src="{RES}new_style/js/rem.js"></script>
+	<script type="text/javascript" src="{RES}js/jquery-2.1.4.min.js" ></script>
+	
+	{php echo register_jssdk(false);} 
+	<script>
+		var pid='';
+		var cid='';
+		function logoUp(obj) {
+			wx.chooseImage({
+				count: 1, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function(res) {
+					localId = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					for(i = 0; i < localId.length; i++) {
+						wx.uploadImage({
+							localId: localId[i].toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+							isShowProgressTips: 1, // 默认为1，显示进度提示
+							success: function(res) {
+								var serverId = '';
+								serverId += res.serverId + ","; // 返回图片的服务器端ID
+								$.post(location.href, {
+									"type": "preview",
+									"mediaids": serverId
+								}, function(res) {
+									for(var i = 0; i < res.img_s.length; i++) {
+										$(obj).empty();
+										$(obj).append('<img class="thumb" src='+res.img_s[i]+' data='+res.img_s[i]+'>');
+										
+									}
+								})
+							}
+						});
+					}
+				}
+			});
+		}
+	
+		var serverIds = '';
+		function descImgUp(obj) {
+			wx.chooseImage({
+				count: 9, // 默认9
+				sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: function(res) {
+					localId = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+
+					for(var i = 0; i < localId.length; i++) {
+
+						wx.uploadImage({
+							localId: localId[i].toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
+							isShowProgressTips: 0, // 默认为1，显示进度提示
+							success: function(res) {
+
+								serverIds = res.serverId + ","; // 返回图片的服务器端ID
+			
+								$.post(location.href, {
+									"type": "preview",
+									"mediaids": serverIds
+								}, function(res) {
+									var html='';
+
+									for(var j = 0; j < res.img_s.length; j++) {
+										html+='<div class="upload-pictures upload_img"><img class="descimgs" data="'+res.img_s[j]+'" src="'+res.img_s[j]+'" alt=""><span class="iconClose"><i class="iconfont icon-guanbi" onclick="imgDel(this)"></i></span></div>';
+									}
+									
+									$(obj).parent().prepend(html);
+								})
+							}
+						});
+					}
+				}
+			});
+		}
+		function imgDel(obj){
+			$(obj).parent().parent().remove()
+		}
+		$(function(){
+			$("#free").click(function(){
+				$("#price").hide();
+				$('#free_num').hide();
+			})
+			$("#no_free").click(function(){
+				$("#price").show();
+				if($("#all_img").is(":checked")){
+					$('#free_num').show();
+				}
+			})
+			$("#img_text").click(function(){
+				$('#free_num').hide();
+				$('.texts').show();
+				$('#jiahao').show();
+				$('#desc_cont').show();
+				$('.upload_img').remove();
+			})
+			$("#all_img").click(function(){
+				if($("#no_free").is(":checked")){
+					$('#free_num').show();
+				}
+				$('.texts').hide();
+				$('#jiahao').hide();
+				$('#desc_cont').hide();
+				$('.upload_img').remove();
+			})
+			$('#jiahao').click(function(){
+				var html='<div class="article-upload-box clearfix imgs">';
+				html+='<div class="upload-pictures" onclick="descImgUp(this)"><p class="pic-before"></p><p class="pic-after"></p></div></div>';
+				html+='<div class="upload-add-bb texts"><div class="upload-input"><textarea class="content" name="uploadTextarea"  cols="30" rows="10"></textarea></div></div>';
+				$("#tuwen").append(html);
+			})
+			$("#art_sub").click(function(){
+				var data={};
+				data.textall= new Array();
+				data.images='';
+				data.type='add';
+				data.pid=pid;
+				data.cid=cid;
+				data.title=$("#title").val();
+				data.price=$("#price").val();
+				data.describ=$("#describ").val();
+				data.free_num=$("#img_free").val();
+				data.thumb=$(".thumb").attr('data');
+				console.log(data.thumb)
+				data.types=$('input:radio[name="articleClassfiy"]:checked').val();
+				
+				if($("#img_text").is(":checked")){
+					var i=0;
+					$('.imgs').each(function(){
+						var h_img='';
+						data.textall[i]=new Array();
+
+						$(this).find('.descimgs').each(function(){
+							if($(this).attr('data')){
+
+								h_img+=$(this).attr('data')+',';
+							}
+							
+						})
+						if(h_img){
+
+							data.textall[i]['0']=h_img;
+						}
+						
+						if($('.content').eq(i).val()){
+							data.textall[i]['1']=$('.content').eq(i).val();
+						}
+						
+						i++;
+					})
+
+				}else{
+					var i=0;
+					$('.descimgs').each(function(){
+						data.images+=$(this).attr('data')+',';
+						i++;
+					})
+				}
+				
+				
+				if(data.title==''){
+					alert('请填写课程标题');
+					return;
+				}
+				if(data.thumb==''||data.thumb=='undefined'){
+					alert('请选择封面');
+					return;
+				}	
+				if(data.pid==''){
+					alert('请选择分类');
+					return;
+				}
+				if(data.price=='' && $("#no_free").is(":checked")){
+					alert('请填写价格');
+					return;
+				}
+				
+			
+				
+				$.post(location.href,data,function(res){
+					if(res.success==-1){
+						alert('请选择图片或输入内容');
+					}else{
+						alert('发布成功');
+						location.href="{php echo $this->createMobileUrl('new_index')}";
+					}
+					
+				})
+				
+			})
+		})
+	</script>
+</head>
+<body>
+	<div class="article">
+		<div class="headline">
+			<span class="article-title">
+				标题
+			</span>
+			<input type="text" id="title" placeholder="请输入标题" class="article-input">
+		</div>
+		<div class="introdution clearfix" id="desc_cont">
+			<span class="article-title">
+				简介
+			</span>
+			<div class="introduce-textarea">
+				<textarea id="describ" name="" cols="30" rows="10">	
+				</textarea>
+			</div>
+		</div>
+		<div class="price">
+			<span class="article-title">
+				价格
+			</span>
+			<span class="article-free clickWidth">
+				<input type="radio" id="free" name="articleMoney" checked="checked" class="article-radio">免费
+			</span>
+			<span class="article-pay clickWidth">
+				<input type="radio" id="no_free" name="articleMoney" class="article-radio">付费
+			</span>
+			<input id="price" style="display: none;" type="text" placeholder="￥ 输入价格(元/每篇)" class="article-input">
+		</div>
+		<div class="article-cover clearfix">
+			<div class="clearfix">
+				<span class="article-title">
+					封面图
+				</span>
+				<div class="upload-pictures" onclick="logoUp(this)">
+					<p class="pic-before"></p>
+					<p class="pic-after"></p>
+				</div>
+			</div>
+			<div class="upload-hint">
+				请上传尺寸为200*160的图片。
+			</div>
+		</div>
+		<div class="article-classify">
+			<span class="article-tipe">
+				课程分类：
+			</span>
+			<div class="select-one">
+				<a id="expressArea" href="javascript:void(0)" style=" font-size: 14px; color:black;">
+                <dl>
+                    <dd id="art_tag">点击选择</dd>
+                </dl>
+            </a>
+			</div>
+			
+		</div>
+		<!--选择地区弹层-->
+       
+		<div class="article-mold">
+			<span class="article-tipe">
+				课程类型：
+			</span>
+			<div class="tipe-classfiy disflex">
+				<span class="article-free flex">
+					<input type="radio" id="img_text" name="articleClassfiy" checked="checked" class="article-radio types" value="1">图文
+				</span>
+				<span class="article-pay flex">
+					<input type="radio" id="all_img" name="articleClassfiy" class="article-radio types" value="2">图集
+				</span>
+			</div>
+			<div class="free-input" style="display: none;" id="free_num">
+				免费试看<input id="img_free" type="text" class="free-num">张
+			</div>
+			<div class="article-upload clearfix" id="tuwen">
+				<div class="article-upload-box clearfix imgs" >
+					<div class="upload-pictures" onclick="descImgUp(this)">
+						<p class="pic-before"></p>
+						<p class="pic-after"></p>
+					</div>
+				</div>
+				<div class="upload-add-bb texts" >
+					<div class="upload-input">
+						<textarea name="uploadTextarea" class="content" id="" cols="30" rows="10"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="upload-add" id="jiahao">
+				<div class="upload-add-box">
+					
+				</div>
+			</div>
+		</div>
+		<div class="article-btn">
+			<button class="btn-submit" id="art_sub">
+				提交
+			</button>
+		</div>
+	</div>
+	 <div id="areaLayer" class="express-area-box">
+            <header>
+                <h3>选择分类</h3>
+           		<a id="backUp" class="back" href="javascript:void(0)" title="返回"></a>
+                <a id="closeArea" onclick="clockArea()" class="close" href="javascript:void(0)" title="关闭"></a>
+            </header>
+            <article id="areaBox">
+                <ul id="areaList" class="area-list"></ul>
+            </article>
+        </div>
+        <!--遮罩层-->
+        <div id="areaMask" class="mask"></div>
+        <script>
+
+        	var pcate = new Array();
+			var ccate = new Array();
+			var all_cate=new Array();
+			var expressArea, areaCont, areaList = '';
+
+				/*打开省市区选项*/
+				$("#expressArea").click(function() {
+					$.post(location.href,{'type':'cate'},function(res){
+						for(var i=0;i<res.parent.length;i++){
+							pcate[i]=res.parent[i].id+','+res.parent[i].name;
+						}
+						for(var i=0;i<res.child.length;i++){
+							ccate[res.child[i].parentid]=new Array()
+							ccate[res.child[i].parentid][i]=res.child[i].id+','+res.child[i].name;
+						}
+						
+						expressArea, areaCont, areaList = $("#areaList"), areaTop = areaList.offset().top;
+						intProvince();
+						
+						$("#areaMask").fadeIn();
+						$("#areaLayer").animate({"bottom": 0});
+					})
+					
+				});
+
+        </script>
+        <script type="text/javascript" src="{RES}new_style/js/jquery.area.js" >
+
+        </script>
+</body>
+</html>

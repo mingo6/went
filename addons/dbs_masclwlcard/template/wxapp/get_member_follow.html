@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>跟进</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+</head>
+<style>
+    .bg-gray {
+        background-color: #F0EFF5;
+    }
+
+    .gray {
+        color: #96959A;
+    }
+
+    .bg-yellow {
+        background-color: #f2c507;
+    }
+
+    .sellect-class {
+        width: 324px;
+        height: 22px;
+        border: 0px;
+        color: gray;
+    }
+
+    .follow-up {
+        width: 70%;
+        height: 40px;
+        line-height: 40px;
+        float: left;
+        margin-left: 2%;
+    }
+
+    .follow {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        float: left;
+        border-bottom: solid 1px #F0EFF5;
+        background-color: #ffffff;
+    }
+    .follow1 {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        float: left;
+        border-bottom: solid 1px #F0EFF5;
+        background-color: #ffffff;
+    }
+
+    .w15 {
+        width: 15px;
+    }
+
+    .fr {
+        float: right;
+        margin-right: 2%;
+    }
+
+    .yellow {
+        color: #f2c507;
+    }
+
+    .pr {
+        position: relative;
+    }
+
+    .pa {
+        position: absolute;
+        left: 90%;
+        top: 0;
+    }
+
+    .input {
+        width: 200px;
+        height: 30px;
+        padding-left: 5px;
+    }
+</style>
+
+<body class="bg-gray">
+
+    <a class="weui-cell weui-cell_access bg-white" href="javascript:;">
+        <div class="weui-cell__bd">
+            <div class="show-follow-list">
+                <div style="width:100%;height:100%;" class="follow-up yellow">选择跟进常用语</div>
+                <div style="margin-bottom:-63px;position:relative;top:-33px;display:none;" class="fr">
+ 
+                </div>
+            </div>
+            <div class="follow_list"  style="display:none;">
+                <div id="pre-follow" class="follow tc">
+                    <div>客户有合作意向</div>
+                </div>
+                <div class="follow tc">
+                    <div>客户多次查看小程序，合作意向强烈</div>
+                </div>
+                <div class="follow tc">
+                    <div>计划近期安排拜访</div>
+                </div>
+                <div class="follow tc">
+                    <div>见面聊过</div>
+                </div>
+
+                <div class="follow tc">
+                    <div>需给客户发送报价</div>
+                </div>
+				
+                <div class="follow tc">
+                    <div>待客户反馈</div>
+                </div>
+                <div class="follow tc">
+                    <div>已成交客户</div>
+                </div>
+
+            </div>
+
+        </div>
+        
+
+        <div class="weui-cell__ft">
+        </div>
+    </a>
+    <div class="weui-cell weui-cell_access">
+        <div class="weui-cell__bd">
+            <div class="f14 gray">跟进描述</div>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form" style="margin-top: 0;">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea f14 yahei" maxlength="40" id="content" onkeyup="onkey()" placeholder="在这里输入跟进语" rows="3"></textarea>
+                <div class="weui-textarea-counter f14">
+                    <span id="rightcount">0</span>/40
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-btn-area f18 white mt35">
+        <a class="weui-btn bg-yellow" href="javascript:" id="showTooltips">提交</a>
+    </div>
+    <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+    <script>
+        var textname;
+		var t=false;
+        $(function () {
+
+            $('.show-follow-list').click(function () {
+                if ($('.follow_list').css('display') == 'none') {
+                    $('.follow_list').css('display', 'block')
+                } else {
+                    $('.follow_list').css('display', 'none')
+                }
+                if ($('.fr').css('display') == 'none') {
+                    $('.fr').css('display', 'block');
+                    $('.weui-cell__ft').css('display','none');
+                } else {
+                    $('.fr').css('display', 'none');
+                    $('.weui-cell__ft').css('display', 'block');
+                }
+            })
+            //获取单个常用语
+            $('.follow').click(function () {
+                textname = $(this).children().eq(0).text();
+                if (textname == "") {
+                    var values = $('.yahei').val();
+                    $('.yahei').val(values);
+                } else {
+                    $('#rightcount').text(textname.length);
+                    $('.yahei').val(textname);
+                }
+            });
+			
+            $('#showTooltips').click(function () {
+				if(t){
+					return;
+				}
+				var sign = $('#content').val();
+				var card_mid = Number({$member_info['id']});
+				var card_id = Number({$member_info['aid']});
+				t=true;
+				$.post("{php echo $this->createMobileUrl('get_member_closer')}", {content:sign,card_id:card_id,card_mid:card_mid}, function(data){
+					if (data.Code>0) {
+						alert(data.msg);
+						t=false;
+						return;
+					}else{
+						alert('跟进成功!');
+						// window.history.back();
+					}
+					t=false;
+				 },"json");
+                return false;
+            })
+        })
+
+        
+
+        function onkey() {
+            var sign = $('#content').val();
+            $('#rightcount').text(sign.length);
+            if (sign.length > 40) {
+                $('#rightcount').text(40);
+                alert("字数超过范围。");
+            }
+        }
+
+    </script>
+</body>
+
+</html>

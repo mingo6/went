@@ -1,0 +1,103 @@
+@charset "utf-8";
+
+/* 内外边距通常让各个浏览器样式的表现位置不同 */
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, del, em, font, ins, q, s, samp, dl, dt, dd, ol, ul, li, form, label, legend, caption, textarea, tbody{margin: 0;padding: 0;}
+
+/* 去掉 table cell 的边距并让其边重合 */
+table{border-collapse: collapse;border-spacing: 0;}
+
+/* ie bug：th 不继承 text-align */
+th{text-align: inherit;}
+
+/* 去除默认边框 */
+fieldset, img{border: none;}
+
+/* ie6 7 8(q) bug 显示为行内表现 */
+iframe{display: block;}
+/* 去掉 firefox 下此元素的边框 */
+abbr, acronym{border: none;font-variant: normal;}
+:focus{
+/* remember to define focus styles! */
+outline: 0;}
+.bor{border: 1px solid red;}
+ol, ul, li{list-style: none;}
+
+blockquote:before, blockquote:after, q:before, q:after{content: "";}
+blockquote, q{quotes: "" "";}
+a img{border: 0;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display: block;}
+
+/* global */
+h1, h2, h3, h4, h5, h6{font-weight: 700;}
+strong{font-weight: 600;}
+cite, em{font-style: normal;}
+i{font-style: italic;}
+img{vertical-align: middle;}
+
+/* CSS Document */
+body{ max-width:640px;font-size:15px;font-family: 'STHeiti','Microsoft YaHei',Helvetica,Arial,sans-serif; background-color:White; margin-left:auto; margin-right:auto; }
+
+#wap{ height:100%; margin:0 auto;background-color:#f5f5f5;margin-top:50px; margin-bottom:80px;background-color: White;}
+
+.Centenauto{margin-left:auto; margin-right:auto;}
+
+.Defutalcolor{color:#2CBA8C;};
+
+.width93{width:93%;}
+ 
+.bgfff{background:#fff; margin:0 auto;}
+.shadow{box-shadow:1px 1px 5px 1px #666;}
+.hor{ display:inline-block}
+
+/* 连接颜色 */
+a{text-decoration:none;}
+a:link,a:visited{color:inherit}
+a:hover{color:inherit; text-decoration:none}
+a:focus,a:active{color:inherit; outline:none;}
+
+
+/*防Android弹出的提示框*/
+#floatTS{position:fixed; height:45px; left:0; top:50%; z-index:1000; width:100%;}
+#TStxt{padding:10px; border-radius:5px; line-height:30px; background-color:Black; color:White; width:200px; display:block; opacity:0.8;}
+
+/*等待框*/
+#floatWait{position:fixed; height:45px; left:0; top:50%; z-index:999; width:100%;}
+#wait{padding:10px; border-radius:5px; line-height:30px; background-color:Black; font-size:20px; color:White; width:50px; display:block; opacity:0.8;}
+ 
+ 
+/*top*/
+.top{ width:100%; height:40px; position :fixed; top:0; left:0; background-color:#2CBA8C;}
+.ultop>li{ float:left; width:14%;text-align: center;line-height: 40px;  }
+.ultop>li a:hover{color:#F37B0B;}
+/* 注释，名字和编辑器冲突
+.bottom{width:100%; height:50px; position:fixed;bottom:0;left:0; background-color:#EDECEA;border-top: #ccc 1px solid;}
+*/
+.bottom img{width: 25px;}
+.bottom li{float: left;width: 25%;text-align: -webkit-center;line-height: 20px; margin-top: 5px;font-size: 12px;color: #929292;}
+.newRed{position: absolute;width: 10px;height: 10px;background-color: red;top: 0;right: 50%;margin-right: -18px;border-radius: 10px;}
+
+/*顶部*/
+.wamtop{ width:100%; height:40px; background-color:#F37B0B; text-align:center; position:relative;}
+.wamtop img{ width:20px;}
+.topleft{ position:absolute;  top:10px; width: 50px;height: 30px;}
+.topright{ position:absolute; top: 12px;right: 20px; color:White; font-size:14px;}
+.topcententxt{font-size: 16px;color: white; line-height:40px;}
+
+/*弹出的提示框*/
+#floatTS{position:fixed; height:45px; left:0; top:50%; z-index:1000; width:100%;}
+#TStxt{padding:10px; border-radius:5px; line-height:30px; background-color:Black; color:White; width:200px; display:block; opacity:0.8;}
+
+.fixedHiden{ position:fixed; top:0; left:0; width:100%; height:100%; background:black;z-index:99; display:none; }
+.fixeradius{width: 100px;height: 100px;border-radius: 100px;z-index: 100;position: fixed;  position:absolute; border: 3px #F37B0B solid;}
+ 
+
+.backimg-panl{width:100%; height:100%; position:fixed; top:0; left:0; background-color:Black;opacity:1; z-index: 1000; } 
+.font-content{font-size:28px; color:#F37B0B;position: absolute;}
+.font-content img{ width:100%;}
+ .btn-color{background-color: black;border: 2px #F37B0B solid; color:#F37B0B;margin-top: 10px;}
+
+.no-data { text-align:center; line-height:30px; }
+/*IM 提醒*/
+.im-toptip {z-index: 999;width: 100%;position: fixed;top: 0px;height: 0px;}
+.im-toptip-msg {background-color: #F37B0B; color:#fff; width: 98%; line-height:50px; border-radius: 5px;margin: auto;z-index:100;}
+.im-toptip-msg span { padding-left:10px;}

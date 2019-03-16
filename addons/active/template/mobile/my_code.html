@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的活动码</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">
+    <style type="text/css">
+        .activity-code-wrapper {
+            position: absolute;
+            width: 100%;
+            min-height: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            background-color: #F7F7F7;
+        }
+        .tab-wrapper {
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-around;
+            -webkit-justify-content: space-around;
+            box-shadow: 0 0 4px rgba(0,0,0,0.1);
+        }
+        .tab-wrapper,
+        .list-item {
+            background-color: #fff;
+            margin-bottom: 15px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        .tab-pan {
+            font-size: 14px;
+            color: #333;
+            padding: 13px 0;
+        }
+        .tab-pan.active {
+            color: #8C8FED;
+            position: relative;
+        }
+        .tab-pan.active:after {
+            content: "";
+            position: absolute;
+            left: 30%;
+            bottom: 0;
+            width: 40%;
+            height: 2px;
+            background-color: #8C8FED;
+            border-radius: 2px;
+        }
+        .list-item {
+            padding: 15px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.1);
+        }
+        .list-item .title {
+            font-size: 16px;
+            color: #3B3B3B;
+            margin-bottom: 15px;
+        }
+        .list-item .subtitle {
+            padding: 10px 0;
+            border: 1px solid #AFB8C0;
+            border-radius: 3px;
+        }
+        .list-item .subtitle span {
+            font-size: 14px;
+            color: #AFB8C0;
+        }
+    </style>
+</head>
+<body>
+<div class="activity-code-wrapper">
+    <div class="tab-wrapper">
+        <div class="tab-pan active" id="1">未使用</div>
+        <div class="tab-pan" id="2">已使用</div>
+    </div>
+    <div class="tab-list" id="3">
+        {loop $my_code $item}
+        {if $item['is_code']==0 && $item['activity_code']!=''}
+        <div class="list-item">
+            <div class="title" onclick="goInfo({$item['id']},{$item['aid']})">{$item['title']}</div>
+            <div class="subtitle"><span>{$item['activity_code']}</span></div>
+        </div>
+        {/if}
+        {/loop}
+    </div>
+    <div class="tab-list" id="4" style="display: none;">
+        {loop $my_code $item}
+        {if $item['is_code']==1}
+        <div class="list-item">
+            <div class="title" onclick="goInfo({$item['id']},{$item['aid']})">{$item['title']}</div>
+            <div class="subtitle"><span>{$item['activity_code']}</span></div>
+        </div>
+        {/if}
+        {/loop}
+    </div>
+</div>
+
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>
+<script type="text/javascript">
+    $('.tab-pan').click(function () {
+        $('.tab-pan').removeClass('active')
+        $(this).addClass('active')
+        if (this.id==1){
+            $('#3').css('display','');
+            $('#4').css('display','none');
+        }else if(this.id==2){
+            $('#3').css('display','none');
+            $('#4').css('display','');
+        }
+    })
+
+    //跳详情页
+    function goInfo(id,aid){
+        window.location.href="{php echo $this->createMobileUrl('info')}&id="+aid+"&ua="+id
+    }
+</script>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+    <!--<meta charset="utf-8">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--<title>我的活动码</title>-->
+    <!--<meta name="viewport" content="initial-scale=1, maximum-scale=1">-->
+    <!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+    <!--<meta name="apple-mobile-web-app-status-bar-style" content="black">-->
+    <!--<link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--{if $is_haveactive==1}-->
+<!--<div>您还未获得活动码哦！</div>-->
+<!--{else}-->
+<!--<div class="list">-->
+    <!--<a href='{php echo $this->createMobileUrl('info')."&id=".$v['id']."&ua=".$v['aid']}'>-->
+    <!--<div class="list-item">-->
+        <!--<p class="title">{$my_code['title']}</p>-->
+        <!--<p class="subtitle">活动码:{$my_code['active_code']}</p>-->
+    <!--</div>-->
+    <!--</a>-->
+<!--</div>-->
+<!--{/if}-->
+<!--<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>-->
+<!--<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>-->
+<!--<script type="text/javascript">-->
+
+
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

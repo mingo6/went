@@ -1,0 +1,16 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<link rel="stylesheet" type="text/css" href="../addons/{MODULE}/public/css/animation.css">
+<link rel="stylesheet" type="text/css" href="../addons/{MODULE}/public/css/main.css?ver=2">
+{if  strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false}
+    {php $is_wx = false;}
+{else}
+    {php $is_wx = true;} 
+    {php echo register_jssdk(false);}
+{/if}
+<title>活动</title>

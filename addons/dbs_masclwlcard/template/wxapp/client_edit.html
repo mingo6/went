@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>客户详情</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+</head>
+<style type="text/css">
+body{background-color:#F3F3F3;width:100%;height:100%;overflow-x:hidden;max-width:640px}
+.number{padding-top:10px;padding-bottom:10px}
+.number input{height:30px;border:none}
+.color_h{color:#666}
+#selectdate{border:none}
+.save_btn{border-radius:5px;color:#fff;margin-top:25px;margin-bottom:25px;width:80%;margin-left:auto;margin-right:auto;background-color:#FE7B03;border:none}
+.hide{display:none}
+.number-head{width:100%;height:50px;line-height:50px;color:#B3B3B5;font-size:14px;border-bottom:solid 1px #E3E3E3;background-color:#fff; padding-left:15px;}
+.birthday { font-size:14px;}
+.hui{color:#B3B3B5}
+</style>
+
+<body>
+    <div style="width: 100%;overflow: hidden;">
+  
+
+    <div class="weui-cells weui-cells_form" style="margin-top:0">
+		
+		
+		<div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">备注名</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input color_h memoname" type="text"  id="name"  value="{$info['name']}" />
+            </div>
+        </div>
+		
+		
+        <div class="weui-cell">
+            <div class="weui-cell__hd">
+                <label class="weui-label">手机号码</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input color_h mobile" type="text"  id="phone" value="{$info['phone']}" />
+            </div>
+        </div>
+		
+        <div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">屏蔽TA的消息提醒</div>
+            <div class="weui-cell__ft">
+                <label for="switchCP_1" class="weui-switch-cp">
+                    <input id="switchCP_1" class="weui-switch-cp__input" type="checkbox"/>
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+
+		
+		<div class="weui-cell weui-cell_switch">
+            <div class="weui-cell__bd">将TA拉入黑名单</div>
+            <div class="weui-cell__ft">
+                <label for="switchCP" class="weui-switch-cp">
+                    <input id="switchCP" class="weui-switch-cp__input" type="checkbox"/>
+                    <div class="weui-switch-cp__box"></div>
+                </label>
+            </div>
+        </div>
+		
+        <div style="clear: both;"></div>
+    </div>
+
+
+
+
+    <div class="button-sp-area save_btn">
+        <a href="javascript:;" class="weui-btn btn-submit">保存</a>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script src="../addons/dbs_masclwlcard/template/wxapp/js/mescroll.min.js"></script>
+<script type="text/javascript">
+var flag = false;
+
+
+
+var pb_status = 0;
+var hmd_status = 0;
+
+$(function() {
+	
+$('#switchCP_1').prop('checked', {$info['pb_status']});	
+$('#switchCP').prop('checked', {$info['hmd_status']});
+
+
+    $(".btn-submit").click(function () {	
+		if(flag){
+			return false;
+		}
+
+		if($('#switchCP_1').is(':checked')){
+			pb_status = 1;
+		}
+		if($('#switchCP').is(':checked')){
+			hmd_status = 1;
+		}
+		
+		var name=$('#name').val();
+		var phone=$('#phone').val();
+		var m_id = {$info['id']};
+		
+		 flag = true;
+		 
+		$.post("{php echo $this->createMobileUrl('client_save')}", {hmd_status:hmd_status,pb_status:pb_status,phone:phone,name:name,m_id:m_id}, function(data){
+			if (data.Code>0) {
+				alert(data.msg);
+				flag = false;
+				return;
+			}else{
+				to_url("{php echo $this->createMobileUrl('staffer_index')}");
+			}
+			
+		 },"json"); 
+    })
+  });
+  	//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+</script>
+
+</html>

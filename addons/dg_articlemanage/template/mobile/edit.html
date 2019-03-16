@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>个人信息</title>
+    <link rel="stylesheet" href="{RES}font/iconfont.css" />
+    <link rel="stylesheet" href="{RES}css/style_index.css" />
+    <script type="text/javascript" src="{RES}js/jquery-2.1.4.min.js" ></script>
+    <script type="text/javascript" src="{RES}js/script.js" ></script>
+</head>
+<body>
+<div id="box">
+    
+    <div class="adit">
+<!--        <div class="adit_balance">
+            <p>您的余额还有<i>0.00</i>元</p>
+        </div>-->
+        <div class="adit_min">
+            <form action="">
+                <div class="adit_list">
+                    <ul>
+                        <li>
+                            <div class="add_tit">
+                                <h3>姓名<i>( 8个汉字，16个英文字符)</i></h3>
+                            </div>
+                            <div class="add_input">
+                                <input type="text" placeholder="8个字以内" name="realname" id="realname"  value="{$info['realname']}"/>
+                            </div>
+                        </li>
+						<li style="display:none;">
+                            <div class="add_tit">
+                                 <h3>性别</i></h3> 
+                            </div>
+                             <div class="add_input">
+								<label style="width:100px;display:inline-block;"><input name="sex" type="radio" value="1" {if $info['sex']==1}checked{/if} style="width:auto;height:auto;"/>男 </label> 
+								<label style="width:100px;display:inline-block;"><input name="sex" type="radio" value="0" {if $info['sex']==0}checked{/if} style="width:auto;height:auto;" />女 </label> 
+                            </div>
+                        </li>
+                        <li>
+                            <div class="add_tit">
+                                <h3>手机号</h3>
+                            </div>
+                            <div class="add_input">
+                                <input type="text" placeholder="请正确填写手机号" name="mobile" id="mobile" value="{$info['mobile']}" />
+                            </div>
+                        </li>
+						<li>
+                            <div class="add_tit">
+                                <h3>支付宝账号</h3>
+                            </div>
+                            <div class="add_input">
+                                <input type="text" placeholder="适用于商户号未开通【企业支付到零钱】" name="zfb" id="zfb" value="{$info['zfb']}" />
+                            </div>
+                        </li>
+                        <li>
+                            <div class="add_tit">
+                                <h3>详细介绍下自己<i>( 100个字以内)</i></h3>
+                            </div>
+                            <div class="add_input add">
+                                <textarea name="desc" cols ="40" rows = "3" onmouseover="this.value='';" id="desc">{if empty($info['desc'])}100字以内{else}{$info['desc']}{/if}</textarea>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn">
+                    <a href="javascript:void(0);" onclick="add()" id="add">提交保存</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="Member_foot">
+        <ul class="clearfix">
+            <li><a href="{php echo $this->createmobileurl('payred_index',array('fuser'=>$_GPC['fuser']))}"><i class="iconfont">&#xe60a;</i>首页</a></li>
+            <li><a class="active" href="{php echo $this->createmobileurl('center',array('fuser'=>$_GPC['fuser']))}"><i class="iconfont">&#xe609;</i>个人中心</a></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+function add(){
+    var realname=$("#realname").val();
+    var mobile=$("#mobile").val();
+    var desc=$("#desc").val();
+	var zfb=$("#zfb").val();
+	var sex=$("input[name='sex'][checked]").val();
+	debugger;
+    $.ajax({
+        type:"post",
+        data:{"realname":realname,"mobile":mobile,"desc":desc,"zfb":zfb,"sex":sex},
+        datatype:"json",
+        url:"{php echo $this->createmobileurl('edit',array('op'=>'post',array('fuser'=>$_GPC['fuser'])))}",
+        success:function(re){
+            if(re.success==1){
+                alert(re.msg);
+                location.href="{php echo $this->createmobileurl('center',array('fuser'=>$_GPC['fuser']))}";
+            }else{
+                alert(re.msg);
+            }
+        }
+    });
+}
+
+</script>
+</html>

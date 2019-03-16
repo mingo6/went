@@ -1,0 +1,210 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+<script type="text/javascript" src="../../../addons/{php echo MODULE}/template/web/js/areatocounty.js"></script>
+<div class="title_tab">
+	<ul class="tab_navs title_tab">
+		<li class="tab_nav js_top " showme="answer_group"><a href="javascript:;">发布活动</a></li>
+	</ul>
+</div>
+
+{if $_GPC['op'] == 'add' || $_GPC['op'] == 'edit'}
+	<form action="" method="POST">
+		<div class="answer_group settings_group">
+			<div class="frm_control_group">
+				<label for="" class="frm_label">活动主图</label>
+				<div class="frm_controls msg">
+					{php echo tpl_form_field_image('active_img', $info['active_img']);}
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group">
+				<label for="" class="frm_label">分享图标</label>
+				<div class="frm_controls msg">
+					{php echo tpl_form_field_image('share_img', $info['share_img']);}
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动标题</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="title" value="{$info['title']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">首页简介</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="index_synopsis" value="{$info['index_synopsis']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动地点</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="address" value="{$info['address']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">参与人数设置</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="sham_people_num" value="{php echo $info['sham_people_num']==''?'0':$info['sham_people_num']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">展示参与人数</label>
+				<div class="frm_controls">
+					展示真实参与人数：<input type="radio" class="is_sham_people_num" name="is_sham_people_num" value="0" {php echo $info['is_sham_people_num']!=1&&$info['is_sham_people_num']!=''?'checked':''}>
+					展示设置好的参与人数：<input type="radio" class="is_sham_people_num" name="is_sham_people_num" value="1" {php echo $info['is_sham_people_num']==1||$info['is_sham_people_num']==''?'checked':''}>
+					<p class="frm_tips">用户参与后，真实参与人数和设置好的参与人数都会加1</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动开始时间</label>
+				<div class="frm_controls">
+					{php echo tpl_form_field_date('start_time', $info['start_time'], true)}
+					<p class="frm_tips">开始时间需大于当前时间</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动结束时间</label>
+				<div class="frm_controls">
+					{php echo tpl_form_field_date('end_time', $info['end_time'], true)}
+					<p class="frm_tips">结束后，页面继续显示活动，但不能参与</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">集赞数</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="need_fabulous_num" value="{php echo $info['need_fabulous_num']==''?'5':$info['need_fabulous_num']}">
+					</span>
+					<p class="frm_tips">需要集多少赞才能拿到激活码</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动码数量</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="limited_num" value="{$info['limited_num']}">
+					</span>
+					<p class="frm_tips">限制发放活动码数量</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">产品视频链接</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="product_video_url" value="{$info['product_video_url']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">产品介绍</label>
+				<div class="frm_controls">
+					{php echo tpl_ueditor('product_introduce', $info['product_introduce'], array())}
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动简介</label>
+				<div class="frm_controls">
+					{php echo tpl_ueditor('synopsis', $info['synopsis'], array())}
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">活动规则</label>
+				<div class="frm_controls">
+					{php echo tpl_ueditor('rule', $info['rule'], array())}
+					<p class="frm_tips"></p>
+				</div>
+			</div>
+		</div>
+
+		<div class="tool_bar">
+			<button type="submit" name="submit" value="123" class="btn btn_primary" >发布</button>
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+
+{elseif $_GPC['op'] == 'list'}
+	{if !empty( $list )}
+		<table class="table" cellspacing="0">
+			<thead class="thead">
+				<tr>
+					<th class="table_cell title td_col_1">
+						<label class="frm_checkbox_label" for="selectAll">
+							<i class="icon_checkbox"></i>
+							<span class="lbl_content">id</span>
+							<input type="checkbox" class="frm_checkbox" id="selectAll" />
+						</label>
+					</th>
+					<th class="table_cell tl td_col_2">活动主图</th>
+					<th class="table_cell tl td_col_2">活动标题</th>
+					<th class="table_cell tl td_col_2">真实参与人数</th>
+					<th class="table_cell tl td_col_2">创建时间</th>
+					<th class="table_cell tr td_col_1">操作</th>
+				</tr>
+			</thead>
+			<tbody class="tbody" id="js_goods">
+			<form method="post">
+				{loop $list $item}
+				<tr>
+					<td class="table_cell title td_col_1">
+						<div class="goods_info">
+							<label class="frm_checkbox_label" >
+								<i class="icon_checkbox"></i>
+								<input type="checkbox" name="checkall[]" class="frm_checkbox" value="{$item['id']}" />
+								{$item['id']}
+							</label>
+						</div>
+					</td>
+					<td class="table_cell price tl td_col_1">
+						<img src="/attachment/{$item['active_img']}" alt="" style="width: 100px;height: 100px;">
+					</td>
+					<td class="table_cell price tl td_col_1">
+						{$item['title']}
+					</td>
+					<td class="table_cell price tl td_col_1">
+						<div>
+							<p>{$item['attend_people_num']}</p>
+							<p><a href="{php echo $this->createWebUrl('user_list',array('op'=>'list','id'=>$item['id']))}">查看参与用户</a></p>
+						</div>
+
+					</td>
+					<td class="table_cell price tl td_col_1">
+						{php echo date('Y年m月d日 H:i:s',$item['create_time'])}
+					</td>
+					<td class="table_cell oper last_child tr opclass td_col_1" style="position: relative;">
+						<a  href="{php echo $this->createWebUrl('library_class',array('op'=>'edit','id'=>$item['id'],'page'=>$_GPC['page']))}" class="edit_listitem" >编辑</a>
+						<a href="{php echo $this->createWebUrl('library_class',array('op'=>'delete','id'=>$item['id']))}" onclick="return confirm('删除不能恢复，确定要删除吗？');">删除</a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		<div class="bottom_page item_cell_box">
+			<div class="tr dib item_cell_flex">
+				{$pager}
+			</div>
+		</div>
+		<input name="token" type="hidden" value="{$_W['token']}" />
+		</form>
+	{else}
+		<div class="no_data">没有找到数据</div>
+	{/if}
+
+{/if}
+
+
+{template '../../../addons/'.MODULE.'/template/web/common/myfooter'}

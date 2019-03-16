@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>个人中心</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">
+</head>
+<body>
+
+<div class="avatar">
+    <img src="{$userinfo['avatar']}">
+    <p>{$userinfo['nickname']}</p>
+</div>
+
+<div class="link-list">
+    <a href="{php echo $this->createMobileUrl('my_active')}">
+        <div class="link-item hairline--bottom">
+            <img src="../addons/{MODULE}/template/mobile/icon/activity.png">
+            <div class="link-name">我的活动</div>
+            <img src="../addons/{MODULE}/template/mobile/icon/arrow-right.png">
+        </div>
+    </a>
+    <a href="{php echo $this->createMobileUrl('my_code')}">
+        <div class="link-item hairline--bottom">
+            <img src="../addons/{MODULE}/template/mobile/icon/activity_code.png">
+            <div class="link-name">查看活动码</div>
+            <img src="../addons/{MODULE}/template/mobile/icon/arrow-right.png">
+        </div>
+    </a>
+</div>
+
+<div class="footerNav hairline--top">
+    <a href="{php echo $this->createMobileUrl('index')}">
+        <div class="nav-item">
+            <img src="../addons/{MODULE}/template/mobile/icon/find_default.png">
+            <img src="../addons/{MODULE}/template/mobile/icon/find.png">
+            <p>发现</p>
+        </div>
+    </a>
+    <a href="{php echo $this->createMobileUrl('users')}">
+        <div class="nav-item active">
+            <img src="../addons/{MODULE}/template/mobile/icon/find_default.png">
+            <img src="../addons/{MODULE}/template/mobile/icon/find.png">
+            <p>个人中心</p>
+        </div>
+    </a>
+</div>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

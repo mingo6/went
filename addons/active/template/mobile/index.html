@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>发现</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">
+</head>
+<body>
+<div class="list">
+
+</div>
+<p class="loading">加载中...</p>
+<div class="footerNav hairline--top">
+    <a href="{php echo $this->createMobileUrl('index')}">
+        <div class="nav-item active">
+            <img src="../addons/{MODULE}/template/mobile/icon/find_default.png">
+            <img src="../addons/{MODULE}/template/mobile/icon/find.png">
+            <p>发现</p>
+        </div>
+    </a>
+    <a href="{php echo $this->createMobileUrl('users')}">
+        <div class="nav-item">
+            <img src="../addons/{MODULE}/template/mobile/icon/find_default.png">
+            <img src="../addons/{MODULE}/template/mobile/icon/find.png">
+            <p>个人中心</p>
+        </div>
+    </a>
+</div>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>
+<script type="text/javascript">
+    $('.nav-item').click(function () {
+        $('.nav-item').removeClass('active')
+        $(this).addClass('active')
+    })
+
+    var current_page = 1 // 当前页数
+    var stop_multiple_load = false; // 阻止多次连续加载
+    function getlist (page) {
+        var str;
+        $.ajaxSettings.async = false;
+        $.get("{php echo $this->createMobileUrl('list')}",{'page':page},function(res){
+            str = res.msg;
+            if(res.page>=res.pageAll){
+                stop_multiple_load = true;
+            }
+        },'json');
+        $.ajaxSettings.async = true;
+        $('.loading').show() // 显示加载文字
+
+        setTimeout(function () { // 模拟ajax回调
+            $('.list').append(str)
+            $('.loading').hide() // 隐藏加载文字
+        }, 500)
+        return stop_multiple_load;
+    }
+
+    getlist(current_page); // 初始化列表
+
+    $(window).scroll(function () {
+        var divHeight = $(window).height()
+        var nScrollHeight = document.body.scrollHeight
+        var nScrollTop = $(window).scrollTop()
+        if (nScrollTop + divHeight > nScrollHeight - 100) {
+            // 阻止多次连续加载
+            if (stop_multiple_load) return false;
+            current_page++;
+            getlist(current_page) // 加载列表
+            return current_page;
+        }
+    })
+</script>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--{template './common/_header'}-->
+<!--</head>-->
+<!--<body>-->
+    <!--<div class="main_active">-->
+        <!--{loop $list $item}-->
+        <!--<div @click="goActive({$item['id']})">-->
+            <!--<div><img src="/attachment/{$item['active_img']}" alt="" style="height: 200px;width: 100%;"></div>-->
+            <!--<span>-->
+                <!--<h2>{$item['title']}</h2>-->
+                <!--<p>{php echo date('m月d日 H:i:s',$item['start_time'])}</p>-->
+            <!--</span>-->
+        <!--</div>-->
+        <!--{/loop}-->
+
+        <!--{template './common/_label'}-->
+    <!--</div>-->
+    <!--{template './common/_footer'}-->
+    <!--<script type="text/javascript" src="../addons/{MODULE}/public/js/vue.min.js"></script>-->
+    <!--<script type="text/javascript">-->
+        <!--window.onload = function () {-->
+            <!--var vm = new Vue({-->
+                <!--el: '.main_active',-->
+                <!--data: {-->
+
+                <!--},-->
+                <!--methods: {-->
+                    <!--//首页-->
+                    <!--goIndex:function(){-->
+                        <!--window.location.href="{php echo $this->createMobileUrl('index')}";-->
+                    <!--},-->
+                    <!--//我的-->
+                    <!--goUsers:function(){-->
+                        <!--window.location.href="{php echo $this->createMobileUrl('users')}";-->
+                    <!--},-->
+                    <!--//活动详情-->
+                    <!--goActive:function(id){-->
+                        <!--window.location.href="{php echo $this->createMobileUrl('info')}&id="+id;-->
+                    <!--}-->
+                <!--}-->
+            <!--})-->
+        <!--}-->
+    <!--</script>-->
+<!--</body>-->
+<!--</html>-->

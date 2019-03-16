@@ -1,0 +1,247 @@
+{template '_header'}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+<link rel="stylesheet" href="jquery-ui-timepicker-addon.min.css" />
+<div class='fui-page  fui-page-current'>
+    <div class="fui-header">
+		<div class="fui-header-left">
+			<a class="back" onclick='location.back()'></a>
+		</div>
+		<div class="title">选择您要预约的水类别</div>
+		<div class="fui-header-right">&nbsp;</div>
+	</div>
+
+	<div class='fui-content' style='margin-top:5px;'>
+
+
+			 
+		<div class="fui-cell-group">
+			<div class="fui-cell">
+				<div class="fui-cell-label">产品</div>
+				<div class="fui-cell-info">
+				<select name="name" id="name">
+					<option value="0">请选择</option>
+					{loop $list $index $vo}
+					<option value="{$vo[id]}">{$vo[name]}</option>
+					{/loop}
+				</select>
+				</div>
+				<!--<div class="fui-cell-info"><input type="text"  class='fui-input'  id='name' name='weixin' placeholder="请选择水分类"  value="{$member['name']}" /></div>-->
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-label">产品图片</div>
+				<div class="fui-cell-info" id="image">
+
+				</div>
+				<!--<div class="fui-cell-info"><input type="text"  class='fui-input'  id='name' name='weixin' placeholder="请选择水分类"  value="{$member['name']}" /></div>-->
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-label">单价</div>
+				<div class="fui-cell-info">
+					<p name="price" id="price"></p>
+				</div>
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-label">数量</div>
+				<div class="fui-cell-info">
+					<input type="text"  class='fui-input'  id='num' name='num' placeholder="请输入数量"  value=""  />
+				</div>
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-label">地址电话</div>
+				<div class="fui-cell-info">
+					<select name="addressmobile" id="addressmobile">
+						<option value="0">请选择</option>
+						{loop $address $vo}
+						<option value="{$vo[id]}">{$vo[address]}-{$vo[mobile]}</option>
+						{/loop}
+					</select>
+				</div>
+			</div>
+			<div class="fui-cell">
+				<div class="fui-cell-label">预约时间</div>
+				<div class="fui-cell-info"><input type="datetime-local"  class='fui-input'  id='appointment_time' name='appointment_time' placeholder="请输入预约时间"  value=""  /></div>
+			</div>
+		</div>
+
+		<a href='javascript: void(0);' class='btn btn-success block' id='clickSubmit'>提交</a>
+	</div>
+
+	<style>
+		.imgClass{ width:200px;height:200px;}
+	</style>
+
+	<script language="javascript">
+
+
+		$('#clickSubmit').click(function(){
+
+            var water_id = $('#name').val();
+            var addressmobile = $('#addressmobile').val(); //地址电话id
+            var appointment_time = $('#appointment_time').val();
+			var appointment_time= appointment_time.replace('T',' ');
+			var appointment_time= appointment_time.substr(0,19);
+		//	var appointment_time= '2018-04-16 19:00:00';
+			var num = $('#num').val();
+            if(water_id == false) {
+                FoxUI.toast.show('请选择要预约的产品')
+                return false;
+            }
+
+            if(addressmobile == false) {
+                FoxUI.toast.show('请选择地址')
+                return false;
+            }
+
+            if(appointment_time == false) {
+                FoxUI.toast.show('请选择预约时间')
+                return false;
+            }
+
+            if(num == false) {
+                FoxUI.toast.show('请输入数量')
+                return false;
+            }
+
+            var re = /^[0-9]+.?[0-9]*$/;
+			/*if(!re.test(num)) {
+                FoxUI.toast.show('数量请输入数字')
+				return false;
+            }
+*/
+
+            $.ajax({
+                url:"{url 'entry&do=mobile&m=ewei_shopv2&r=water.orderMake'}",
+                data:{'water_id':water_id,'addressmobile':addressmobile,'appointment_time':appointment_time,'num':num},
+                dataType:'json',
+                type:'post',
+                success:function(e){
+                    if(e.status == 200) {
+                        //alert(e.msg);
+                        FoxUI.toast.show(e.msg);
+                        location.href = core.getUrl('water/pay', {
+                            'id':e.id,
+						})
+                    } else {
+                        FoxUI.toast.show(e.msg);
+                        //alert(e.msg);
+                    }
+                },
+                error:function(e){
+                    alert('通讯错误');
+                }
+            })
+		});
+
+
+
+		//预约时间
+       /* $.datepicker.regional['zh-CN'] = {
+            closeText: '关闭',
+            prevText: '&lt;上月',
+            nextText: '下月&gt;',
+            currentText: '今天',
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            monthNamesShort: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+            dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            dayNamesMin: ['日', '一', '二', '三', '四', '五', '六'],
+            weekHeader: '周',
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: true,
+            yearSuffix: '年'
+        };
+        $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+
+
+        $( "#appointment_time" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 3,
+            onClose: function( selectedDate ) {
+                $( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#appointment_time" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 3,
+            onClose: function( selectedDate ) {
+                $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+
+       // $("#appointment_time").timepicker(); // 时分秒*/
+
+
+
+        $('#name').change(function(){
+
+			var id = $('#name').val();
+			$.ajax({
+				url:"{url 'entry&do=mobile&m=ewei_shopv2&r=water.getPriceByName'}",
+				dataType:'json',
+				type:'post',
+				data:{'id':id},
+				success:function(e){
+				    var v = e.data;
+					if(e.code == 200) {
+
+                        var option = '';
+						var img = '';
+
+                        img = '<img width="100px" height="100px" src="{php echo tomedia("'+v.image+'")}">';
+						$('#price').html(v.price);
+						$('#image').html(img);
+
+						//成功后跳转到支付页面
+                        location.href = core.getUrl('order/pay', {
+                            id: ret.result.orderid
+                        })
+
+					} else {
+                        option ='<option value="0">无</option>';
+                        $('#price').html(option);
+
+                        $('#image').html('');
+
+					    //alert('该商品不存在');
+					}
+				},
+				error:function() {
+				    alert('通讯错误');
+				}
+			});
+
+		});
+
+        $('#image').on('click','img',function(){
+            $('#image img').toggleClass('imgClass');
+           // $(this).trigger('click');
+		});
+
+
+
+	</script>
+	<script language='javascript'>
+
+        require(['biz/member/info'], function (modal) {
+		  	modal.init({
+			    new_area:{php echo $new_area},
+			    returnurl:"{php echo $returnurl}",
+			    template_flag: {php echo intval($template_flag)},
+				wapopen: {php echo intval($wapset['open'])}
+			});
+
+
+	});
+
+</script>
+
+</div>
+{template '_footer'}
+

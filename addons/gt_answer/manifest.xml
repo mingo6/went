@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.qinhantangtop.com" versionCode="0.8,1.0">
+	<application setting="true">
+		<name><![CDATA[港铁答题小游戏]]></name>
+		<identifie><![CDATA[gt_answer]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[港铁答题小游戏]]></ability>
+		<description><![CDATA[港铁答题小游戏]]></description>
+		<author><![CDATA[勤瀚堂源码]]></author>
+		<url><![CDATA[https://www.qinhantangtop.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

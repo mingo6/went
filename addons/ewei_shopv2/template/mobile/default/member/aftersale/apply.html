@@ -1,0 +1,119 @@
+{template '_header'}
+<style>
+    .upload-wrapper {
+        display: inline-block;
+        width: 65px;
+        height: 65px;
+        border: 1px dashed #ccc;
+        position: relative;
+        vertical-align: text-top;
+    }
+    .upload-wrapper:before {
+        content: '+';
+        position: absolute;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        left: 50%;
+        top: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+        color: #ddd;
+        text-align: center;
+        line-height: 20px;
+    }
+    #aftersaleApply {
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #uplaodImg {
+        font-size: 0;
+        white-space: normal;
+    }
+    #uplaodImg .img-wrapper {
+        width: 66px;
+        height: 66px;
+        display: inline-block;
+        vertical-align: text-top;
+        margin: 0 10px 10px 0;
+        position: relative;
+        font-size: 0;
+    }
+    #uplaodImg .img-wrapper span {
+        position: absolute;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        top: 0;
+        right: 0;
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        line-height: 14px;
+        background: red;
+    }
+    #uplaodImg .img-wrapper img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div class='fui-page  fui-page-current'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if empty($aftersaleinfo)}申请售后{else}编辑售后信息{/if}</div>
+        <div class="fui-header-right">&nbsp;</div>
+    </div>
+    <div class='fui-content'>
+        <form method='post' class='form-ajax' >
+            <input type='hidden' id='id' value="{$aftersaleinfo['id']}"/>
+            <div class='fui-cell-group'>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>商品名称</div>
+                    <div class='fui-cell-info'><input type="text" id='goods_name'  name='goods_name' value="{$aftersaleinfo['goods_name']}" placeholder="商品名称" class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>商品型号</div>
+                    <div class='fui-cell-info'><input type="text" id='goods_model'  name='goods_model' value="{$aftersaleinfo['goods_model']}" placeholder="商品型号" class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>姓名</div>
+                    <div class='fui-cell-info'><input type="text" id='name'  name='name' value="{$aftersaleinfo['name']}" placeholder="联系人姓名" class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>电话</div>
+                    <div class='fui-cell-info'><input type="tel" id='mobile' name='mobile' value="{$aftersaleinfo['mobile']}" placeholder="联系人电话"  class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>快递名称</div>
+                    <div class='fui-cell-info'><input type="text" id='express_name' name='express_name' value="{$aftersaleinfo['express_name']}" placeholder='快递单号'  class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>快递单号</div>
+                    <div class='fui-cell-info'><input type="text" id='express_numbers' name='express_numbers' value="{$aftersaleinfo['express_numbers']}" placeholder='快递名称'  class="fui-input"/></div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>图片（保修卡、发票等）</div>
+                    <div class='fui-cell-info' id="uplaodImg">
+                        <div class="upload-wrapper"></div>
+                        <input type="hidden" name="image" id="image" value="" />
+                    </div>
+                </div>
+                <div class='fui-cell'>
+                    <div class='fui-cell-label'>备注</div>
+                    <div class='fui-cell-info'><input type="text" id='remark' name='remark' value="{$aftersaleinfo['remark']}" placeholder='备注'  class="fui-input"/></div>
+                </div>
+            </div>
+            <a id="btn-submit" class='external btn btn-danger block'>申请售后</a>
+        </form>
+    </div>
+    <script type="text/javascript">
+        require(['biz/member/apply'], function (modal) {
+            modal.initPost({new_area: '{php echo $new_area}',address_street: '{php echo $aftersaleinfo_street}'});
+        });
+    </script>
+</div>
+
+{template '_footer'}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <div class='scene luck'>
+        <img class="luck_bg" src="../addons/{MODULE}/public/images/luck.gif">
+        <img class="luck inluck animated" src="../addons/{MODULE}/public/images/luck_bg.png">
+        <img onclick="confirm(2)" class="unluck inluck animated" src="../addons/{MODULE}/public/images/unluck.png">
+        <audio id="shake" preload="auto" src="../addons/{MODULE}/public/audio/yao.mp3"></audio>
+        <div class="confirm" onclick="confirm(1)"></div>
+    </div>
+    {template './common/_footer'}
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        function confirm (type) {
+            if (type == 1) {
+                location.href = '{php echo $this->createMobileUrl("dusk")}';
+            } else {
+                location.href = '{php echo $this->createMobileUrl("index")}';
+            }
+        }
+
+        init();
+        var AJAX_RETURN=true;
+        var SHAKE_THRESHOLD = 2000;
+        var last_update = 0;
+        var x = y = z = last_x = last_y = last_z = 0;
+        function init() {
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', deviceMotionHandler, false);
+            } else {
+                alert('not support mobile event');
+            }
+        }
+
+        // 阈值
+        var flag = false
+        function audioAutoPlay(type){
+            if (flag) return
+            var audio = document.getElementById('shake');
+            var play = function() {
+                document.removeEventListener("WeixinJSBridgeReady", play);
+                document.removeEventListener("YixinJSBridgeReady", play);
+                audio.play();
+                if (type == 'pause') {
+                    audio.pause();
+                }
+            };
+            audio.play();
+            // audio.pause();
+            //weixin
+            document.addEventListener("WeixinJSBridgeReady", play, false);
+            //yixin
+            document.addEventListener('YixinJSBridgeReady', play, false);
+        }
+        audioAutoPlay('pause')
+        function deviceMotionHandler(eventData) {
+            var acceleration = eventData.accelerationIncludingGravity;
+            var curTime = new Date().getTime();
+            if ((curTime - last_update) > 100) {
+                var diffTime = curTime - last_update;
+                last_update = curTime;
+                x = acceleration.x;
+                y = acceleration.y;
+                z = acceleration.z;
+                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                if (speed > SHAKE_THRESHOLD) {
+                    // 播放音效
+                    audioAutoPlay()
+                    flag = true
+
+                    $(".container img").addClass("conanima");
+                    if(AJAX_RETURN){
+                        yaoyiyao();
+                    }
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+        function yaoyiyao(){
+           AJAX_RETURN=false;
+
+           data = {
+                'name' : '{$name}',
+                'mobile' : '{$mobile}',
+                'addr' : '{$addr}',
+            };
+            $.ajax({
+                type: 'POST',
+                url: "{php echo $this->createMobileUrl('lottery')}",
+                data: data,
+                dataType: "json",
+                success: function(res){
+                    if(res.code == 10000) {
+                        alert(res.msg);
+                        location.href = '{php echo $this->createMobileUrl("info")}';
+                    } else if(res.code == 10001) {
+                        // todo 没中奖了
+                        setTimeout(() => {
+                            $('.unluck').addClass('bounceIn')
+                        }, 500)
+                        // AJAX_RETURN=true;
+                    } else if(res.code == 200) {
+                        // todo 中奖了
+                        setTimeout(() => {
+                            $('.luck').addClass('bounceIn')
+                        }, 500)
+                        // AJAX_RETURN=true;
+                    } else {
+                        alert(1)
+                    }
+                },
+            });
+        }
+    </script>
+</body>
+</html>

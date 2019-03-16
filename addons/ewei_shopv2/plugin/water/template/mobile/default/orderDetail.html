@@ -1,0 +1,163 @@
+{template '_header'}
+<style>
+    .fui-list-media img{height:2.5rem;}
+    .fui-list:first-child:before{display: block;}
+    .yen{border:none;height:0.75rem;width:0.75rem;display: inline-block;background: #ff4753;color:#fff;font-size:0.4rem;line-height: 0.8rem;text-align: center;
+        font-style: normal;border-radius: 0.75rem;-webkit-border-radius: 0.75rem;margin-right:0.15rem;}
+</style>
+<div class='fui-page order-detail-page'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back external" href="{php echo mobileUrl('water/myOrderList')}"></a>
+        </div>
+        <div class="title">预定水订单详情</div>
+        <div class="fui-header-right" data-nomenu="">&nbsp;</div>
+    </div>
+    <div class='fui-content navbar'>
+
+        <div class='fui-list-group result-list'>
+            <div class='fui-list order-status'>
+
+                <div class='fui-list-inner'>
+                    <div class='title'>
+                        {if empty($order['status'])}
+                        已取消
+                        {elseif $order['status']==1}
+                        未付款
+                        {elseif $order['status']==2}
+                        已付款
+                        {elseif $order['status']==3}
+                        已发货
+                        {elseif $order['status']==4}
+                        退货中
+                        {elseif $order['status']==5}
+                        已完成
+                        {elseif $order['status']==6}
+                        已关闭
+                        {elseif $order['status']==7}
+                        已退货
+                        {/if}
+                    </div>
+                    <div class='text'>订单金额: &yen; {$order['price']}<span></div>
+                </div>
+                <div class='fui-list-media'>
+                    {if $order['status']==3}
+                    <i class='icon icon-deliver'></i>
+                    {elseif $order['status'] ==1}
+                    <i class='icon icon-information'></i>
+                    {elseif $order['status']==2}
+                    <i class='icon icon-money'></i>
+                    {elseif $order['status']==3}
+                    <i class='icon icon-deliver'></i>
+                    {elseif $order['status']==5}
+                    <i class='icon icon-check'></i>
+                    {elseif $order['status']==7}
+                    <i class='icon icon-roundclose'></i>
+                    {/if}
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class='fui-list'>
+            <div class='fui-list-media'><i class='icon icon-location'></i></div>
+            <div class='fui-list-inner'>
+                <div class='title'>{$order['linkman']} {$order['mobile']}</div>
+                <div class='text'>{$order['address']}</div>
+            </div>
+        </div>
+
+
+    <div class='fui-cell-group price-cell-group'>
+        <div class="fui-cell">
+            <div class="fui-cell-label">商品小计</div>
+            <div class="fui-cell-info">{if $order['price']}<span class="text-danger" style="font-size: 0.6rem;">(套餐总价)</span>{/if}</div>
+            <div class="fui-cell-remark noremark">&yen; {$order['price']}</div>
+        </div>
+
+        <div class="fui-cell">
+            <div class="fui-cell-label" style='width:auto;'>实付费</div>
+            <div class="fui-cell-info"></div>
+            <div class="fui-cell-remark noremark"><span class='text-danger'>&yen; <span style='font-size:.8rem'>{$order['price']}</span></span></div>
+        </div>
+    </div>
+
+    <div class="fui-cell-group info-cell-group"  style='table-layout:fixed;'>
+        <div class="fui-cell">
+            <div class="fui-cell-label">预约时间:</div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i',$order['appointment_time'])}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">订单编号:</div>
+            <div class="fui-cell-info">{$order['order_sn']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">创建时间:</div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i:s', $order['create_time'])}</div>
+        </div>
+        {if $order['status']>=1 && $order['paytime'] > 0}
+        <div class="fui-cell">
+            <div class="fui-cell-label">支付时间: </div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i:s', $order['pay_time'])}</div>
+        </div>
+        {/if}
+       <!-- {if $order['status']>=2 || ($order['status']>=1 && $order['sendtype']>0)}
+        <div class="fui-cell">
+            <div class="fui-cell-label">发货时间: </div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i:s', $order['sendtime'])}</div>
+        </div>
+        {/if}
+        {if $order['status']==3}
+        <div class="fui-cell">
+            <div class="fui-cell-label">完成时间: </div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i:s', $order['createtime'])}</div>
+        </div>
+        {/if}-->
+    </div>
+
+    {template '_copyright'}
+</div>
+
+<div class='fui-footer'>
+        {if $order['status']==1}
+            <!--<div class="btn btn-default btn-default-o order-cancel">取消订单
+                <select data-orderid="{$order['id']}">
+
+                    <option value="">不取消了</option>
+                    <option value="我不想买了">我不想买了</option>
+                    <option value="信息填写错误，重新拍">信息填写错误，重新拍</option>
+                    <option value="同城见面交易">同城见面交易</option>
+                    <option value="其他原因">其他原因</option>
+                </select>
+            </div>-->
+            {if is_mobile()}
+                {if $order['status'] == 1}
+                        <a class="btn btn-danger" href="{php echo mobileUrl('water/pay',array('id'=>$order['id']))}">支付订单</a>
+                {/if}
+            {/if}
+        {/if}
+        {if $order['status']==0 || $order['status']==6}
+        <div class="btn btn-default btn-default-o order-delete" data-orderid="{$order['id']}">删除订单</div>
+        {/if}
+        {if $order['status']==3}
+        <div class="btn btn-default btn-default-o order-finish" data-orderid="{$order['id']}">确认收货</div>
+        {/if}
+
+        {if $order['canrefund']}
+        <a data-nocache="true" class="btn btn-default" href="{php echo mobileUrl('water/refund',array('id'=>$order['id']))}">{if ($order['status'] ==4)}查看{/if}{if $order['status'] ==2}申请退款{/if}</a>
+        {/if}
+</div>
+<script language='javascript'>
+    require(['biz/order/detail'], function (modal) {
+        FoxUI.according.init();
+        modal.init({orderid: "{$orderid}",fromDetail:true});
+    });
+
+</script>
+</div>
+{template '_footer'}

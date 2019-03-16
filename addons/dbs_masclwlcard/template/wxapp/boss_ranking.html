@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>销售排行</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/boss_rader.css">
+</head>
+<style type="text/css">
+.content{padding-bottom: 10px;}
+.active_item{border:1px solid #FE7B03;color: #FE7B03;}
+.costermer{text-align: left;background-color: #fff;padding-bottom: 15px;}
+.costermer span{padding: 0 10px 30px 10px;}
+.sort_content{width: 100%;background-color: #fff;border-bottom: 1px solid #ddd;}
+.sort_box{width: 90%;padding: 23px 0;margin-left: auto;margin-right: auto;display: flex;flex-direction: row;justify-content: space-between;align-items: center;}
+.sort_left{width: 80%;}
+.sort_right{width: 20%;text-align: right;}
+.sort_left ul{list-style: none;}
+.sort_left ul li{float: left;padding-right: 10px;height: 45px;line-height: 45px;}
+.sort_left ul li  img{width: 45px;height: 45px;border-radius: 50%;z-index: 2;}
+.number{font-size: 20px;width: 20%;overflow: hidden;text-align: center;}
+.number_active{color: rgb(245, 217,104)}
+.sort_right span{color: rgb(232, 132,50);font-weight: bold;}
+.name{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;width:45%;display: inline-block;}
+.userimg{width: 18%;}
+.number_one{position: relative; display: flex;flex-direction: column;justify-content: center;align-items:center;}
+#onetop{width: 30px;height: 23px;position: absolute;z-index: 1;top: -18px;}
+.frequency2{display: none;}
+.frequency3{display: none;}
+.color_y{color: #FE7B03;}
+</style>
+
+<body>
+    <div class="container">
+
+        <div class="content">
+            <div class="weui-flex navbar">
+            <div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_index')}"><div class="placeholder">汇总</div></div>
+            <div class="weui-flex__item"><div class="placeholder active_navbar">销售排行</div></div>
+            <div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_ai')}"><div class="placeholder">AI分析</div></div>
+            </div>
+            <div class="weui-flex taps">
+                <div class="weui-flex__item"><div id="1" class="placeholder actived_item active_item">按客户人数</div></div>
+                <div class="weui-flex__item"><div id="2" class="placeholder actived_item">按互动频率</div></div>
+                <div class="weui-flex__item"><div id="3" class="placeholder actived_item sales_group" data-group="5">按成交率</div></div>
+            </div>
+        </div>
+        <div class="class_box">
+            <div class="frequency1">
+                <div class="costermer">
+                    <span id="c1" class="color_y sales_group" data-group="1">客户总数</span>
+                    <span id="c2" class="sales_group" data-group="2">新增客户</span>
+                </div>
+            </div>
+            <div class="frequency2">
+                <div class="costermer costermer2">
+                    <span id="t1" class="color_y sales_group" data-group="3">跟进总数</span>
+                    <span id="t2" class="sales_group" data-group="4">咨询总数</span>
+                </div>           
+            </div>
+            <div class="frequency3">
+                <div class="costermer">
+                    <span id="p1" class="color_y group_scale" data-min="0" data-max="50">0%-50%</span>
+                    <span id="p2" class="group_scale" data-min="50" data-max="80">50%-80%</span>
+                    <span id="p3" class="group_scale" data-min="80" data-max="99">80%-99%</span>
+                    <span id="p4" class="group_scale" data-min="100" data-max="100">100%</span>
+                </div>
+            </div>   
+            
+            <div class="costermer date_select" style="display:none">
+                <span id="t3" class="color_y" data-days="1">昨日</span>
+                <span id="t4" class="group_days" data-days="7">近7天</span>
+                <span id="t5" class="group_days" data-days="15">近15天</span>
+                <span id="t6" class="group_days" data-days="30">近30天</span>
+            </div>        
+        </div>
+        <!--排名列表-->
+        <div id="bottom-box" style="margin-top: 5px;margin-top: 20px">
+            
+        </div>
+    </div>
+</body>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/echarts.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+	    loadSales(1)
+        loadBtn();
+    })
+
+
+    function loadBtn() {
+        //一级标签切换
+        $(".taps").on("click", function (e) {
+            var id = e.target.id;
+            if (id != "") {
+                $(".actived_item").removeClass("active_item")
+                $("#" + id).addClass("active_item")
+                $(".class_box").children().hide();
+                //切换时，第一个子tab
+                $(".frequency" + id + " .sales_group").eq(0).click();
+            }
+            if (id == 1){
+                $(".frequency1").show();
+                changeTab(5);
+            }
+            else if (id == 2){
+                $(".frequency2").show();
+                changeTab(5);}
+            else if (id == 3) {
+                $(".frequency3").show();
+                changeTab(5);
+            }
+        })
+
+
+        //二级切换
+        $(".frequency1").on("click", function (e) {
+            var id = e.target.id;
+            if (id != "") {
+                $(".frequency1 span").removeClass("color_y")
+                $("#" + id).addClass("color_y")
+                changeTab(1);
+            }
+        })
+
+        //二级切换
+        $(".costermer2").on("click", function (e) {
+            var id = e.target.id;
+            if (id != "") {
+                $(".costermer2 span").removeClass("color_y")
+                $("#" + id).addClass("color_y")
+                changeTab(2);
+            }
+        })
+
+
+        //二级切换
+        $(".frequency3").on("click", function (e) {
+            var id = e.target.id;
+            if (id != "") {
+                $(".frequency3 .costermer span").removeClass("color_y")
+                $("#" + id).addClass("color_y")
+            }
+            changeTab(3);
+        })
+        //三级切换
+        $(".date_select").on("click", function (e) {
+            var id = e.target.id;
+            if (id != "") {
+                $(".date_select span").removeClass("color_y")
+                $("#" + id).addClass("color_y")
+            }
+            changeTab(6);
+        })
+
+        //记录当前选中的group
+        $(".sales_group").click(function () {
+            $(".sales_group").removeClass("group_active")
+            $(this).addClass("group_active");
+
+            //是否显示天数
+            var group = $(this).attr("data-group");
+            if (group == 2 || group == 3 || group == 4) {
+                $(".date_select").show();
+            }
+            else
+                $(".date_select").hide();
+        });
+
+       
+    }
+	//导航切换
+        $(".a-tab").click(function () {
+			
+            var url = $(this).attr("data-url");
+			to_url(url);
+			
+        })
+		//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+
+//切换tab刷新数据
+function changeTab(tab) {
+    //console.log(tab)
+    var group = "";
+    $(".sales_group").each(function () {
+        if ($(this).attr("class").indexOf("group_active") > -1) {
+            group += $(this).attr("data-group");
+        }
+    })
+
+    loadSales(group);
+}
+
+//销售排行数据
+function loadSales(group) {
+    //天数
+    var days = 0;
+	
+	
+    $(".group_days").each(function () {
+        if ($(this).attr("class").indexOf("color_y") > -1) {
+            days = $(this).attr("data-days");
+        }
+    })
+
+    // 百分比
+    var min = 0, max = 0;
+    $(".group_scale").each(function () {
+        if ($(this).attr("class").indexOf("color_y") > -1) {
+            min = $(this).attr("data-min");
+            max = $(this).attr("data-max");
+        }
+    })
+
+    if ((group == 2 || group == 3 || group == 4) && days == 0)
+        days = 1;
+    var param = "";
+
+  // alert(group);alert(days);alert(min);alert(max);
+    $.post("{php echo $this->createMobileUrl('boss_getrank')}", {days:days,group:group,min:min,max:max}, function(data){ 
+		$('#bottom-box').html("");
+        if (data.Code>0) {
+			
+			alert(data.msg);
+			
+			return;
+		}
+        if (data.value == null || data.value.length < 1) return;
+        //绑定列表数据
+        var html2 = "";
+        var list = data.value;
+        for (var i = 0; i < list.length; i++) {
+            if (i == 0)
+                html2 += "<div class='sort_content'><div class='sort_box' onclick='boss_list(" + list[i].id + ")'><div class='sort_left'><ul><li class='number number_active'>" + parseInt(i + 1) + "</li><li class='userimg number_one'><img id='onetop' src='../addons/dbs_masclwlcard/template/wxapp/images/33.png' alt=''><img src='" + list[i].avaterUrl + "' alt=''></li><li class='name number_active f16'>" + list[i].nickname + "</li></ul></div><div class='sort_right'><span class='f25'>" + list[i].num + "</span></div></div></div>";
+            else {
+                html2 += "<div class='sort_content'><div class='sort_box' onclick='boss_list(" + list[i].id + ")'><div class='sort_left'><ul><li class='number number_active'>" + parseInt(i + 1) + "</li><li class='userimg number_one'><img src='" + (list[i].avaterUrl) + "' alt=''></li><li class='name number_active f16'>" + list[i].nickname + "</li></ul></div><div class='sort_right'><span class='f25'>" + list[i].num + "</span></div></div></div>";
+            }
+        }
+        $('#bottom-box').html("");
+        $('#bottom-box').append(html2);
+    },"json");
+}
+function boss_list(card_id) {
+    to_url("{php echo $this->createMobileUrl('boss_list')}"+'&card_id='+card_id)
+}
+
+</script>
+</html>

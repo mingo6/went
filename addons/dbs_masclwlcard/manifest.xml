@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://wxxcx001.com" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[智能AI雷达名片]]></name>
+		<identifie><![CDATA[dbs_masclwlcard]]></identifie>
+		<version><![CDATA[1.6.6]]></version>
+		<type><![CDATA[activity]]></type>
+		<ability><![CDATA[主要用于宣传]]></ability>
+		<description><![CDATA[主要用于宣传]]></description>
+		<author><![CDATA[电商时代]]></author>
+		<url><![CDATA[http://wxxcx001.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports>
+			<item type="wxapp" />
+		</supports>
+	</platform>
+	<bindings>
+	    <cover>
+	        
+		</cover>
+		<rule>
+		    
+		</rule>
+		<menu>
+			<entry title="企业微信设置" do="qyapi" state="" direct="false" />
+<entry title="基础设置" do="base" state="" direct="false" />
+<entry title="名片管理" do="card" state="" direct="false" />
+<entry title="官网管理" do="website" state="" direct="false" />
+<entry title="产品管理" do="product" state="" direct="false" />
+<entry title="商城管理" do="shops" state="" direct="false" />
+<entry title="客户管理" do="member" state="" direct="false" />
+<entry title="朋友圈管理" do="friend" state="" direct="false" />
+
+		</menu>
+	</bindings>
+	<install><![CDATA[CREATE TABLE `ims_dbs_masclwlcard` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `identify` varchar(300) NOT NULL,
+  `card_logo` varchar(300) NOT NULL,
+  `detailed_address` varchar(300) NOT NULL,
+  `card_name` varchar(300) NOT NULL,
+  `errmsg` varchar(300) NOT NULL,
+  `card_instr` text NOT NULL,
+  `card_id` varchar(80) NOT NULL,
+  `userid` varchar(80) NOT NULL,
+  `weixinid` varchar(80) NOT NULL,
+  `photo` text NOT NULL,
+  `address` varchar(80) NOT NULL,
+  `sex` tinyint(1) NOT NULL DEFAULT '0',
+  `template_type` tinyint(1) NOT NULL DEFAULT '0',
+  `card_forward_status` tinyint(1) NOT NULL DEFAULT '0',
+  `see_num` int(11) NOT NULL DEFAULT '0',
+  `browse_headimg_num` int(11) NOT NULL DEFAULT '0',
+  `sort` int(11) NOT NULL DEFAULT '0',
+  `signature_count` int(11) NOT NULL DEFAULT '0',
+  `share_num` int(11) NOT NULL DEFAULT '0',
+  `total_pic_num` int(11) NOT NULL DEFAULT '0',
+  `ishide` tinyint(1) NOT NULL DEFAULT '0',
+  `thumbs_num` int(11) NOT NULL DEFAULT '0',
+  `mrtype` tinyint(1) NOT NULL DEFAULT '0',
+  `card_level` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否标星',
+  `last_update_star_time` varchar(15) NOT NULL,
+  `card_tel` varchar(15) NOT NULL,
+  `role_name` varchar(15) NOT NULL DEFAULT '职位',
+  `phone` varchar(15) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `hide_property` tinyint(1) NOT NULL,
+  `customer_disturb` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否隐藏',
+  `open_boss` tinyint(3) DEFAULT '0',
+  `zd_msg` varchar(350) NOT NULL,
+  `company_name` varchar(50) NOT NULL,
+  `template_img` varchar(300) NOT NULL,
+  `share_img` varchar(350) NOT NULL,
+  `share_title` varchar(350) NOT NULL,
+  `is_sendcard_id` int(11) DEFAULT '0',
+  `is_sendcard` tinyint(1) DEFAULT '0',
+  `music_voice` varchar(350) NOT NULL,
+  `view_people` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_act_report` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `copytype` varchar(300) NOT NULL DEFAULT '0',
+  `footertype` varchar(300) NOT NULL DEFAULT '0',
+  `updatetime` varchar(30) NOT NULL,
+  `card_id` int(11) NOT NULL DEFAULT '1',
+  `num` int(11) NOT NULL DEFAULT '0',
+  `act_id` int(11) NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `p_id` int(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `act_content` varchar(300) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=700 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_adv` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `images` varchar(300) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `addtime` int(10) NOT NULL,
+  `card_id` int(11) NOT NULL,
+  `image` varchar(350) NOT NULL,
+  `content` text NOT NULL,
+  `share_content` varchar(350) NOT NULL,
+  `share_title` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_card_closer` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `content` text NOT NULL COMMENT '更近内容',
+  `card_mid` int(11) NOT NULL DEFAULT '1',
+  `card_id` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_card_member` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `showZan` tinyint(3) NOT NULL DEFAULT '0',
+  `isPopCard` tinyint(3) NOT NULL DEFAULT '0',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  `gailv` tinyint(3) DEFAULT '0',
+  `hmd_status` tinyint(3) DEFAULT '0',
+  `pb_status` tinyint(3) DEFAULT '0',
+  `source_id` int(11) DEFAULT '0',
+  `canTake` decimal(11,2) NOT NULL,
+  `totalBroker` decimal(11,2) NOT NULL,
+  `hasTaken` decimal(11,2) NOT NULL,
+  `inTaking` decimal(11,2) NOT NULL,
+  `notInAccount` decimal(11,2) NOT NULL,
+  `send_cardid` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_cash` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openid` varchar(300) NOT NULL,
+  `source_id` int(11) DEFAULT '0',
+  `m_id` int(11) NOT NULL DEFAULT '1',
+  `mch_billno` varchar(300) NOT NULL,
+  `log` text NOT NULL,
+  `fee` decimal(10,2) NOT NULL,
+  `create_t` int(11) NOT NULL,
+  `ip` varchar(50) NOT NULL,
+  `success_t` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openid`(255)) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_chat` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `fid` int(11) NOT NULL DEFAULT '0',
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `card_id` int(11) NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `is_send` tinyint(1) NOT NULL DEFAULT '0',
+  `type` tinyint(1) NOT NULL DEFAULT '0',
+  `stype` tinyint(1) NOT NULL DEFAULT '1',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `send_fromid` tinyint(11) NOT NULL DEFAULT '0',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `formId` varchar(350) NOT NULL,
+  `msg` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_footer` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `card_img` varchar(380) NOT NULL,
+  `card_img_no` varchar(380) NOT NULL,
+  `card_name` varchar(30) NOT NULL,
+  `shop_name` varchar(30) NOT NULL,
+  `friend_name` varchar(30) NOT NULL,
+  `web_name` varchar(30) NOT NULL,
+  `shop_img` varchar(380) NOT NULL,
+  `friend_img` varchar(380) NOT NULL,
+  `web_img` varchar(380) NOT NULL,
+  `shop_img_no` varchar(380) NOT NULL,
+  `friend_img_no` varchar(380) NOT NULL,
+  `web_img_no` varchar(380) NOT NULL,
+  `shop_type` tinyint(1) NOT NULL,
+  `friend_type` tinyint(1) NOT NULL,
+  `web_type` tinyint(1) NOT NULL,
+  `card_type` tinyint(1) NOT NULL,
+  `shop_url` varchar(380) NOT NULL,
+  `shop_path` varchar(380) NOT NULL,
+  `card_path` varchar(380) NOT NULL,
+  `web_path` varchar(380) NOT NULL,
+  `web_appid` varchar(380) NOT NULL,
+  `card_appid` varchar(380) NOT NULL,
+  `friend_appid` varchar(380) NOT NULL,
+  `friend_path` varchar(380) NOT NULL,
+  `shop_appid` varchar(380) NOT NULL,
+  `friend_url` varchar(380) NOT NULL,
+  `web_url` varchar(380) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_formid` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `formId` varchar(350) NOT NULL DEFAULT '',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_friend` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `card_id` int(11) unsigned NOT NULL,
+  `all_img` text NOT NULL,
+  `is_card` tinyint(11) NOT NULL DEFAULT '0',
+  `content_card` text NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `time` int(10) NOT NULL,
+  `head_img` varchar(300) NOT NULL,
+  `content` text NOT NULL,
+  `sort` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_member` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_nav` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `images` varchar(300) NOT NULL,
+  `path` varchar(350) NOT NULL,
+  `title` varchar(350) NOT NULL,
+  `newid` varchar(350) NOT NULL,
+  `linkType` varchar(350) NOT NULL,
+  `appid` varchar(350) NOT NULL,
+  `path_web` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `time` int(10) NOT NULL,
+  `head_img` varchar(300) NOT NULL,
+  `content` text NOT NULL,
+  `sort` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_pl` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `fid` int(11) NOT NULL DEFAULT '0',
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `content` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_product` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `cp_bs_img` text NOT NULL,
+  `cp_bs_content` text NOT NULL,
+  `cp_bs_name` varchar(300) NOT NULL,
+  `cp_bs_price` varchar(300) NOT NULL,
+  `sort` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_set` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `company_name` varchar(300) NOT NULL,
+  `lat` varchar(300) NOT NULL,
+  `lng` varchar(300) NOT NULL,
+  `num` int(10) NOT NULL,
+  `company_addr` varchar(300) NOT NULL,
+  `template_id` varchar(300) NOT NULL,
+  `open_shop` tinyint(1) NOT NULL DEFAULT '0',
+  `company_tel` varchar(30) NOT NULL,
+  `company_logo` varchar(300) NOT NULL,
+  `shop_bg` varchar(350) NOT NULL,
+  `open_redpack` tinyint(3) DEFAULT '0',
+  `redpack_min` decimal(11,2) NOT NULL,
+  `redpack_max` decimal(11,2) NOT NULL,
+  `support_tel` varchar(30) NOT NULL,
+  `support_name` varchar(300) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_set_fx` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `open_fx` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否开启商城',
+  `fx_price` decimal(11,2) NOT NULL COMMENT '最大金额',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_dbs_masclwlcard_set_qy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `corpid` varchar(300) NOT NULL,
+  `agentid` varchar(300) NOT NULL,
+  `secret` varchar(300) NOT NULL,
+  `secret_1` varchar(300) NOT NULL,
+  `status` tinyint(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `cp_bs_img` text NOT NULL COMMENT '产品的详情',
+  `top_pic` text NOT NULL COMMENT '产品的轮播图',
+  `shop_name` text NOT NULL COMMENT '商品名称',
+  `typeid` int(11) NOT NULL COMMENT '商品分类',
+  `specid` int(11) NOT NULL COMMENT '商品属性',
+  `sale_num` int(11) NOT NULL COMMENT '商品销售数量',
+  `shops_num` int(11) NOT NULL COMMENT '商品库存数量',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  `shop_spec` tinyint(1) NOT NULL COMMENT '商品规格',
+  `is_show` tinyint(1) NOT NULL COMMENT '是否上架',
+  `cp_bs_content` text NOT NULL,
+  `cp_bs_name` varchar(300) NOT NULL,
+  `addtime` varchar(12) NOT NULL,
+  `gimg` varchar(300) NOT NULL COMMENT '商品缩略图',
+  `price` decimal(11,2) NOT NULL,
+  `fx_type` tinyint(3) DEFAULT '0',
+  `fx_price` decimal(11,2) NOT NULL,
+  `no_show_price` tinyint(1) DEFAULT '0',
+  `is_recommend` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops_address` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `errMsg` varchar(300) NOT NULL DEFAULT '0',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `userName` varchar(30) NOT NULL DEFAULT '',
+  `postalCode` varchar(30) NOT NULL DEFAULT '0',
+  `provinceName` varchar(30) NOT NULL DEFAULT '0',
+  `cityName` varchar(30) NOT NULL DEFAULT '0',
+  `countyName` varchar(300) NOT NULL DEFAULT '0',
+  `detailInfo` text NOT NULL,
+  `nationalCode` varchar(100) NOT NULL,
+  `telNumber` varchar(30) NOT NULL,
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `is_status` tinyint(1) NOT NULL DEFAULT '0',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops_cart` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `thumb` varchar(350) NOT NULL COMMENT '产品的详情',
+  `parentid` int(10) NOT NULL COMMENT '产品的轮播图',
+  `sort` int(10) NOT NULL COMMENT '产品的轮播图',
+  `num` int(10) NOT NULL COMMENT '商品显示数量',
+  `enabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否可用',
+  `title` varchar(200) NOT NULL COMMENT '商品名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `from_user` varchar(300) NOT NULL,
+  `orderid` varchar(300) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `shops_id` int(11) NOT NULL DEFAULT '0',
+  `card_id` int(11) NOT NULL DEFAULT '0',
+  `shareid` int(11) NOT NULL DEFAULT '0',
+  `tid` int(11) NOT NULL DEFAULT '0',
+  `transaction_id` varchar(300) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `all_price` decimal(10,2) NOT NULL,
+  `addtime` int(11) NOT NULL,
+  `shops_num` int(11) NOT NULL,
+  `paid` tinyint(1) NOT NULL,
+  `hxstatus` tinyint(1) NOT NULL DEFAULT '0',
+  `hxname` varchar(30) NOT NULL DEFAULT '0',
+  `nickname` varchar(350) NOT NULL,
+  `shop_name` varchar(300) NOT NULL,
+  `tp_text` text NOT NULL,
+  `name` varchar(350) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `new_spec` varchar(50) NOT NULL,
+  `avatar` varchar(350) NOT NULL,
+  `address` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`from_user`(255)) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_shops_spec` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `spec_content` text NOT NULL COMMENT '商品规格',
+  `title` varchar(200) NOT NULL COMMENT '规格名称',
+  `sort` int(11) NOT NULL COMMENT '规格名称',
+  `enabled` tinyint(1) NOT NULL COMMENT '规格名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `title` varchar(300) NOT NULL,
+  `kf` varchar(300) NOT NULL,
+  `starttime` int(10) NOT NULL,
+  `count` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `content` text NOT NULL,
+  `images` varchar(300) NOT NULL,
+  `i_yuyue` varchar(300) NOT NULL,
+  `i_content` varchar(300) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_web` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `video` varchar(380) NOT NULL,
+  `cp_bs_content` text NOT NULL,
+  `images` varchar(380) NOT NULL,
+  `tx_video` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_zan` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `fid` int(11) NOT NULL DEFAULT '0',
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+CREATE TABLE `ims_dbs_masclwlcard_bank` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL,
+  `openId` varchar(100) NOT NULL,
+  `nickname` varchar(30) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `phone` varchar(30) NOT NULL,
+  `addtime` varchar(30) NOT NULL,
+  `updatetime` varchar(30) NOT NULL,
+  `aid` int(11) NOT NULL DEFAULT '0',
+  `gender` tinyint(11) NOT NULL DEFAULT '1',
+  `city` varchar(30) NOT NULL DEFAULT '1',
+  `errMsg` varchar(300) NOT NULL DEFAULT '0',
+  `language` varchar(30) NOT NULL DEFAULT '1',
+  `bankCard` varchar(50) NOT NULL DEFAULT '0',
+  `userName` varchar(30) NOT NULL DEFAULT '',
+  `postalCode` varchar(30) NOT NULL DEFAULT '0',
+  `provinceName` varchar(30) NOT NULL DEFAULT '0',
+  `cityName` varchar(30) NOT NULL DEFAULT '0',
+  `countyName` varchar(300) NOT NULL DEFAULT '0',
+  `detailInfo` text NOT NULL,
+  `nationalCode` varchar(100) NOT NULL,
+  `telNumber` varchar(30) NOT NULL,
+  `avatarUrl` varchar(350) NOT NULL DEFAULT '1',
+  `province` varchar(30) NOT NULL DEFAULT '1',
+  `is_status` tinyint(1) NOT NULL DEFAULT '0',
+  `avatar` varchar(350) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`uniacid`,`openId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_dbs_masclwlcard`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_act_report`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_adv`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_article`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_card_closer`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_card_member`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_cash`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_chat`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_footer`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_formid`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_friend`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_member`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_nav`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_news`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_pl`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_product`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_set`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_set_fx`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_set_qy`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_address`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_cart`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_category`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_order`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_shops_spec`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_user`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_web`;
+DROP TABLE IF EXISTS `ims_dbs_masclwlcard_zan`;
+DROP TABLE IF EXISTS `ims_ims_dbs_masclwlcard_bank`;
+]]></uninstall>
+	<upgrade><![CDATA[m_upgrade.php]]></upgrade>
+</manifest>

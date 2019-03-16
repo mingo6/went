@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <div class="main_scene">
+        <audio id="music" autoplay loop src="/attachment/{$music}"></audio>
+        <audio id="fail" src="../addons/{MODULE}/public/audio/fail.mp3"></audio>
+        <audio id="success" src="../addons/{MODULE}/public/audio/success.mp3"></audio>
+        <div class="voice" @click.stop="pause"><img src="../addons/{MODULE}/public/images/play.png"></div>
+        <div class='scene index'>
+            <img class='game_start' src='../addons/{MODULE}/public/images/game_start.gif'>
+            <div class='start_btn' @click.stop='router(1)'></div>
+            <div class='game_rules' @click.stop='rulebool = true'></div>
+            <div class='questionnaire' @click.stop='router(3)'></div>
+            <div class="rule-mask" @click="rulebool = false" :class="[rulebool ? 'active' : '']"  v-if="rulebool">
+                <div class="rule-wrapper animated" :class="[rulebool ? 'zoomIn' : '']" @click="rulebool = false">
+                    {$roles}
+                </div>
+            </div>
+        </div>
+        <div class="load">
+            <div>
+                <p>资源加载中</p>
+                <img src="../addons/{MODULE}/public/images/loading.gif">
+            </div>
+        </div>
+        <div class="answer-area" @click="animation('0.05')">
+            <div class="score">分数：<span v-html="score"></span></div>
+            <div class="plus animated">+20分</div>
+            <div class="subject-order animated" v-for="(item, index) in subject" v-html="item.level" v-if="index == active"></div>
+            <div class="subject-content animated" v-for="(item, index) in subject" v-if="index == active">
+                <div class="title" v-html="item.title"></div>
+                <div class="options" v-for="(obj, _index) in item.options">
+                    <div class="radio" :class="[obj.check ? 'active' : '']" @click="select(index, _index)"></div>
+                    <div class="label" v-html="obj.content"></div>
+                </div>
+            </div>
+            <div class="submit" @click="comfirm"></div>
+            <div class="left-btn" @click="beforeSub"></div>
+            <div class="right-btn" @click="nextSub"></div>
+        </div>
+    </div>
+    {template './common/_footer'}
+    <script type="text/javascript" src="../addons/{MODULE}/public/js/vue.min.js"></script>
+    <script type="text/javascript">
+        if (!window.sessionStorage.isload) {
+            $('.load').show()
+            window.sessionStorage.isload = true
+            var imgArr = [
+                '../addons/{MODULE}/public/images/footer_info.png',
+                '../addons/{MODULE}/public/images/loading.gif',
+                '../addons/{MODULE}/public/images/game_start.gif',
+                '../addons/{MODULE}/public/images/content_bg.png',
+                '../addons/{MODULE}/public/images/level_bg.png',
+                {loop $list $item}
+                    "/attachment/{$item['bg_img']}",
+                {/loop}
+                '../addons/{MODULE}/public/images/fail.png',
+                '../addons/{MODULE}/public/images/success.png',
+                '../addons/{MODULE}/public/images/huanghun_new.png',
+                '../addons/{MODULE}/public/images/info_bg.png',
+                '../addons/{MODULE}/public/images/luck.gif',
+                '../addons/{MODULE}/public/images/luck_bg.png',
+            ]
+            var count = 0;
+            for(var i = 0; i < imgArr.length; i++) {
+                var imgObj = new Image();
+                imgObj.src = imgArr[i];
+            }
+        }
+        window.onload = function () {
+            $('.load').hide()
+            var u = navigator.userAgent;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var vm = new Vue({
+                el: '.main_scene',
+                data: {
+                    subject: [
+                        {loop $list $item}
+                        {level: '第{$item["num"]}关', title: '{$item["title"]}', times: '{$item["bg_time"]}', options: [
+                            {loop $item["answer"] $k $v}
+                            { id: '{$v["answer_no"]}', check: false, content: '{$v["answer_no"]}.{$v["answer_content"]}' }, 
+                            {/loop}
+                        ]},
+                        {/loop}
+                    ],
+                    scene: [
+                        {loop $list $item}
+                            "/attachment/{$item['bg_img']}",
+                        {/loop}
+                    ],
+                    active: 0,
+                    answer: [],
+                    grade:[
+                        {loop $list $item}
+                            {$item['grade']},
+                        {/loop}
+                    ],
+                    real_answer:[
+                        {loop $list $item}
+                            "{$item['correct_response']}",
+                        {/loop}
+                    ],
+                    score: 0,
+                    index: '',
+                    aniBool: false,
+                    isPause: false,
+                    rulebool: false,
+                    multiple: false
+                },
+                created () {
+                    for (var i = 0; i < this.subject.length; i++) {
+                        this.answer.push('')
+                    }
+                    // 第一题动画
+                    this.animation()
+                    // 加载资源
+                    // this.loadresouce()
+                },
+                mounted () {
+                    // 播放音乐
+                    this.audioAutoPlay('music')
+                },
+                watch: {
+                    active: function () {
+                        var self = this
+                        console.log(self.subject[self.active].times)
+                        self.aniBool = false
+                        setTimeout(function () {
+                            self.animation(0.05)
+                        }, self.subject[self.active].times * 1000)
+                    }
+                },
+                methods: {
+                    animation (times) {
+                        if (this.aniBool) return
+                        this.aniBool = true
+                        var self = this
+                        $('.subject-order').removeClass('zoomIn')
+                        $('.subject-content').removeClass('zoomIn')
+                        $('.subject-order').hide()
+                        $('.subject-content').hide()
+                        setTimeout(function () {
+                            $('.subject-order').show()
+                            $('.subject-content').show()
+                            $('.subject-order').addClass('zoomIn')
+                            $('.subject-content').addClass('zoomIn')
+                        }, times * 1000)
+                    },
+                    select: function (index1, index2) {
+                        // if (this.answer[index1]) return
+                        this.index = index1
+                        for (var i = 0; i < this.subject[index1].options.length; i++) {
+                            if (i == index2) {
+                                this.subject[index1].options[i].check = true
+                                this.answer[index1] = this.subject[index1].options[i].id
+                            } else {
+                                this.subject[index1].options[i].check = false
+                            }
+                        }
+                    },
+                    comfirm () {
+                        if (this.answer[this.active] != '' && !this.multiple) {
+                            if (this.active == "<?php echo $library_num-1 ?>") {
+                                this.submitAnswer()
+                            } else {
+                                this.isTrue()
+                                this.multiple = true
+                            }
+                        }
+                    },
+                    beforeSub () {
+                        return
+                        if (this.active == 0) return
+                        this.active--
+                        this.switchScene()
+                    },
+                    nextSub () {
+                        return
+                        if (this.active == "<?php echo $library_num-1 ?>") return
+                        if (this.answer[this.active] == '') return
+                        this.active++
+                        this.switchScene()
+                    },
+                    submitAnswer () {
+                        this.isTrue()
+                        if (this.score >= '{$score}') {
+                            location.href = "{php echo $this->createMobileUrl('before')}"
+                        } else {
+                            location.href = "{php echo $this->createMobileUrl('fail')}"
+                        }
+                    },
+                    switchScene () {
+                        $('.main_scene').css({ backgroundImage: 'url('+ this.scene[this.active] +')' })
+                    },
+                    isTrue () {
+                        var self = this
+                        if (this.answer[this.active] == this.real_answer[this.active]) { //答案正确
+                            // 答案正确音效
+                            var oSuccess = document.getElementById('success')
+                            if (this.active < "<?php echo $library_num-1 ?>" && !this.isPause) {
+                                oSuccess.play()
+                                oSuccess.addEventListener("ended",function() {
+                                    oSuccess.pause()
+                                })
+                            }
+                            this.score += this.grade[this.active]
+                            $('.score').html('分数：' + this.score)
+                            $('.plus').html('+'+this.grade[this.active]+'分');
+                            $('.plus').addClass('fadeOutUp')
+                            setTimeout(function () {
+                                self.multiple = false
+                                $('.plus').removeClass('fadeOutUp')
+                                self.active++
+                                self.switchScene()
+                            }, 1000)
+                        } else {
+                            var oFail = document.getElementById('fail')
+                            if (this.active < "<?php echo $library_num-1 ?>" && !this.isPause) {
+                                oFail.play()
+                                // 答案错误音效
+                                oFail.addEventListener("ended",function() {
+                                    oFail.pause()
+                                })
+                            }
+                            $('.subject-content').removeClass('zoomIn')
+                            $('.subject-content').addClass('wobble')
+                            setTimeout(function () {
+                                self.multiple = false
+                                $('.subject-content').removeClass('wobble')
+                                self.active++
+                                self.switchScene()
+                            }, 1000)
+                        }
+                    },
+                    pause () {
+                        var oAudio = document.getElementById('music')
+                        this.isPause = !this.isPause
+                        if (this.isPause) {
+                            $('.voice img').attr('src', '../addons/{MODULE}/public/images/unplay.png')
+                            oAudio.pause()
+                        } else {
+                            $('.voice img').attr('src', '../addons/{MODULE}/public/images/play.png')
+                            oAudio.play()
+                        }
+                    },
+                    audioAutoPlay (id) {
+                        var audio = document.getElementById(id)
+                        // console.log(audio)
+                        var play = function () {
+                            audio.play();
+                            document.removeEventListener("touchstart",play,false);
+                        };
+                        // play();
+                        // audio.play();
+                        document.addEventListener("WeixinJSBridgeReady", function() {
+                            play();
+                        }, false);
+                        document.addEventListener('YixinJSBridgeReady', function() {
+                            play();
+                        }, false);
+
+                        audio.play();
+
+                        // document.addEventListener("touchstart", function () {
+                        //     if (isiOS) {
+                        //         audio.play();
+                        //         document.removeEventListener("touchstart",play,false);
+                        //     }
+                        // }, false);
+
+                    },
+                    router (type) {
+                        var name = ''
+                        switch (parseInt(type)) {
+                            case 1:
+                                $('.index').hide()
+                                // this.animation()
+                                this.switchScene()
+                                return false
+                                // url = "{php echo $this->createMobileUrl('scene')}";
+                                break
+                            case 2:
+                                url = "{php echo $this->createMobileUrl('rule')}";
+                                break
+                            case 3:
+                                url = "{php echo $this->createMobileUrl('dusk')}";
+                                break
+                        }
+                        location.href = url
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>

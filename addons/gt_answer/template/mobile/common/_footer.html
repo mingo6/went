@@ -1,0 +1,31 @@
+<div class="footer_info"><img id="footer_info" src="../addons/{MODULE}/public/images/footer_info.png"></div>
+<script type="text/javascript" src="../addons/{MODULE}/public/js/zepto.min.js"></script>
+
+<script type="text/javascript">
+    $("img:not(.luck)").click(function (e) {
+        e.preventDefault()
+    })
+    $("img:not(.unluck)").click(function (e) {
+        e.preventDefault()
+    })
+</script>
+
+{if $is_wx == true }
+<script>
+wx.ready(function () {
+    sharedata = {
+        title: '2018深圳城市轨道交通乘客安全宣传季',
+        desc: '一路文明，安全出行 ！参与答题互动赢精美礼品！',
+        link: 'http://mptest.qinhantangtop.com/app/index.php?i=3&c=entry&do=index&m=gt_answer',
+        imgUrl: 'http://mptest.qinhantangtop.com/addons/gt_answer/public/images/share_logo.png',
+        success: function(){
+            // alert('success');
+        },
+        cancel: function(){
+            // alert('cancel');
+        }
+    };
+    wx.onMenuShareAppMessage(sharedata);
+});
+</script>
+{/if}

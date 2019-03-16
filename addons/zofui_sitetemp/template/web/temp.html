@@ -1,0 +1,162 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+
+	
+{if $_GPC['op'] == 'my' || $_GPC['op'] == 'sys'}
+	{if $_GPC['op'] == 'my'}
+	<div class="tr">
+		<a href="javascript:;" class="add_form_btn topbar_jsbtn" js="addtemp">添加模板</a>
+	</div>
+	{/if}
+	{if !empty( $list )} 
+		<div class="temp_page_box">
+			{loop $list $item}
+				<div class="temp_page_item ">
+					{if $item['isact'] == 1}
+						<div class="temp_page_actitem">使用中</div>
+					{/if}
+					{if $item['issystem'] == 1}
+						<div class="temp_page_actitem temp_page_system">系统模板</div>
+					{/if}					
+					<div class="temp_item_thumb">
+						<img src="{php echo tomedia( $item['img'] )}">
+						<div class="temp_item_name">{$item['name']}</div>
+						{if $item['isact'] == 0 && $item['issystem'] == 0}
+						<div class="temp_page_settemp">
+							<span class="settemp_btn" id="{$item['id']}">使用模板</span>
+						</div>
+						{/if}
+					</div>
+					{if $item['issystem'] == 1}
+						<div class="item_cell_box temp_item_bot">
+							<li class="item_cell_flex"><a href="javascript:;" class="temptopage" id="{$item['id']}">导出编辑使用模板</a></li>
+						</div>
+						<div class="item_cell_box temp_item_bot">
+							{if $_W['role'] == 'founder' && $item['issetsystem'] == 1}
+								<li class="deletesystem" id="{$item['id']}"><a href="javascript:;" >删除系统模板</a></li>
+							{/if}
+						</div>
+					{else}
+						<div class="item_cell_box temp_item_bot">
+							<li><a href="{php echo $this->createWebUrl('page',array('op'=>'list','tid'=>$item['id']))}">页面列表</a></li>
+							<li class="item_cell_flex tc"><a href="{php echo $this->createWebUrl('page',array('op'=>'add','tid'=>$item['id']))}">添加页面</a></li>
+							<li><a href="{php echo $this->createWebUrl('page',array('op'=>'design','op'=>'bar','tid'=>$item['id']))}">设置导航</a></li>
+						</div>
+						<div class="item_cell_box temp_item_bot">
+							<li><a href="javascript:;" class="edit_listitem" id="{$item['id']}">编辑模板</a></li>
+							<li class="item_cell_flex {if $_W['role'] == 'founder'}tc{else}tr{/if}"><a href="{php echo $this->createWebUrl('temp',array('op'=>'delete','id'=>$item['id']))}" onclick="return confirm('删除不能恢复，确定要删除吗？');">删除模板</a></li>
+							{if $_W['role'] == 'founder'}
+								<li class="tosystem" id="{$item['id']}"><a href="javascript:;" >设为系统</a></li>
+							{/if}
+						</div>	
+					{/if}					
+				</div>
+			{/loop}
+		</div>
+		<div class="tr">
+			{$pager}
+		</div>
+    {else}
+    	<div class="no_data">没有找到数据</div>
+    {/if}
+<div class="my_model" addtemp style="display: none;position: relative;z-index: 999;">
+    <div class=" ui-draggable " >
+        <div class="dialog">
+            <div class="dialog_hd">
+                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+            </div>
+            <div class="dialog_bd info_box" >
+                <form>
+					<div class="frm_control_group">
+						<label for="" class="frm_label">模板名称</label>
+						<div class="frm_controls msg">
+							<span class="frm_input_box">
+								<input type="text" class="frm_input"  name="name" value="{$info['name']}">
+							</span>
+							<p class="frm_tips frm_tips_default">设置名称便于辨识不同模板</p>
+						</div>
+					</div>
+					<div class="frm_control_group">
+						<label for="" class="frm_label">排序序号</label>
+						<div class="frm_controls msg">
+							<span class="frm_input_box">
+								<input type="text" class="frm_input"  name="number" value="{$info['number']}">
+							</span>
+							<p class="frm_tips frm_tips_default">填入数字，越大越前</p>
+						</div>
+					</div>
+					<div class="frm_control_group single_img_upload">
+						<label for="" class="frm_label">模板图标</label>
+						<div class="frm_controls">
+							{php echo  WebCommon::tpl_form_field_image('img',$info['img'])}
+							<p class="frm_tips frm_tips_default"></p>
+						</div>
+					</div>
+                </form>
+            </div>
+            <div class="dialog_ft">
+                <span class="btn btn_primary btn_input js_btn_p" id="confirm_addform" >
+                    <button type="button" class="js_btn">保存</button>
+                </span>
+                <span class="btn btn_default btn_input js_btn_p model_close" >
+                    <button type="button" class="js_btn">取消</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="mask ui-draggable" style="display: block;z-index: 222"></div>
+</div>
+<script type="text/javascript">
+	$(function(){
+
+		var fid = 0;
+		$('.edit_listitem').click(function(){
+			var nowfid = $(this).attr('id');
+			Http('post','json','findtemp',{fid:nowfid},function(data){
+				if(data.status == 200){
+					fid = nowfid; // 防止取消后再添加异常
+					$('input[name=name]').val(data.obj.name);
+					$('input[name=number]').val(data.obj.number);
+					if( data.obj.img ) {
+						$('input[name=img]').val(data.obj.img);
+						if( data.obj.img ) $('.img-thumbnail').attr('src',data.obj.showimg).parent().show();
+					}else{
+						$('input[name=img]').val('');
+						$('.img-thumbnail').attr('src','').parent().hide();
+					}
+					
+					$('.my_model[addtemp]').show();
+
+				}else{
+					webAlert(data.res);
+				}
+			},true);
+		});
+		
+		$('#confirm_addform').click(function(){
+			var postdata = {
+				fid : fid,
+				name : $('input[name=name]').val(),
+				number : $('input[name=number]').val(),
+				img : $('input[name=img]').val(),
+			};
+			
+			Http('post','json','addtempform',postdata,function(data){
+				if(data.status == 200){
+					webAlert(data.res);
+					setTimeout(function(){
+						location.href = '';
+					},500);
+				}else{
+					webAlert(data.res);
+				}
+			},true);
+
+		});
+
+	});
+</script>
+
+{/if}
+	
+	
+{template 'common/footer'}

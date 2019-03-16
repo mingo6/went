@@ -1,0 +1,80 @@
+{itemplate 'public/header'}
+<style>
+	.store-title{padding-right:0 !important;}
+	.big_img_box{position:absolute;top:2.2rem;right:0;left:0;bottom:2.5rem;background-color:black;z-index:11;display:none;s}
+	.big_img_box .close{position:absolute;right:.5rem;top:.5rem;width:1.4rem;height:1.4rem;}
+	.big_img_box .img{width:100%;height:auto;position:absolute;top:50%;left:0;transform:translateY(-50%);}
+</style>
+<div class="page my-comment" id="page-app-my-comment">
+	<div class="big_img_box">
+		<img class="close" src="{WE7_WMALL_TPL_URL}static/img/close_fff.png">
+		<img class="img" src="">
+	</div>
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="icon icon-arrow-left"></i></a>
+		<h1 class="title">我的发票</h1>
+	</header>
+	{php get_mall_menu();}
+	<div class="content infinite-scroll js-infinite" data-href="{php echo imurl('wmall/member/invoice/more');}" data-distance="50" data-min="{$min}" data-container=".comment-list" data-tpl="tpl-invoice">
+		{if empty($invoices)}
+			<div class="common-no-con">
+				<div style="width:4.7rem;height:4.7rem;border-radius:50%;margin:0 auto;background-color:white;">
+					<img style="max-width:3.1rem;width:3.1rem;height:auto;margin:.8rem;" src= "{WE7_WMALL_TPL_URL}static/img/invoice.png"/>
+				</div>
+				<p>您还没有发票！</p>
+			</div>
+		{else}
+			<div class="comment-list">
+				{loop $invoices $key $invoice}
+					<div class="comment-inner border-1px-b">
+						<div class="store-title">
+							<div>订单号：{$invoice['order_sn']}</div>
+							<div>发票类型：{if $invoice['invoice_type'] == 1}普通发票{else}增值发票{/if}</div>
+							<div style="display:flex;align-items: center;">
+								<span style="margin-right:.5rem;">发票图片:</span>
+								<span>
+									{if !empty($invoice['arr_invoice_images'])}
+										{loop $invoice['arr_invoice_images'] $img}
+											<img class="to_big_img" style="width:100px;height: 100px;" src="{php echo tomedia($img)}">
+										{/loop}
+									{else}
+										待上传
+									{/if}
+									
+								</span>
+							</div>
+						</div>
+					</div>
+				{/loop}
+			</div>
+			<div class="infinite-scroll-preloader hide">
+				<div class="preloader"></div>
+			</div>
+		{/if}
+	</div>
+</div>
+
+<script id="tpl-invoice" type="text/html">
+	<{# for(var i = 0, len = d.length; i < len; i++){ }>
+		<div class="comment-inner border-1px-b">
+			<div class="store-title">
+				<div>订单号：<{d[i].order_sn}></div>
+				<div>发票类型：<{# if(d[i].invoice_type == 1){ }>普通发票<{# }else{ }>增值发票<{# } }></div>
+				<div style="display:flex;align-items: center;">
+					<span style="margin-right:.5rem;">发票图片:</span>
+					<span>
+						<{# if(d[i].arr_invoice_images){ }>
+							<{# for(var j = 0, length = d[i].arr_invoice_images.length; j < d[i].arr_invoice_images.length; j++){ }>
+								<img class="to_big_img" style="width:100px;height: 100px;" src="<{d[i].arr_invoice_images[j]}>">
+							<{# } }>
+						<{# }else{ }>
+							待上传
+						<{# } }>
+						
+					</span>
+				</div>
+			</div>
+		</div>
+	<{# } }>
+</script>
+{itemplate 'public/footer'}

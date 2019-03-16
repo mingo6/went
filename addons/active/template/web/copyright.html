@@ -1,0 +1,116 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+	{if $_GPC['op'] == 'list'}
+		<form method="post" action="">
+			<div class="frm_control_group">
+				<label for="" class="frm_label"></label>
+				<div class="frm_controls">
+				</div>
+			</div>
+			<div class="frm_control_group change_item" item="arealimit_item">
+	  			<label for="" class="frm_label">状态</label>
+	   			<div class="frm_controls">
+	    			<label class="frm_radio_label">
+	    				<i class="icon_radio"></i>
+	    				<span class="lbl_content">开启</span>
+	    				<input type="radio" name="status" value="0" class="frm_radio" {if $temp['status'] == 0}checked="checked"{/if} />
+	    			</label>
+	    			<label class="frm_radio_label" show="limitbox">
+	    				<i class="icon_radio"></i>
+	    				<span class="lbl_content">关闭</span>
+	    				<input type="radio" name="status" value="1" class="frm_radio" {if $temp['status'] == 1}checked="checked"{/if} /> 
+	    			</label>
+	    			<div class="frm_tips">提示：版权只有站点管理员才能设置，一旦设置，本平台下的所有小程序页面底部都会有版权</div>
+	   			</div>
+	  		</div>
+			<div class="frm_control_group textarea_item">
+				<label for="" class="frm_label">版权内容</label>
+				<div class="frm_controls">
+					{php echo tpl_ueditor('content', htmlspecialchars_decode($temp['content']));}
+					<span class="frm_tips">建议：只设置图片或只设置文字。若设置图片，图片将在前端自动被拉伸成100%屏幕宽度。</span>
+				</div>
+			</div>
+			<div class="tool_bar">
+				<input type="submit" name="create" class="btn btn_primary" value="确定" >
+				<input name="token" type="hidden" value="{$_W['token']}" />
+			</div>
+		</form>
+	{elseif $_GPC['op'] == 'mail' }
+
+		<form method="post" action="">
+			<div class="frm_control_group">
+				<label for="" class="frm_label"></label>
+				<div class="frm_controls">
+				</div>
+			</div>
+		<div class="frm_control_group " > 
+	  		<label for="" class="frm_label">测试发邮件</label> 
+	   		<div class="frm_controls"> 
+	    		<a class="btn btn_primary usemail" href="javascript:;">发送一封测试邮件</a>
+	   		</div>
+	  	</div>
+		<div class="frm_control_group " > 
+	  		<label for="" class="frm_label">SMTP服务器</label> 
+	   		<div class="frm_controls"> 
+	    		<label class="frm_radio_label  " > 
+	    			<i class="icon_radio"></i> 
+	    			<span class="lbl_content">网易邮箱服务器</span>
+	    			<input type="radio" name="type" value="0" class="frm_radio"  {if $temp['type'] == 0}checked="checked"{/if} />
+	    		</label> 
+	    		<label class="frm_radio_label " >
+	    			<i class="icon_radio"></i>
+	    			<span class="lbl_content">qq邮箱服务器</span>
+	    			<input type="radio" name="type" value="1" class="frm_radio" {if $temp['type'] == 1}checked="checked"{/if} /> 
+	    		</label>	    		
+	    		<p class="frm_tips">SMTP服务器为发送邮件的服务器，系统内置了网易和qq的邮件服务器的信息。目前能接收到邮件通知的场景：会员提交表单数据。重要：若你的服务器是腾讯云，请使用QQ邮箱服务器。</p>
+	   		</div>
+	  	</div>
+
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">发送帐号</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="account" value="{$temp['account']}">
+					</span>
+					<p class="frm_tips">指定发送邮件的用户名，例如：test@163.com</p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">smtp客户端授权密码</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="pass" value="{$temp['pass']}">
+					</span>
+					<p class="frm_tips">指定发送邮件的密码，
+					<a href="http://service.mail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256" target="_Blank" id="code">QQ邮箱获取授权码方法</a>，<a href="http://jingyan.baidu.com/article/495ba841ecc72c38b30ede38.html" target="_Blank" id="code">网易邮箱获取授权码方法</a></p>
+				</div>
+			</div>
+			<div class="frm_control_group" >
+				<label for="" class="frm_label">发件人名称</label>
+				<div class="frm_controls">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input" name="name" value="{$temp['name']}">
+					</span>
+					<p class="frm_tips">指定发送邮件发信人名称</p>
+				</div>
+			</div>
+			
+			<div class="frm_control_group">
+				<label for="" class="frm_label">邮件签名</label>
+				<div class="frm_controls msg">
+					<span class="frm_textarea_box textarea_60px">
+						<textarea  name="sign" class="frm_textarea" rows="6" placeholder="">{$temp['sign']}</textarea>
+					</span>
+					<p class="frm_tips">指定邮件末尾添加的签名信息</p>
+				</div>
+			</div>
+			<div class="tool_bar">
+				<input type="submit" name="savemail" class="btn btn_primary" value="保存" >
+				<input name="token" type="hidden" value="{$_W['token']}" />
+			</div>
+		</form>
+
+
+	{/if}
+	
+	
+{template 'common/footer'}

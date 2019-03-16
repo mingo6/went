@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <div class="main_scene">
+        <div class="answer-area" @click="animation('0.05')">
+            <div class="score">分数：<span v-html="score"></span></div>
+            <div class="plus animated">+20分</div>
+            <div class="subject-order animated" v-for="(item, index) in subject" v-html="item.level" v-if="index == active"></div>
+            <div class="subject-content animated" v-for="(item, index) in subject" v-if="index == active">
+                <div class="title" v-html="item.title"></div>
+                <div class="options" v-for="(obj, _index) in item.options">
+                    <div class="radio" :class="[obj.check ? 'active' : '']" @click="select(index, _index)"></div>
+                    <div class="label" v-html="obj.content"></div>
+                </div>
+            </div>
+            <div class="submit" @click="comfirm"></div>
+            <div class="left-btn" @click="beforeSub"></div>
+            <div class="right-btn" @click="nextSub"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../addons/{MODULE}/public/js/vue.min.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '.main_scene',
+            data: {
+                subject: [
+                    {loop $list $item}
+                    {level: '第{$item["num"]}关', title: '{$item["title"]}', times: '0.26', options: [
+                        {loop $item["answer"] $k $v}
+                        { id: '{$v["answer_no"]}', check: false, content: '{$v["answer_no"]}.{$v["answer_content"]}' }, 
+                        {/loop}
+                    ]},
+                    {/loop}
+                ],
+                scene: [
+                    {loop $list $item}
+                        "/attachment/{$item['bg_img']}",
+                    {/loop}
+                ],
+                active: 0,
+                answer: [],
+                grade:[
+                    {loop $list $item}
+                        {$item['grade']},
+                    {/loop}
+                ],
+                real_answer:[
+                    {loop $list $item}
+                        "{$item['correct_response']}",
+                    {/loop}
+                ],
+                score: 0,
+                index: '',
+                aniBool: false
+            },
+            created () {
+                // $('.main_scene').css({ backgroundImage: 'url('+ this.scene[this.active] +')' })
+                this.switchScene()
+                for (var i = 0; i < this.subject.length; i++) {
+                    this.answer.push('')
+                }
+                this.animation()
+            },
+            watch: {
+                active: function () {
+                    var self = this
+                    self.aniBool = false
+                    setTimeout(function () {
+                        self.animation(0.05)
+                    }, self.subject[self.active].times * 1000)
+                }
+            },
+            methods: {
+                animation (times) {
+                    if (this.aniBool) return
+                    this.aniBool = true
+                    var self = this
+                    $('.subject-order').removeClass('zoomIn')
+                    $('.subject-content').removeClass('zoomIn')
+                    $('.subject-order').hide()
+                    $('.subject-content').hide()
+                    setTimeout(function () {
+                        $('.subject-order').show()
+                        $('.subject-content').show()
+                        $('.subject-order').addClass('zoomIn')
+                        $('.subject-content').addClass('zoomIn')
+                    }, times * 1000)
+                },
+                select: function (index1, index2) {
+                    // if (this.answer[index1]) return
+                    this.index = index1
+                    for (var i = 0; i < this.subject[index1].options.length; i++) {
+                        if (i == index2) {
+                            this.subject[index1].options[i].check = true
+                            this.answer[index1] = this.subject[index1].options[i].id
+                        } else {
+                            this.subject[index1].options[i].check = false
+                        }
+                    }
+                },
+                comfirm () {
+                    if (this.active == "<?php echo $library_num-1 ?>") {
+                        if (this.answer[this.active] == '') {
+                            // alert('请选择答案')
+                        } else {
+                            this.submitAnswer()
+                        }
+                    } else {
+                        if (this.answer[this.active] == '') return
+                        this.isTrue()
+                        this.active++
+                        this.switchScene()
+                    }
+                },
+                beforeSub () {
+                    return
+                    if (this.active == 0) return
+                    this.active--
+                    this.switchScene()
+                },
+                nextSub () {
+                    return
+                    if (this.active == "<?php echo $library_num-1 ?>") return
+                    if (this.answer[this.active] == '') return
+                    this.active++
+                    this.switchScene()
+                },
+                submitAnswer () {
+                    this.isTrue()
+                    if (this.score >= '{$score}') {
+                        location.href = "{php echo $this->createMobileUrl('before')}"
+                    } else {
+                        location.href = "{php echo $this->createMobileUrl('fail')}"
+                    }
+                },
+                switchScene () {
+                    $('.main_scene').css({ backgroundImage: 'url('+ this.scene[this.active] +')' })
+                },
+                isTrue () {
+                    if (this.answer[this.active] == this.real_answer[this.active]) { //答案正确
+                        this.score += this.grade[this.active]
+                        // $('.score').html('分数：' + this.score)
+                        $('.plus').html('+'+this.grade[this.active]+'分');
+                        $('.plus').addClass('fadeOutUp')
+                        setTimeout(() => {
+                            $('.plus').removeClass('fadeOutUp')
+                        }, 500)
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

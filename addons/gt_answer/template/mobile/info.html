@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <div class='scene info'>
+        <img src="../addons/{MODULE}/public/images/info_bg.png?ver=1">
+        <div class="field">
+            <div class="field-group">
+                <div class="field-label">姓名：</div>
+                <div class="field-control"><input id="name" name="name" type="text"></div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">电话：</div>
+                <div class="field-control"><input id="mobile" name="mobile" type="number"></div>
+            </div>
+            <div class="field-group">
+                <div class="field-label">地址：</div>
+                <div class="field-control"><textarea id="addr" name="addr"></textarea></div>
+            </div>
+        </div>
+        <div class="confirm" onclick="confirm()"></div>
+    </div>
+    {template './common/_footer'}
+    <script type="text/javascript">
+        $('.scene.info').css({
+            width: $(window).width(),
+            height: $(window).height()
+        })
+        function confirm () {
+            name = $('#name').val()
+            mobile = $('#mobile').val()
+            addr = $('#addr').val()
+            if (name == '') {
+                alert('请先填写姓名');
+                return false;
+            }
+            if (mobile == '') {
+                alert('请先填写电话');
+                return false;
+            }
+            if (addr == '') {
+                alert('请先填写地址');
+                return false;
+            }
+            location.href = '{php echo $this->createMobileUrl("luck")}'+"&name="+name+"&mobile="+mobile+"&addr="+addr;
+        }
+    </script>
+</body>
+</html>

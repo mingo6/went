@@ -1,0 +1,86 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li>
+        <a href="{php echo $this->createWebUrl('member', array('status' => ''))}">授权号码客户</a>
+    </li>
+	
+	<li  class="active">
+        <a href="{php echo $this->createWebUrl('card_member', array('status' => ''))}">名片客户资料</a>
+    </li>
+   
+</ul>
+	
+<div class="main">
+	<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="" method="get" class="form-horizontal" role="form" id="form1">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="dbs_masclwlcard" />
+			<input type="hidden" name="do" value="card_member" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">查询</label>
+				<div class="col-sm-8 col-lg-9 col-xs-12">
+					<input class="form-control" name="keyword" id="" type="text" value="{$_GPC['keyword']}" placeholder="可查询电话 昵称 姓名">
+				</div>
+			</div>
+	
+
+			<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+					<div class="col-sm-3 col-lg-2"><button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+					</div>
+			</div>
+		</form>
+   </div>
+</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		  <input type="hidden" name="uniacid" value="{$_W['uniacid']}" />
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th style="width:80px;">昵称</th>
+						<th style="width:80px;">性别</th>
+						<th style="width:10px;">头像</th>						
+						<th style="width:20px;">姓名</th>
+						<th style="width:20px;">电话</th>
+						<th style="width:100px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $alltuan $item}
+					<tr>
+						<td style="width:30px;">{$item['nickname']}</td>
+						<td style="width:30px;">{if $item['gender'] == 1}  男 {elseif $item['gender'] == 2}  女 {else} 未知  {/if}</td>
+						<td style="width:30px;"><img src="{$item['avatarUrl']}" style="width:40px;height:40px;"></td>		
+						<td style="width:30px;">{$item['name']}</td>
+						<td style="width:50px;">{$item['phone']}</td>
+
+												
+						<td style="width:100px;text-align:right;">
+								<a href="{php echo $this->createWebUrl('detail_card_member', array('id' => $item['id']))}" 
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="详细信息">详细信息</i>
+								</a>
+								<!--a href="{php echo $this->createWebUrl('detail_card_member_chat', array('id' => $item['id']))}" 
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="聊天记录">聊天记录</i>
+								</a>
+								<a href="{php echo $this->createWebUrl('s_card_member', array('id' => $item['id']))}" 
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="推广下线">推广下线</i>
+								</a-->
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+
+			</form>
+		</div>
+	</div>
+</div>
+{$pager}
+{template 'common/footer'}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="{RES}new_style/css/style.css" />
+		<link rel="stylesheet" href="{RES}new_style/css/swiper.min.css" />
+		<link rel="stylesheet" href="{RES}new_style/font/iconfont.css" />
+		<link rel="stylesheet" href="{RES}new_style/css/base.css" />
+	</head>
+	<body>		
+		<div class="classList">
+			<ul>
+				{loop $category $val}
+					{if empty($val['parentid'])}
+						<li class="bWhite bd8">
+							{if empty($val['parentid'])}
+							<div class="tit tc pr before">
+					        	<h2 class="f18 before after">{$val['name']}</h2>
+					        </div>
+					        {/if}
+					        <div class="classListMin tc">
+								<dl class="flex">
+									<dd>
+										<a class="hi40 disb line-text" href="{php echo $this->createmobileurl('navi_list',array('pid'=>$val['id'],'cid'=>0))}">全部</a>
+									</dd>
+									{loop $category $row}
+										{if $row['parentid']==$val['id']}
+											<dd>
+												<a class="hi40 disb line-text" href="{php echo $this->createmobileurl('navi_list',array('pid'=>$row['parentid'],'cid'=>$row['id']))}">{$row['name']}</a>
+											</dd>
+										{/if}
+									{/loop}
+								</dl>
+							</div>
+						</li>
+					{/if}
+				{/loop}	
+			</ul>
+		</div>
+		<!--foot start-->
+	         {template footer}
+	        <!--foot end-->
+	</body>
+</html>

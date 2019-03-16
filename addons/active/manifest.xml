@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.qinhantangtop.com" versionCode="0.8,1.0">
+	<application setting="true">
+		<name><![CDATA[活动]]></name>
+		<identifie><![CDATA[active]]></identifie>
+		<version><![CDATA[1.0.0]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[活动]]></ability>
+		<description><![CDATA[活动]]></description>
+		<author><![CDATA[勤瀚堂源码]]></author>
+		<url><![CDATA[https://www.qinhantangtop.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[CREATE TABLE `ims_active_activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rule` text NOT NULL,
+  `limited_num` int(11) NOT NULL,
+  `attend_people_num` int(11) NOT NULL DEFAULT '0',
+  `start_time` int(10) NOT NULL,
+  `end_time` int(10) NOT NULL,
+  `create_time` int(10) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `is_default` tinyint(3) NOT NULL DEFAULT '1',
+  `active_img` varchar(255) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  `index_synopsis` text NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `synopsis` text NOT NULL,
+  `product_video_url` text NOT NULL,
+  `product_introduce` text NOT NULL,
+  `sham_people_num` int(11) NOT NULL DEFAULT '0',
+  `is_sham_people_num` tinyint(3) NOT NULL DEFAULT '1',
+  `need_fabulous_num` int(11) NOT NULL,
+  `share_img` varchar(255) NOT NULL,
+  `code_num` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_active_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(30) NOT NULL DEFAULT '',
+  `openid` varchar(50) NOT NULL,
+  `create_time` int(11) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  `sex` tinyint(3) NOT NULL,
+  `city` varchar(30) DEFAULT NULL,
+  `province` varchar(30) DEFAULT NULL,
+  `country` varchar(30) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_active_users_activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `activity_id` int(11) NOT NULL,
+  `fabulous_num` int(11) NOT NULL,
+  `attend_time` int(10) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  `activity_code` varchar(20) DEFAULT '',
+  `is_code` tinyint(3) DEFAULT '0',
+  `havecode_time` int(10) DEFAULT NULL,
+  `iscode_time` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+CREATE TABLE `ims_active_users_fabulous` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `users_id` int(11) NOT NULL,
+  `users_activity_id` int(11) NOT NULL,
+  `fabulous_time` int(10) NOT NULL,
+  `uniacid` int(11) NOT NULL,
+  `avatar` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_active_users`;
+DROP TABLE IF EXISTS `ims_active_activity`;
+DROP TABLE IF EXISTS `ims_active_users_activity`;
+DROP TABLE IF EXISTS `ims_active_users_fabulous`;
+]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

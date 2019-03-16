@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>客户</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/mescroll.min.css">
+</head>
+<style type="text/css">
+body{background-color:#fff;width:100%;overflow-x:hidden}
+.date_right{float:right;padding-top:5px}
+.date_right2{float:right;padding-top:5px;color:#666}
+</style>
+
+<body>
+    <!--滑动区域-->
+    <div id="mescroll" class="mescroll">
+        <!--客户列表-->
+        <div class="weui-panel__bd client-list">
+        </div>
+    </div>
+    <!--滑动区域-->
+    <div id="mescroll2" class="mescroll" style="display: none;">
+        <!--客户列表-->
+        <div class="weui-panel__bd client-list2">
+        </div>
+    </div>
+    <!--滑动区域-->
+    <div id="mescroll3" class="mescroll" style="display: none;">
+        <!--客户列表-->
+        <div class="weui-panel__bd client-list3">
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script src="../addons/dbs_masclwlcard/template/wxapp/js/mescroll.min.js"></script>
+	
+
+<script type="text/javascript">
+    var mescroll = getPager(loadClient);
+	//分页控件
+	function getPager(callback, mescroll_id) {
+		if (mescroll_id == null)
+			mescroll_id = "mescroll";
+		var mescroll = new MeScroll(mescroll_id, {
+			down: {
+				auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+				use: false
+			},
+			up: {
+				page: {
+					num: 0, //当前页码,默认0,回调之前加1,即callback(page)从1开始;
+					size: 10, //每页数据的数量; 
+					time: null //加载第一页数据服务器返回的时间 (可空); 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+				},
+				offset: 50, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+				auto: true, //初始化完毕,是否自动触发上拉加载的回调
+				isBoth: false, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+				callback: callback, //上拉加载的回调
+				autoShowLoading: true
+			}
+		});
+		return mescroll;
+	}
+	
+    $(function () {
+        //changeProbability();
+    })
+
+    /*function showlayer() {
+        if(!$(".tap_title").hasClass('title_active')){
+            var bh=$(window).height();//获取屏幕高度
+            var bw=$(window).width();//获取屏幕宽度
+            $("#layer").css({
+                height:bh,
+                width:bw,
+                display:"block"
+            });
+            $(".layer_content").show();
+            $(".tap_title").addClass("title_active");
+        }else{
+            $("#layer,.layer_content").hide();
+            $(".tap_title").removeClass("title_active");
+        }
+    }*/
+	
+function getNoDataMsg(page) {
+	if (page != null && page > 1)
+		return "<div class='no-data'>已经到底了</div>";
+	return "<div class='no-data'>没有数据</div>";
+}
+function isNoData(list) {
+	if (list == null || list.length == 0)
+		return true;
+	return false;
+}
+	//客户列表-通讯录信息
+function loadClient(pageObj) {
+    var followName = "";
+    var source;//客户来源
+	var card_id='{$card_id}';
+     $.post("{php echo $this->createMobileUrl('boss_getclient_list')}", {card_id:card_id,page:pageObj.num}, function(data){
+		
+        if (data.error>0) {
+			alert(data.msg);
+			mescroll.endErr();
+			return;
+		}
+		
+		if (isNoData(data.Data)) {
+		    $(".client-list").append(getNoDataMsg(pageObj.num));
+            mescroll.endSuccess(0);  //设置条数
+            return;	
+	  }
+
+        mescroll.endSuccess(data.Data.length);  //设置条数
+
+        var list = data.Data;
+        var html = "";
+        for (var i = 0; i < list.length; i++) {
+            /*if (list[i].Source == 1) sourece = "扫码";
+            else if (list[i].Source == 2) sourece = "转发";
+            else sourece = "工作交接";*/
+            if (list[i].now_status == 0) {
+                followName = "今天跟进过";
+            } else if (list[i].now_status == 1) {
+                followName = "今日未跟进";
+            } else if (list[i].now_status == -1) {
+                followName = "未跟进过";
+            } else if (list[i].now_status == -2) {
+                followName = "今日新增";
+            }
+			
+            if (list[i].avatarUrl == null || list[i].avatarUrl == "") {
+                $('.weui-media-box__thumb').attr('src', '../addons/dbs_masclwlcard/template/wxapp/images/18.png')
+            }
+			//html += "<div class='weui-box'><a href='{php echo $this->createMobileUrl('boss_client_detail')}&card_mid=" + list[i].id + "&card_id=" + list[i].aid + "' class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + '暂无' + "</span></h4></div></a></div>"
+			html += "<div class='weui-box'><a href='#' class='weui-media-box weui-media-box_appmsg'><div class='weui-media-box__hd'><img class='weui-media-box__thumb' src='" + list[i].avatarUrl + "' alt=''></div><div class='weui-media-box__bd'><h4 class='weui-media-box__title f14'>" + list[i].nickname + "<span  class='date_right f14'>预计成交率：" + list[i].gailv + "%</span></h4><h4 class='weui-media-box__title'><span class='yellow f14'>电话:" + list[i].phone + "</span><span class='yellow f14'> " + followName + "</span><span  class='date_right2 f14'> 来源：" + list[i].Source_name + "</span></h4></div></a></div>"
+        
+		}
+        $(".client-list").append(html);
+
+   },"json");
+}
+
+</script>
+</html>

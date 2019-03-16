@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>AI销售助手</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/mescroll.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/rule.css">
+</head>
+<style>
+    .color{color: #f8a152;}
+</style>
+<body>
+
+    <div class="weui-flex" style="position: fixed;top: 0;width: 100%;">
+        <div class="weui-flex__item navbar active_navbar">
+            <a href="{php echo $this->createMobileUrl('staffer_index')}">
+                <div class="placeholder">时间</div>
+                <div class="border" style="display:block"></div>
+            </a>
+        </div>
+        <div class="weui-flex__item navbar">
+            <a href="{php echo $this->createMobileUrl('member_act')}">
+                <div class="placeholder">行为</div>
+                <div class="border"></div>
+            </a>
+        </div>
+        <div class="weui-flex__item navbar">
+            <a href="{php echo $this->createMobileUrl('interact')}">
+                <div class="placeholder">人</div>
+                <div class="border"></div>
+            </a>
+        </div>
+    </div>
+    <div class="weui-tab__panel">
+        <!--滑动区域-->
+        <div id="mescroll" class="mescroll">
+            <!--展示上拉加载的数据列表-->
+            <div class="mslist" style="display:block">
+            </div>
+            <div style="height:60px;"></div>
+        </div>
+
+    </div>
+	
+	<div class="weui-tabbar tabbar">
+	<a href="{php echo $this->createMobileUrl('staffer_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/9.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a href="{php echo $this->createMobileUrl('client_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">客户</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('friend_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">动态</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">我</p>
+	</a>
+</div>
+
+   
+
+    <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+    <script src="../addons/dbs_masclwlcard/template/wxapp/js/mescroll.min.js"></script>
+    <script type="text/javascript">
+	
+	function getNoDataMsg(page) {
+		if (page != null && page > 1)
+			return "<div class='no-data'>已经到底了</div>";
+		return "<div class='no-data'>没有数据</div>";
+	}
+	function isNoData(list) {
+		if (list == null || list.length == 0)
+			return true;
+		return false;
+	}
+      var mescroll = getPager(load);
+      $(function () {
+          loadBtn();
+    });
+
+      function load(pageObj) {
+          $.post("{php echo $this->createMobileUrl('get_ai_msg')}", {page:pageObj.num}, function(data){
+				if (data.error>0) {
+					alert(data.msg);
+                    mescroll.endErr();
+                    return;
+                }
+              if (isNoData(data.Data)) {
+                  $('.mslist').append(getNoDataMsg(pageObj.num));
+                  mescroll.endSuccess(0);  //设置条数
+                  return;
+              }
+
+              mescroll.endSuccess(data.Data.length);  //设置条数
+              $('.mslist').append(function () {
+                  var arr = [];
+				  var datestr_a ='';
+                  $.each(data.Data, function (index, items) {
+					
+                      var todaystart = new Date();
+                      todaystart.setHours(0);
+                      todaystart.setMinutes(0);
+                      todaystart.setSeconds(0);
+                      todaystart.setMilliseconds(0);
+
+                      var todayend = new Date();
+                      todayend.setHours(23);
+                      todayend.setMinutes(59);
+                      todayend.setSeconds(59);
+                      todayend.setMilliseconds(59);
+
+                      var datestr = (items.addtime) *1000;
+                        if (datestr >= todaystart.getTime() && datestr <= todayend.getTime()){
+                            datestr = dateFtt('hh:mm', new Date(datestr))
+                        }else{
+                            datestr = dateFtt('yyyy/MM/dd hh:mm', new Date(datestr));
+						}
+						
+						if(datestr != datestr_a){
+							arr.push('<div class="time-tit">' + datestr + '</div>');
+						}
+						
+						 datestr_a = datestr;
+
+                     
+					  arr.push('<div class="weui-cells"><a class="weui-cell weui-cell_access" onclick=\"member_detail(' + items.id+ ',' + items.card_id + ')\"  href="javascript:;"><div class="weui-cell__hd"><div class="avatar"><img class="avatar-img" src="' +items.avatarUrl + '" alt=""></div></div><div class="weui-cell__bd"><p style="margin-left:10px;">' + Trim(items.act_content) + '</p></div><div class="weui-cell__ft"></div></a></div>');
+                  
+                  });
+                  return arr.join('');
+              });
+         },"json");
+      }
+  
+function Trim(str)
+ { 
+	//return str.replace(/(^\s*)|(\s*$)/g, "");
+	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	
+	/*var result;
+	  result = str.replace(/(^\s+)|(\s+$)/g,"");
+	  result = result.replace(/\s/g,"");
+	  return result;*/
+}
+//分页控件
+function getPager(callback, mescroll_id) {
+    if (mescroll_id == null)
+        mescroll_id = "mescroll";
+    var mescroll = new MeScroll(mescroll_id, {
+        down: {
+            auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            use: false
+        },
+        up: {
+            page: {
+                num: 0, //当前页码,默认0,回调之前加1,即callback(page)从1开始;
+                size: 1, //每页数据的数量; 
+                time: null //加载第一页数据服务器返回的时间 (可空); 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+            },
+            offset: 50, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+            auto: true, //初始化完毕,是否自动触发上拉加载的回调
+            isBoth: false, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+            callback: callback, //上拉加载的回调
+            autoShowLoading: true
+        }
+    });
+    return mescroll;
+}
+   
+    function dateFtt(fmt, date) { //author: meizz
+        var o = {
+            "y+": date.getFullYear(),
+            "M+": date.getMonth() + 1,                 //月份
+            "d+": date.getDate(),                    //日
+            "h+": date.getHours(),                   //小时
+            "m+": date.getMinutes(),                 //分
+            "s+": date.getSeconds(),                 //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    function loadBtn() {
+
+        var index;
+        $('.placeholder').on('click', function () {
+            index = $(this).parents('.weui-flex__item').index()
+            $(this).parents('.weui-flex__item').addClass('active_navbar').siblings().removeClass('active_navbar');
+            $(this).parents().children('.border').css('display', 'block').parents().siblings().children('.border').css(
+              'display', 'none')
+            $('.weui-tab__panel').children().eq(index).css('display', 'block').siblings().css('display', 'none')
+        });
+
+    }
+
+    function member_detail(id, card_id) {
+		var url = "{php echo $this->createMobileUrl('member_detail')}"+'&member_id='+id+'&card_id='+card_id;
+        to_url(url);
+    }
+	
+	//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+    </script>
+</body>
+
+</html>

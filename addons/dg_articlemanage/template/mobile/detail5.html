@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<title>{$_W['account']['name']}</title>
+		<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
+		{php echo register_jssdk(false);}
+		<link rel="stylesheet" href="{RES}font/font/iconfont.css" />
+		<link rel="stylesheet" href="{RES}font/iconfont.css" />
+		<!-- <link rel="stylesheet" href="{RES}css/style_detail.css" /> -->
+		
+		<link rel="stylesheet" href="{RES}cs/style.css" />
+		{if $detail['types']==4}
+		<link rel="stylesheet" href="{RES}css/video-js.css" />
+		<script type="text/javascript" src="{RES}js/video.min.js"></script>
+		{/if}
+		
+		<script type="text/javascript" src="{RES}js/jquery1.8.3.js"></script>
+		<script type="text/javascript" src="{RES}js/jquery-2.1.1.min.js"></script>
+		<!-- <script src="{RES}music_style/css/js/audioplayer.js"></script> -->
+		<!-- -->
+		{if $detail['types']==3}
+		<script src="{RES}weixinAudio.js"></script> 
+		<link rel="stylesheet" href="{RES}music/css/index.css" />
+		
+		{/if}
+		{if $cfg['article_copy']==2}
+		<style>
+			.jz_copy{  
+			    -webkit-touch-callout:none;  /*系统默认菜单被禁用*/  
+			    -webkit-user-select:none; /*webkit浏览器*/  
+			    -khtml-user-select:none; /*早期浏览器*/  
+			    -moz-user-select:none;/*火狐*/  
+			    -ms-user-select:none; /*IE10*/  
+			    user-select:none;  
+			}
+			img { pointer-events: none; }
+		</style>
+		{/if}
+		<script type="text/javascript">
+			var video_a=1;
+			var article_id = "{$detail['id']}";
+			var article_title = "{$detail['title']}";
+			var send_url = "{php echo $this->createmobileurl('pay_sendnotice')}";
+			 (function(doc){var addEvent='addEventListener',type='gesturestart',qsa='querySelectorAll',scales=[1,1],meta=qsa in doc?doc[qsa]('meta[name=viewport]'):[];function fix(){meta.content='width=device-width,minimum-scale='+scales[0]+',maximum-scale='+scales[1];doc.removeEventListener(type,fix,true);}if((meta=meta[meta.length-1])&&addEvent in doc){fix();scales=[.25,1.6];doc[addEvent](type,fix,true);}}(document));
+			$(function() {
+				if("{$detail['types']}"==4){
+					var myPlayer = videojs('my-video');
+					videojs("my-video").ready(function(){
+					var myPlayer = this;
+									
+					});
+					var myVideo=document.getElementById("my-video_html5_api"); 
+					if("{$ved_free}"){
+					myVideo.addEventListener('timeupdate',function(){ 
+						//alert(myPlayer.currentTime())
+						if("{$ved_free}"){
+							if(myPlayer.currentTime()>"{$ved_free}" || myPlayer.currentTime()=="{$ved_free}"){
+							myPlayer.pause(); 
+							myPlayer.currentTime(parseInt("{$ved_free}")-1);
+							$('#notice').text('支付后可观看剩余部分');
+							$('video').hide();
+							video_a=2;
+							$('.Bomb').show();
+							
+						}
+						}
+						
+					});
+				}
+
+				}
+				
+				$('#qrcode').click(function() {
+					$('#box .boxMa').show();
+				})
+				$('#box .boxMa').click(function() {
+					$('#box .boxMa').hide();
+				})
+				$('#box .boxMa i,#box .elastic i').click(function() {
+					$('#box .boxMa,#box .elastic').hide();
+				})
+				$('#box .boxUp ul i').click(function() {
+					$('#box .boxUp ul i').css({
+						'color': '#f00'
+					});
+				})
+				$('#box .boxUp .home i').click(function() {
+					$('#box .boxUp .home i').css({
+						'color': '#f00'
+					});
+				})
+				$('#box .zhifu .a2').click(function() {
+					$('#box .elastic').show();
+				})
+			})
+		</script>
+		<script>
+			$(function() {
+				$("#notice_close").click(function(){
+					$('.Bomb').hide()
+					if(video_a==2){
+						$('video').show();
+					}
+				})
+				var index = 0;
+				<!-- $('#box .boxTit a').click(function() { -->
+					<!-- $('#box .boxMa').show(); -->
+				<!-- }) -->
+				$('#box .boxMa i,#box .elastic i').click(function() {
+					$('#box .boxMa,#box .elastic').hide();
+				})
+				$('#box .boxUp i').click(function() {
+					$('#box .boxUp i').css({
+						'color': '#f00'
+					});
+				})
+				$('#box .zhifu .a2').click(function() {
+					$('#box .elastic').show();
+				})
+				$('#box .zhifu .a1').click(function() {
+					$('#box .tab').toggleClass('active');
+
+					$('.zhifu .a1').hide();
+				})
+				// $('.audio_play_area').click(function() {
+				// 	$('.audio_area').toggleClass('playing');
+				// })
+				$('.tab_tit a').click(function() {
+					_index = $(this).index();
+					$(this).addClass('active').siblings().removeClass('active');
+					$('.tab_Min li').eq(_index).addClass('active').siblings().removeClass('active');
+				})
+				$('.tab_li a').click(function() {
+					$('.tab_li a').removeClass('active');
+					$(this).addClass('active');
+				})
+			})
+		</script>
+	</head>
+
+	<body>
+<style>
+/*div#liu {
+    margin: 15px;
+}*/
+	
+#box .zhifu .a1 {
+    width: 60%;
+    background: #08BA06;
+    color: #fff;
+    display: inline-block;
+    line-height: 40px;
+    border-radius: 20px;
+}
+.Bomb{position: fixed;top: 0;left: 0;width:100%;height:100%;background: rgba(0,0,0,.8);z-index: 999}
+.Bomb .BombBox{position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);background: #fff;border-radius:5px;width:90%;text-align: center;}
+.Bomb .BombBox h2{color:#08BA06;line-height: 46px;font-size: 18px;}
+.Bomb .BombBox .minText{padding: 15px;font-size: 18px;}
+.Bomb .BombBox a{height: 46px;line-height: 46px;border-top: 1px solid #f5f5f5;color:#08BA06;display: block;}
+</style>
+		<div id="box" style="overflow-x:hidden; " ">
+			<div class="Bomb" style="display: none;">
+				<div class="BombBox">
+					<h2>* 温馨提示 *</h2>
+					<div class="minText">
+						<p id="notice"></p>
+					</div>
+					<div class="conBtn">
+						<a id="notice_close" href="javascript:;">关闭</a>
+					</div>
+				</div>
+			</div>
+			 <!-- <link rel="stylesheet" type="text/css" href="{RES}music_style/css/css/audioplayer.css"/> -->
+			 {if $detail['types']!=3}
+			<div class="boxTit">
+				<h2>{$detail['title']}</h2>
+				<p>{php echo date('Y-m-d', $detail['createtime'])}&nbsp;
+					<a href="javascript:void(0);" id="qrcode">{$_W['account']['name']}</a>&nbsp;类别：<a href="{php echo $this->createmobileurl('payred_index',array('pcate'=>$detail['pcate']))}">{$pcate['name']}</a>&nbsp;{if !empty($author)} 作者:
+					<a href="{php echo $this->createmobileurl('myarticle',array('aid'=>$autorid,'op'=>on))}"><i>{$author['nickname']}</i></a>
+					{/if}
+				</p>
+			</div>
+			{/if}
+			<div class="boxMa">
+				<div class="boxMa_min">
+					<i></i>
+					<img src="{$_W['attachurl']}qrcode_{$_W['uniacid']}.jpg" />
+					<p>长按识别,关注公众号</p>
+				</div>
+			</div>
+			
+			<div class="boxMin jz_copy " style="padding: 10px;">
+			{if $detail['types']==1}
+				{$detail['content']}
+			{/if}
+			{if $detail['types']==2}
+				{php  for($i=0;$i<count($detail['images']);$i++){;}
+					<img src="{$detail['images'][$i]}" style="object-fit: cover;" alt="">
+				{php  };}
+			{/if}
+			{if $detail['types']==3}	
+
+			<p class="weixinAudio">
+			<audio src="" id="media" width="1" height="1" preload></audio>
+			<span id="audio_area" class="db audio_area">
+			
+				<div class="audioMin">
+					<div class="turnPic">
+						<span class="audio_play_area" style="background-image:url({php echo $_W['siteroot'].'/attachment/'.$detail['thumb']});background-size: cover;background-position: center center;background-repeat: no-repeat;width:120px;height: 120px;display: block;border-radius: 50%;margin: 0 auto">
+							 <i class="icon_playing"></i>
+			           	   	<i class="icon_default" style="display: none;"></i>
+		           	   </span>	           	  
+					</div>
+					<div class="fra">
+						<span id="audio_length" class="audio_length tips_global"></span>						
+						<div class="audioLoadding">
+							<i class="allTime">00:00</i>
+							<div class="audio_w">
+							   <!-- <div class="border-radius"></div> -->
+                               <span id="audio_progress" class="progress_bar" style="width: 0%;"></span>
+							</div>							
+							<i class="nowTime">00:00</i>
+						</div>
+						
+					</div>
+				</div>				
+			</span>			
+		</p>
+		<style>
+		.boxMin {background: #f2faf7;padding: 0 40px 40px;}
+		.audioLoadding{display: flex;}
+		.audioLoadding {margin-top: 20px;}
+		.audioLoadding .audio_progress{flex: 1;}
+		.audio_w{flex: 1;height:2px;background: #ccc;margin: 9px 30px 0;position:relative;}
+		.audioMin .fra{flex:1;display: flex;flex-direction: column;justify-content: center;}
+		.audioMin .border-radius{position: absolute;top: -14px;left: 0;width:26px;height: 26px;background: #fff;border-radius:50%;box-shadow: 0 0 10px rgba(0,0,0,.3);}
+		.audioMin .progress_bar{background:#08BA06;height: 2px;width: 100%;position: absolute;top: 0;left: 0;}		
+		.turnPic{position: relative;width:100%;height: 120px;display: flex;}
+		.icon_playing,.icon_default,.icon_playing:before,.icon_default:before,.icon_default:after{position: absolute;top:50%;left: 50%;-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);}
+		.icon_playing,.icon_default{width:36px;height: 36px;border:1px solid #f5f5f5;border-radius: 50%;}
+		.allTime,.nowTime{color:#333;}
+		.icon_playing:before{content: '';display: block;width: 0;height: 0;border:6px solid;border-radius: 2px;border-color: #fff #fff transparent transparent;-webkit-transform: translate(-40%,-50%) rotate(45deg);transform: translate(-40%,-50%) rotate(45deg);left: 40%;}
+		.icon_default:before,.icon_default:after{content: '';display: block;width:2px;height: 15px;background: #fff;}
+		.icon_default:before{left: 40%;-webkit-transform: translate(-40%,-50%);transform: translate(-40%,-50%);}
+		.icon_default:after{left: 55%;-webkit-transform: translate(-55%,-50%);transform: translate(-55%,-50%);}
+		.audio_play_area.active{-webkit-animation: turn 4s linear infinite;animation: turn 4s linear infinite;}
+          @-webkit-keyframes turn
+			{
+			0% {
+				-webkit-transform: rotate(0);
+				transform: rotate(0);
+			}
+			100% {
+				-webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+			}
+			}
+ 			.audioText{padding: 15px;}
+			.audioText .audio_title{font-size:18px;color:#333;}
+			.audioText .audioTextIntro{font-size: 14px;color:#999;margin: 10px 0;}
+			.audioText .audioStrong{display: flex;justify-content: space-between;}
+	    </style>
+<script type="text/javascript">
+    var audio_time='';
+     function addZero(word, howManyZero) {
+		var word = String(word);
+		while (word.length < howManyZero) word = "0" + word;
+		return word;
+	}
+    function getAudioSeconds(string){
+   		string = string % 60;
+		string = addZero(Math.floor(string), 2);
+		(string < 60) ? string = string: string = "00";
+		return string;
+   	}	
+	
+   	function getAudioMinutes(string){
+   		string = string / 60;
+		string = addZero(Math.floor(string), 2);
+		(string < 60) ? string = string: string = "00";
+		return string;
+   	}
+   $(function(){	
+   	$('.weixinAudio').weixinAudio({
+	   autoplay:false,
+	   src:'{$detail["bg_music"]}',
+   });
+	var media=document.getElementById("media"); 
+	var now_time='';
+   	$('.icon_playing').click(function(){
+   		if("{$aud_free}" && now_time > "{$aud_free}"){
+   			$('#notice').text('支付后可继续收听');
+   			$(".Bomb").show();
+   		}else{
+   			$(this).hide();
+	   		$('.icon_default').show();
+	   		$('.audio_play_area').addClass('active');
+	   		media.play();
+   		}
+   	})
+   	$('.icon_default').click(function(){
+   		$(this).hide();
+   		$('.icon_playing').show();
+   		media.pause();
+   		$('.audio_play_area').removeClass('active');
+   	})
+   		var aud_free="{$aud_free}";
+   		media.addEventListener('timeupdate',function(){
+	   		audio_time=media.currentTime;
+			var minutes = getAudioMinutes(audio_time);
+			var seconds = getAudioSeconds(audio_time);
+			audiostime = minutes + ":" + seconds;
+			$('.allTime').text(audiostime)
+			pares = (audio_time * 100 / media.duration) + '%';
+			if (pares == "NaN%") {
+				pares = 0 + '%';
+			}
+			var styles = {
+				"width": pares
+			};
+			$('.progress_bar').css(styles);
+				if("{$aud_free}"){
+				   if(media.currentTime > aud_free){	
+				   	now_time=media.currentTime;
+				   		media.pause();
+				   		$('.icon_default').hide();
+						$('.icon_playing').show();
+						$('.audio_play_area').removeClass('active');
+				   		$('#media').attr('src','');
+				   		$('#notice').text('支付后可继续收听');
+				   		$(".Bomb").show();
+				   }
+			    }
+		})
+
+   })
+   	
+
+  
+</script>
+			{/if}
+			{if $detail['types']==4}
+			<style>
+					.my-video-dimensions {width: 100%;		 
+				    }				    
+			</style>
+				<video id="my-video" x5-playsinline="" playsinline="" webkit-playsinline=""  class="video-js vedio_play  vjs-big-play-centered" controls preload="auto" width="500" height="240"
+		  poster="{php echo tomedia($detail['thumb'])}"  data-setup='{"example_option":true}' loop='loop'>
+			<source src="{$detail['vedio_url']}">
+		  </video>
+			{/if}
+			</div>
+			{if $detail['types']==3}
+			<div class="audioText">
+					<span class="db audio_info_area">
+			                <strong class="db audio_title">{$detail['title']}</strong>
+			                <!-- <span class="audio_source tips_global"></span> -->
+					</span>
+					<p class="audioTextIntro">{$detail['author']}</p>
+
+				   <div class="audioStrong">
+						<p>{php echo date("Y-m-d H:i:s",$detail['createtime'])}</p>
+						<p><span>{if $detail['clickNum']}{$detail['clickNum']}{else}0{/if}人浏览</span></p>
+				   </div>
+			</div>
+			{/if}
+			<div class="zhifu pl15 pr15">
+				{if $member['info_status']!=2 && $pay_status==0} {if $detail['pay_money']>0 }
+				{if $openid!=$author['openid']}
+				<a class="a1" href="##">继续阅读</a>
+				<!--选项卡效果 start-->
+				<div class="tab">
+					<div class="tab_tit flex1">
+						<a class="active half" href="javascript:;">单篇阅读</a>
+						<a class="half" href="javascript:;">成为会员</a>
+
+					</div>
+					<div class="tab_Min">
+						<ul class="clearfix">
+							<li class="active">
+								<div class="tab_li all">
+
+									<a href="javascript:" {if $pay_status==0} id="btn_pay" data-id="1" data-aid="{$id}" {/if}>
+										{$detail['pay_money']}元 支付单篇
+										<i class="icon iconfont"></i>
+									</a>
+								</div>
+
+							</li>
+							<li>
+							{loop $configlist $config}
+								<div class="tab_li half">
+									<a href="javascript:;" onclick="pay({$config['id']})">
+										<p>{$config["title"]}<i class="money">{$config['money']}</i>元</p>
+									</a>
+								</div>
+							{/loop}
+								
+							</li>
+
+						</ul>
+					</div>
+				</div>
+				<!--选项卡效果 end-->
+
+				<!--       <p>本文需要付费才能阅读全部内容</p>
+         <a class="a1"  href="javascript:" {if $pay_status==0} id="btn_pay" data-id="1" data-aid="{$id}"{/if}>
+        {if $pay_status==0}
+        支付{$detail['pay_money']}元
+        {else}
+        您已支付
+        {/if}
+        </a>-->
+        {/if}
+				<p style="margin-top: 10px;">已有{$pay_count}人为该课程支付</p>
+				{/if} {/if}
+		{if $shang_status==1}
+		{if $sstatus==0}
+        <a class="a2" href="#" id="shang">赏</a>
+        {/if}
+        
+        <div class="img">
+            {loop $shang $row}
+            <span><img src="{$row['headimg']}"></span>
+            {/loop}
+        </div>
+        
+        <p>已有{$pcount}人打赏</p>
+        {/if}
+			</div>
+			<style>
+			.pl15{padding-left: 15px;}
+			.pr15{padding-right: 15px;}
+			.pb15{padding-bottom:15px;}
+			#box{padding: 0}
+			.tit{text-indent:0;padding:15px;}
+			.tit a i{margin-left: -4px;}
+			.Recommend{margin-bottom: 15px;border-top:10px solid #f5f5f5;border-bottom:10px solid #f5f5f5;}
+			.RecommendMin ul{-webkit-overflow-scrolling: touch;white-space: nowrap;}
+			.RecommendMin li{width:100px;display: inline-flex;margin-right: 5%;overflow: hidden;}
+			.RecommendMin li .img{border-radius: 3px;}
+			.RecommendMin li:last-child{margin-right: 6%;}
+			.RecommendMin li a{display: block;width:100%;}
+			/*定位和伪元素*/
+.pr{position: relative;}
+[class*=pab]{position: absolute;}
+[class*=pabt]{top: 0;}
+[class*=pabtl]{left: 0;}
+[class*=pabbl]{bottom: 0;}
+[class*=pabtr]{right: 0;}
+[class*=pabFour]{top:0;right: 0;bottom: 0;left: 0;}
+.before:before,.after:after{content: '';display: block;position: absolute;}
+.imgWH {
+    width: 100px;
+    height: 80px;
+}
+[class*=overflow]{overflow: hidden;}
+[class*=overflow-x]{overflow-x: auto;}
+[class*=overflow-y]{overflow-y: auto;}
+/****************盒子布局*****************/
+[class*=flex]{ display: -webkit-box;display: -webkit-flex;  display: -ms-flexbox; display: flex;/* width: 100%;*/}
+[class*=flex] .sub{ -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; overflow: hidden;}
+[class*=flex-column]{-webkit-flex-direction: column; flex-direction: column;}
+[class*=flex-column-c]{justify-content: center;}
+[class*=flex-column-ja]{align-items: center;}
+[class*=flex-jb]{justify-content: space-between;}
+[class*=line-text]{ overflow: hidden;text-overflow: ellipsis;}
+[class*=line-text-t]{ display: -webkit-box; -webkit-box-orient: vertical;box-orient: vertical;}
+[class*=line-text-two]{ -webkit-line-clamp: 2;}
+[class*=line-text-three]{ -webkit-line-clamp: 3;}
+
+.mt10{ margin-top:10px;}
+/****************字体大小*****************/
+.max-font { font-size: 2rem }
+.large-font { font-size: 1.8rem }
+.big-font { font-size: 1.6rem }
+.mid-font { font-size: 1.4rem }
+.small-font { font-size: 1.2rem }
+.min-font { font-size: 1rem }
+
+.f12{font-size: 12px;}
+.f14{font-size: 14px;}
+.f16{font-size: 16px;}
+.f18{font-size: 18px;}
+.f20{font-size: 20px;}
+.f28{font-size: 28px;}
+.f30{font-size: 30px;}
+
+/****************常用字体颜色*****************/
+.grey{color:#989898;}
+.Lightgrey{color:#c0c0c0;}
+.black{color:#333;}
+.white{color:#fff;}
+.cred{color:#e64340;}
+.cblack{color:#353535;}
+.tit{padding: 15px 0;}
+			</style>
+			 <div class="Recommend bWhite mt10 pl15 pr15">
+	        	<div class="tit pr after flex-jb">
+	        		<h2 class="f18">相关课程</h2>
+	        		<a class="tr grey" href="{php echo $this->createmobileurl('payred_index',array('pcate'=>$detail['pcate']))}">
+	        			更多
+	        			<i class="iconfont icon-xiangyoujiantou"></i>
+	        		</a>
+	        	</div>
+	        	<div class="RecommendMin pb15">
+	        		 <ul class="overflow-x">
+	        		 {loop $one_article $val}
+	        		 	<li>
+	        		 		<a href="{php echo $this->createmobileurl('detail',array('id'=>$val['id']))}">
+	        		 			<div class="img imgWH" style="background-image:url({$_W['attachurl']}{$val['thumb']});background-size: 100% 100%;"></div>
+	        		 			<h3 class="f16 line-text mt10 cblack">{$val['title']}</h3>
+	        		 		</a>
+	        		 	</li>
+	        		 	{/loop}
+	        		 </ul>
+	        	</div>
+	        </div>
+			<style type="text/css">
+				.liuyanMin {
+					display: flex;
+					justify-content: space-between;
+				}
+				
+				#box .liuyan {
+					margin-top: 0;
+				}
+				
+				#box .liuyan .xiexin {
+					width: 100px;
+					padding: 0;
+				}
+				#box .liuyan h3
+				{
+					padding: 10px 15px;
+				}
+				#box .liuyan h3:before{left: 18px;}
+				.right_min01 h4{color:#333;}
+				.right_min01 i{font-size: 12px;margin-top: 6px;display:inline-block}
+				.right_min01 .titR{display: flex;justify-content: space-between;}
+				.liuyan_list li .right span i{margin: 0 10px 0 0;padding: 0;font-size: 14px;vertical-align: -1px;}
+				.liuyan_list ul{padding-bottom: 50px}
+			</style>
+			<div class="liuyanMin pl15 pr15" style="margin-bottom: 20px;">
+				<div class="boxUp">
+					<ul>
+						<li>阅读<span>{$detail['clickNum']}</span></li>
+						<li id="like">
+							{if $like!=1}
+							<i class="iconfont">&#xe600;</i> {else}
+							<i class="iconfont">&#xe604;</i> {/if}
+							<span id="likeNum">{$detail['zanNum']}</span>
+						</li>
+						{if $detail['tel'] }
+						<li>
+							<a href="tel:{$detail['tel']}">联系我们</a>
+						</li>
+						{/if}
+						<li style="float:right;"><a class="xiexin" href="#liuliu" onclick="dis();" id="dis"><i class="iconfont">&#xe615;</i>留言</a></li>
+					</ul>
+				</div>
+				
+			</div>
+			<div class="liuyan ">
+					
+					{if !empty($dis)}
+					<div class="liuyan_list">
+						<h3>精选留言</h3>
+						<ul>
+							{loop $dis $row}
+							<li style="padding: 10px;">
+								<span class="img"><img src="{$row['avatar']}"></span>
+								<div class="right">
+									<div class="right_min01 clearfix">
+										<div class="titR">
+											<h4>{$row['nickname']}</h4>
+											<div class="liuyun_wz">
+												<span class="zang"><i class="iconfont diszan" data="{$row['id']}" id="diszan_{$row['id']}">&#xe600;<i>{$row['zannum']}</i></i></span>
+											</div>
+										</div>										
+										<i>{php echo date('Y-m-d H:i:s', $row['createtime']);}</i>
+										<p>{$row['discuss']}</p>										
+									</div>
+									{if !empty($row['reply'])}
+									<div class="huifu_min">
+										<div class="huifu_li">
+											<h5>作者回复</h5>
+											<p>{$row['reply']}</p>
+										</div>
+									</div>
+									{/if}
+								</div>
+							</li>
+							{/loop}
+						</ul>
+					</div>
+					{/if}
+				</div>
+				<div height="20px"></div>
+		<!-- 	<form action="">
+			<div class="liuyan_min clearfix" id="liu" style="display: none;">
+				<textarea onmouseover="this.value='';" name="discontent" id="discontent"></textarea>
+				<div class="btn">
+					<a href="javascript:;" name="liuliu" id="dissub" onclick="dissub();">提交保存</a>
+				</div>
+		
+			</div>
+		
+		</form> -->
+		<style>
+	/*弹层*/
+.Elastic{position: fixed;top: 0;left: 0;background: rgba(0,0,0,.8);width:100%;height: 100%;z-index: 999;display: none;-webkit-animation: popupbg 0.4s ease forwards;-webkit-opacity: 0;}
+.Elastic.active{display: block;}
+.ElasticMin{width:100%;height: 35vh;background:#fff;-webkit-transform: translateY(35vh);transform: translateY(35vh);-webkit-animation: popup 0.4s ease forwards;-webkit-opacity: 0;}
+.ElasticMin.active{padding: 0 15px 15px 15px;-webkit-transform: translateY(0vh);transform: translateY(0vh);}
+.ElasticMin .title{padding: 8px 0;
+    background: #F5F5F5;
+    text-indent: 1em;}
+.ElasticMin .close{width:0;height: 0;border:20px solid;border-color: rgba(8,186,6,1) rgba(8,186,6,1) transparent transparent;position: absolute;top:0;right:0;background: none;border-radius: inherit;}
+.ElasticMin .close:before{content: '';display: block;width:1px;height: 15px;background: #fff;position: absolute;top: -14px;left: 9px;-wekbit-transform:rotate(45deg);transform:rotate(45deg);}
+.ElasticMin .close:after{content: '';display: block;width:1px;height: 15px;background: #fff;position: absolute;top: -14px;left: 9px;-wekbit-transform:rotate(-45deg);transform: rotate(-45deg);}
+.ElasticMin .info{padding: 15px;}
+.ElasticMin .textarea{background:rgba(7,187,69,0.03);}
+.ElasticMin .textarea textarea{outline: none;resize: none;width: 100%;border:1px solid #ccc;padding: 15px;}
+.ElasticMin .btn{margin-top: 15px;}
+.ElasticMin .btn button{width:100%;height: 46px;line-height: 46px;background: rgba(8,186,6,1);color:#fff;border-radius: 3px;border:none;outline: none;font-size: 
+16px }
+
+.popup{ -webkit-animation: popupbg 0.4s ease forwards;  -webkit-opacity: 0;}
+@-webkit-keyframes popupbg {
+  0% { -webkit-opacity: 0;}
+  100%{ -webkit-opacity: 1;}
+}
+.popup .popup-box{ -webkit-animation: popup 0.4s ease forwards; -webkit-transform: translateY(36vh); -webkit-opacity: 0;}
+@-webkit-keyframes popup {
+  0% { -webkit-transform: translateY(36vh); -webkit-opacity: 0;}
+  100%{ -webkit-transform: translateY(0); -webkit-opacity: 1;}
+}
+
+	</style>
+<div class="Elastic transition" id="liu" >
+				<div class="ElasticMin w100 bWhite pabbl transition">
+					<span class="close"><i class="iconfont icon-2 blank"></i></span>
+					<div class="title  f16">发表课程评论</div>
+					<div class="info">
+						<div class="textarea">
+							<textarea class="w100 p10" rows="3" name="discontent" id="discontent" placeholder="请输入您要输入的评论~"></textarea>
+						</div>
+						<div class="btn mt20">
+							<button name="liuliu" id="dissub" onclick="dissub();">提交</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			  <div class="elastic">
+        <div class="ceng">
+            <i></i>
+            <form action="">
+                <div class="ceng_min">
+                    <h3>打赏金额</h3>
+                    <p>请输入您要打赏的金额</p>
+                    <input class="text" type="text" id="sdol" name="sdol" placeholder="{$sdol}" value="{$sdol}">
+                    <a href="###" onclick="add();" class="submit">提交</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+			<div class="homeH">
+				<div class="home" href="javascript:void(0);" onclick="link();"><i class="iconfont">&#xe64e;</i></div>
+			</div>
+			<div class="dianzan" id="collect" onclick="collect('col');">
+				{if empty($iscol)}
+				<i class="iconfont">&#xe618;</i> {else}
+				<i class="iconfont">&#xe617;</i> {/if}
+			</div>
+		</div>
+	</body>
+	<!--<script type="text/javascript">
+    var uin = "";
+    var key = "";
+    var pass_ticket = "";
+    //全局变量
+    gSound = '{php echo tomedia($detail['bg_music'])}';
+</script>
+<script type="text/javascript">var _speedMark = new Date(), _loadTime = '1429101314';</script>
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="{RES}js/weixin_new.js"></script>-->
+
+</html>
+<script>
+	/*$("#play").bind("click", function() {
+		var Media = document.getElementById('music_audio');
+		if($(this).attr("data") == "open") {
+			$(this).attr('data', 'close');
+			Media.play(); //播放
+			$(".icon_default").addClass("active");
+		} else {
+			$(this).attr('data', 'open');
+			Media.pause(); //暂停
+			$(".icon_default").removeClass("active");
+		}
+
+	});*/
+</script>
+
+ 
+<script type="text/javascript">
+	function jsApiCall(pay) {
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',
+			pay,
+			function(res) {
+				WeixinJSBridge.log(res.err_msg);
+				if(res.err_msg == "get_brand_wcpay_request:ok") {
+					$.post(send_url, {
+						'type': pay.type,
+						'id': pay.id,
+						'title': pay.title,
+						'money': pay.money,
+						'out_trade_no': pay.out_trade_no
+					}, function(res) {
+						location.href = "{php echo $this->createmobileurl('detail',array('id'=>$detail['id']))}";
+					})
+					location.href = "{php echo $this->createmobileurl('detail',array('id'=>$detail['id']))}";
+				} else if(res.err_msg == "get_brand_wcpay_request:cancel") {
+					alert("已取消付费!");
+				} else {
+					alert(res.err_code + res.err_desc + res.err_msg);
+				}
+			}
+		);
+	}
+
+	function pay(id) {
+		$.ajax({
+			type: "post",
+			data: {
+				"id": id,
+				"pay_type":pay_type
+			},
+			url: "{php echo $this->createmobileurl('detail',array('op'=>'post'))}",
+			datatype: "json",
+			success: function(data) {
+				console.log(data)
+				if(mini_pay){ 
+				 //小程序支付 
+				 var mini_url=encodeURIComponent("{$send_url}"+"&id="+"{$detail['id']}")
+				 wx.miniProgram.navigateTo({url:'/dg_costreadsimple/pages/pay/index?num='+data.out_trade_no+'&uniacid='+'{$_W["uniacid"]}'+'&mini_url='+mini_url}); 
+				 }else{ 
+				 	jsApiParameters = JSON.parse(data.jsApiParameters);
+					jsApiParameters.money = data.money;
+					jsApiParameters.out_trade_no = data.out_trade_no;
+					jsApiParameters.type = 'vip';
+				 	callpay(jsApiParameters);
+				 } 
+				
+			}
+		});
+	}
+
+	function callpay(pay) {
+		if(typeof WeixinJSBridge == "undefined") {
+			if(document.addEventListener) {
+				document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+			} else if(document.attachEvent) {
+				document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+				document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+			}
+		} else {
+			jsApiCall(pay);
+		}
+	}
+</script>
+<script>
+var mini_pay = false; 
+var pay_type='uni';
+ 
+			
+				
+	/*document.getElementById("music_audio").play();
+	$(".audioplayer-playpause").bind("click", function() {
+		var Media = document.getElementById("music_audio");
+		if($(this).attr("title") == "Pause") {
+			$(this).removeClass("Pause");
+			$(this).addClass("Play");
+			Media.pause(); //暂停  
+		} else {
+			$(this).removeClass("Play");
+			$(this).addClass("Pause");
+			Media.play(); //播放  
+		}
+	});*/
+
+	function link() {
+		location.href = "{$_W['siteroot']}app/index.php?i={$_W['uniacid']}&c=entry&do=new_index&m=dg_articlemanage";
+	}
+
+	$(function() {
+		if($("#btn_pay").length > 0) {
+			$("#btn_pay").click(function() {
+				var payid = $(this).data("id");
+				var aid = $(this).data("aid");
+				var from = "{$fromer}";
+				
+				$.ajax({
+					type: "post",
+					datatype: "json",
+					url: "{php echo $this->createmobileurl('detail')}" + "&fuser=" + from,
+					data: {
+						"payid": payid,
+						"pay_type":pay_type,
+						"id": aid
+					},
+					success: function(data) {
+
+						if(mini_pay){ 
+						 //小程序支付 
+						 var mini_url=encodeURIComponent("{$send_url}"+"&id="+"{$detail['id']}");
+						 wx.miniProgram.navigateTo({url:'/dg_costreadsimple/pages/pay/index?&num='+data.out_trade_no+'&uniacid='+'{$_W["uniacid"]}'+'&mini_url='+mini_url});
+						 }else{ 
+						 	jsApiParameters = JSON.parse(data.jsApiParameters);
+							jsApiParameters.money = data.money;
+							jsApiParameters.out_trade_no = data.out_trade_no;
+							jsApiParameters.title = article_title;
+							jsApiParameters.id = article_id;
+							jsApiParameters.type = 'dp';
+						 	callpay(jsApiParameters);
+						 } 
+						
+					}
+				})
+
+			});
+		}
+		$("#like").click(function() {
+			var id = "{$detail['id']}";
+			var ajaxurl = "{php echo $this->createmobileurl('like')}";
+			$.ajax({
+				url: ajaxurl,
+				type: "post",
+				dataType: "json",
+				data: {
+					"articleid": id
+				},
+				success: function(r) {
+					$(".rich_media_tool .red").removeClass("red");
+					var v = $("#likeNum");
+					var c = r.zannum;
+					v.text(c);
+					if(r.success==1){
+						//$("#like > i").empty();
+						$("#like ").html('<i class="iconfont">&#xe604;</i><span id="likeNum">'+r.zannum+'</span>');
+					}else{
+						//$("#like > i").empty();
+						$("#like").html('<i class="iconfont">&#xe600;</i><span id="likeNum">'+r.zannum+'</span>');
+					}
+					
+				},
+				error: function(r) {
+					console.log(r);
+				}
+			});
+		});
+		$("#shang").click(function() {
+			$(".imInfo").show(0);
+		});
+	});
+	initShare();
+	
+	
+	function initShare() {
+
+		wx.ready(function() {
+						
+			shareMeta = {
+				imgUrl: "{$shareimg}",
+				link: "{$url}",
+				desc: "{$detail['title']}",
+				title: "{$detail['title']}",
+				success: function() {
+
+				},
+				cancel: function() {
+					// alert("分享失败，可能是网络问题，一会儿再试试？");
+				}
+			};
+			wx.onMenuShareTimeline(shareMeta);
+			wx.onMenuShareAppMessage(shareMeta);
+			wx.onMenuShareWeibo(shareMeta);
+			wx.onMenuShareQQ(shareMeta);
+			wx.onMenuShareQZone(shareMeta);
+			
+			mini_pay=window.__wxjs_environment === 'miniprogram'; 
+			if(mini_pay){
+				pay_type='mini_pay';
+					
+			}else{
+				pay_type='uni';
+			}
+
+		});
+
+	}
+	
+		
+
+	<!-- function author(op) { -->
+		<!-- location.href = "{php echo $this->createmobileurl('myarticle',array('aid'=>$autorid,'op'=>on))}" + op; -->
+	<!-- } -->
+
+	function add() {
+		var id = "{$detail['id']}";
+		var sdol = $("#sdol").val();
+		$.ajax({
+			type: "post",
+			data: {
+				"article_id": id,
+				"sdol": sdol
+			},
+			datatype: "json",
+			url: "{php echo $this->createmobileurl('shang')}&pay_type="+pay_type,
+			success: function(data) {
+				$(".imInfo").hide(0);
+				console.log(data)
+				if(mini_pay){ 
+						 //小程序支付 
+					var mini_url=encodeURIComponent("{$send_url}"+"&id="+"{$detail['id']}")
+ 					wx.miniProgram.navigateTo({url:'/dg_costreadsimple/pages/pay/index?&num='+data.out_trade_no+'&uniacid='+'{$_W["uniacid"]}'+'&mini_url='+mini_url})
+ 				}else{
+					callpay(JSON.parse(data.jsApiParameters));
+ 				}
+				
+			}
+		})
+	}
+
+	function dis() {
+		$("#liu").toggle();
+	}
+
+	function dissub() {
+		var discontent = $("#discontent").val();
+		var aid = "{$detail['id']}";
+		$.ajax({
+			type: "post",
+			data: {
+				"discuss": discontent,
+				"aid": aid
+			},
+			url: "{php echo $this->createmobileurl('dis')}",
+			datatype: "json",
+			success: function(res) {
+				alert(res.msg);
+				location.reload();
+			}
+		});
+	}
+	$(".diszan").click(function() {
+		var disid = $(this).attr("data");
+		var id = "{$detail['id']}";
+		$.post(location.href, {
+			id: id,
+			disid: disid
+		}, function(res) {
+			var c = res.zannum;
+			$("#diszan_" + disid + " > i").text(c);
+		});
+	});
+
+	function collect(op) {
+		var id = "{$detail['id']}";
+		var collurl = "{php echo $this->createmobileurl('collect')}";
+		var c = op;
+		$.post(collurl, {
+			id: id,
+			op: c
+		}, function(res) {
+			if(res.result == 1) {
+				alert(res.msg);
+				$("#collect > i").empty();
+				$("#collect > i").html("&#xe617;");
+			} else {
+				alert(res.msg);
+			}
+		});
+	}
+</script>
+

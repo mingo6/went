@@ -1,0 +1,146 @@
+{itemplate 'public/header'}
+<style>
+.picker-items-col:nth-child(1),
+.picker-items-col:nth-child(2),
+.picker-items-col:nth-child(3){
+	display:none;
+}
+</style>
+<div class="page my-page" id="page-app-profile">
+{if $ta == 'info'}
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="icon icon-arrow-left"></i></a>
+		<h1 class="title">会员资料</h1>
+	</header>
+	{if !is_weixin()}
+		<a class="bar bar-tab text-center logout js-post" href="{php echo imurl('delivery/auth/loginout');}" data-confirm="确定退出当前账号吗??">
+			退出当前账号
+		</a>
+	{/if}
+	<div class="content member-info">
+		<div class="list-block border-1px-tb">
+			<ul>
+				<li class="item-content item-link">
+					<a href="{php echo imurl('delivery/member/profile/edit', array('type' => 'region'))}" class="item-inner border-1px-b">
+						<div class="item-title">所属区域</div>
+						<div class="item-after">{if !empty($_deliveryer['region_name'])}{$_deliveryer['region_name']}{else}未设置{/if}</div>
+					</a>
+				</li>
+				<li class="item-content item-link">
+					<a href="{php echo imurl('delivery/member/profile/edit', array('type' => 'work_hours'))}" class="item-inner">
+						<div class="item-title">工作时间</div>
+						<div class="item-after">{$work_hours_str}</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+{/if}
+
+{if $ta == 'edit'}
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="icon icon-arrow-left"></i></a>
+		<h1 class="title">修改{if $_GPC['type'] == 'region'}区域{else}工作时间{/if}</h1>
+	</header>
+	<div class="content member-edit">
+		<div class="list-block">
+			<ul>
+				{if $_GPC['type'] == 'region'}
+				<li>
+					<div class="item-content">
+						<div class="item-inner">
+							<div class="item-input">
+								<select name="region_id">
+									{if !empty($regionList)}
+										<option value="-1" {if $_deliveryer['region_id'] <= 0}selected{/if}>请选择区域</option>
+										{loop $regionList $region}
+											<option value="{$region['id']}" {if $_deliveryer['region_id'] == $region['id']}selected{/if}>{$region['name']}</option>
+										{/loop}
+									{/if}
+								</select>
+							</div>
+						</div>
+					</div>
+				</li>
+				{elseif $_GPC['type'] == 'work_hours'}
+				<li>
+					<div class="item-content">
+						<div class="item-inner border-1px-b">
+							<div class="item-input">
+								<input type="text" name="start_work_time" class="select_time" data-toggle='date' placeholder="开始工作时间，例如：09:00" value="{if !empty($_deliveryer['work_hours']['start'])}{$_deliveryer['work_hours']['start']}{/if}" />
+							</div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="item-content">
+						<div class="item-inner">
+							<div class="item-input border-1px-b">
+								<input type="text" name="end_work_time" class="select_time" data-toggle='date' placeholder="结束工作时间，例如：18:00" value="{if !empty($_deliveryer['work_hours']['end'])}{$_deliveryer['work_hours']['end']}{/if}" />
+							</div>
+						</div>
+					</div>
+				</li>
+				{/if}
+			</ul>
+		</div>
+		<div class="content-block">
+			<a href="javascript:;" class="button button-big button-fill button-danger" id="btnSubmit">确定</a>
+		</div>
+	</div>
+{/if}
+</div>
+<script>
+require(['tiny'], function(tiny){
+	$(function(){
+		$('#btnSubmit').click(function(){
+			var type = "{$_GPC['type']}";
+			if(type == 'region'){
+				var region_id = $.trim($("select[name='region_id']").val());
+				if(!region_id){
+					$.toast("区域不能为空！");
+					return false;
+				}
+				var data = {'region_id': region_id};
+			}else if(type == 'work_hours'){
+				var start_work_time = $.trim($("input[name='start_work_time']").val());
+				var end_work_time = $.trim($("input[name='end_work_time']").val());
+				if(!start_work_time){
+					$.toast("开始工作时间不能为空!");
+					return false;
+				}
+				if(!end_work_time){
+					$.toast("结束工作时间不能为空!");
+					return false;
+				}
+				var data = {'start_work_time': start_work_time,'end_work_time':end_work_time};
+			}
+			$.post("{php echo imurl('delivery/member/profile/edit', array('type' => $type))}", data, function(result){
+				var result = $.parseJSON(result);
+				if(result.message.errno != 0) {
+					$.toast(result.message.message);
+				} else {
+					$.toast(result.message.message);
+					location.href = "{php echo imurl('delivery/member/profile/info')}";
+				}
+			})
+		})
+	});
+
+	//日期插件
+	var obj = {
+		toolbarTemplate: 
+		'<header class="bar bar-nav">\
+			<button class="button button-link pull-right close-picker">确定</button>\
+			<h1 class="title">选择时间</h1>\
+		</header>',
+		value: ['2000', '01', '01', '08', '00'],
+	};
+	$(".select_time").datetimePicker(obj);
+	$(".select_time").change(function(e){
+		$(this).val(e.target.value.split(' ')[1]);
+		console.log($(this).val());
+	});
+});
+</script>
+{itemplate 'public/footer'}

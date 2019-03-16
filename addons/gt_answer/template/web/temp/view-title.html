@@ -1,0 +1,13 @@
+<div class="temp_item temp_item_title" ng-style="{'padding':item.params.paddingv+'px '+item.params.paddingh+'px','background':item.params.bgcolor}">
+	
+	<div class="item_cell_box" style="align-items: center;">
+		<div class="temp_title_limg" ng-show="item.params.lefticon">
+			<img ng-style="{'width':item.params.lwidth+'px'}" ng-src="{{item.params.leftimg}}">
+		</div>
+		<div class="item_cell_flex" ng-style="{'text-align':item.params.pos,'font-size':item.params.size+'px','color':item.params.color}">{{item.params.content}}</div>
+		<div class="temp_title_rimg" ng-show="item.params.righticon">
+			<img ng-style="{'width':item.params.rwidth+'px'}" ng-src="{{item.params.rightimg}}">
+		</div>
+	</div>
+
+</div>

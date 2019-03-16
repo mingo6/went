@@ -1,0 +1,62 @@
+<!--底部菜单 start-->
+<style>
+    [class*=flex]{ display: -webkit-box;display: -webkit-flex;  display: -ms-flexbox; display: flex;/* width: 100%;*/}
+[class*=flex] .sub{ -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; overflow: hidden;}
+</style>
+ <style type="text/css">
+    .foot{box-shadow: inherit;}
+    </style>
+ <div class="foot tc bWhite">
+             <ul class="flex">
+                 <li class="sub">
+                <a {if $_GPC['do']=='new_index'}class="active"{/if} href="{php echo $this->createmobileurl('new_index')}">
+                <i class="iconfont icon-shouye disb"></i> 首页
+             </a>
+         </li>
+         <li class="sub">
+                        <a  href="{php echo $this->createmobileurl('tag_list')}" {if $_GPC['do']=='tag_list'}class="active"{/if}>
+                            <i class="iconfont icon-icon2 disb"></i>
+                            分类
+                        </a>
+                    </li>
+        <li class="sub">
+            <a {if $_GPC['do']=='center'}class="active"{/if} href="{php echo $this->createmobileurl('center')}">
+                <i class="iconfont icon-gerenzhongxin disb"></i> 个人中心
+            </a>
+        </li>
+    </ul>
+</div>
+<!--底部菜单 start-->
+<script type="text/javascript">
+ $(function(){
+	 var url=location.href;
+	 if(url.indexOf('payred_index')>0){
+         $(".menu_center").removeClass('active');
+         $(".menu_pay").addClass('active');
+         if(url.indexOf('_pay')>0){
+             $(".menu_pay").addClass('active');
+             return;
+         }
+         if(url.indexOf('_free')>0){
+             $(".menu_pay").removeClass('active');
+             $(".menu_free").addClass('active');
+             return;
+         }
+     }
+     if(url.indexOf('payred_index')>0 && url.indexOf('_free')>0){
+         $(".menu_free").addClass('active');
+         $(".menu_center").removeClass('active');
+             return;
+     }
+	 if(url.indexOf('serialize')>0){
+         $(".menu_serialize").addClass('active');
+         $(".menu_center").removeClass('active');
+             return;
+         }
+     if(url.indexOf('expert')>0){
+         $(".menu_serialize_3").addClass('active');
+         $(".menu_center").removeClass('active');
+         return;
+     }
+ });
+</script>

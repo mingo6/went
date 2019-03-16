@@ -1,0 +1,10 @@
+{if $item['status'] == 2}
+    <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('water/confirmFahuo', array('id' => $item['id']))}" data-confirm="确认发货吗?">确认发货</a><br />
+{/if}
+{if $item['status'] == 3}
+<a class="btn btn-primary btn-xs" data-toggle='ajaxPost'  href="{php echo webUrl('water/confirmShouhuo', array('id' => $item['id']))}" data-confirm="确认收货吗？">确认收货</a>
+{/if}
+{if $item['status'] == 4}
+<a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('water/confirmRefound', array('id' => $item['id']))}" data-confirm="确认退款吗？" >确认退款</a>
+{/if}
+

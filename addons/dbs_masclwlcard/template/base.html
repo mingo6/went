@@ -1,0 +1,162 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="{php echo $this->createWebUrl('base');}">编辑资料</a></li>
+	<li><a href="{php echo $this->createWebUrl('footer');}">修改底部导航</a></li>
+	<li><a href="{php echo $this->createWebUrl('upload_cert');}">微信证书上传</a></li>
+</ul>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			公司基本设置
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司名称</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="company_name" name="company_name" placeholder="请输入公司名称" value="{php echo $info['company_name'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">公司logo</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('company_logo', $info['company_logo']);}
+				</div>
+			  </div>
+			  
+			 <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司电话</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="company_tel" name="company_tel" placeholder="请输入公司电话" value="{php echo $info['company_tel'];}">
+				</div>
+			  </div>
+			  
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司地址</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="company_addr" name="company_addr" placeholder="请输入公司地址" value="{php echo $info['company_addr'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">地址:纬度</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="lat" name="lat" placeholder="请输入地址:纬度" value="{php echo $info['lat'];}">
+				 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">地址:经度</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="lng" name="lng" placeholder="请输入地址:经度" value="{php echo $info['lng'];}">
+				 <span> <a style="color: #1E9FFF;" href="http://www.gpsspg.com/maps.htm" target="_blank">在线查询地址</a><span>
+				</div>
+			  </div>
+			  {if $_W['role']=='founder'}
+				 <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">技术支持:</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="support_name" name="support_name" placeholder="请输入技术支持" value="{php echo $info['support_name'];}">
+					</div>
+				  </div>
+				  
+				   <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">技术支持号码:</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="support_tel" name="support_tel" placeholder="请输入技术支持号码" value="{php echo $info['support_tel'];}">
+					</div>
+				  </div>
+				
+				  <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">创建名片个数</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="num" name="num" placeholder="请输入创建名片个数" value="{php echo $info['num'];}">
+					</div>
+				  </div>
+			  {/if}
+			 <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">消息模板id</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="template_id" name="template_id" placeholder="请输入消息模板" value="{php echo $info['template_id'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否开启商城</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="open_shop" value="0" {if intval($info['open_shop']) == 0}checked="checked"{elseif intval($info['open_shop']) == ''}checked="checked"{else} {/if}> 否
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="open_shop" value="1" {if intval($info['open_shop']) == 1}checked="checked"{/if}> 是
+					</label>
+				</div>
+			</div>
+			
+			  <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">商城背景图片</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('shop_bg', $info['shop_bg']);}
+				</div>
+				<span class="help-block">700px * 300px</span>
+			  </div>
+			  
+			  
+			  <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否开启红包</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="open_redpack" value="0" {if intval($info['open_redpack']) == 0}checked="checked"{elseif intval($info['open_redpack']) == ''}checked="checked"{else} {/if}> 否
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="open_redpack" value="1" {if intval($info['open_redpack']) == 1}checked="checked"{/if}> 是
+					</label>
+				</div>
+			</div>
+			
+			 <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">企业红包金额</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="input-group">
+						<input type="text" name="redpack_min" class="form-control" value="{php echo $info['redpack_min'];}" />
+						<span class="input-group-addon">到</span>	
+					<input type="text" name="redpack_max" class="form-control" value="{php echo $info['redpack_max'];}" />
+					<span class="input-group-addon">元之间</span>
+					</div>	
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否开启查看密码</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="is_public" value="0" {if intval($info['is_public']) == 0}checked="checked"{elseif intval($info['is_public']) == ''}checked="checked"{else} {/if}> 否
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="is_public" value="1" {if intval($info['is_public']) == 1}checked="checked"{/if}> 是
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="public_password" class="col-sm-2 control-label">查看密码</label>
+				<div class="col-sm-8">
+					<input type="password" class="form-control" id="public_password" name="public_password" placeholder="请输入查看密码" value="">
+				</div>
+			</div>
+				  
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-13">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+				  <input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			  </div>
+		</form>
+	</div>
+</div>
+{template 'common/footer'}

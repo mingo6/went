@@ -1,0 +1,213 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#">名片添加</a></li>
+	<li><a href="{php echo $this->createWebUrl('card_list')}">名片列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('card_change');}">名片交接</a></li>
+	<li><a href="{php echo $this->createWebUrl('qy_update')}">同步企业微信</a></li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			名片管理
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		
+			<?php if($info['id']){ ?>
+				 <input type="hidden" id="id" name="id"  value="{php echo $info['id'];}">
+			<?php}?>
+		
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">头像图片</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('card_logo', $info['card_logo']);}
+				</div>
+				<span class="help-block">默认样式图片640px * 640px,样式一图片:600px * 600px; 样式二 只要上传一个logo图片670*394px</span>
+			  </div>
+			  
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">姓名</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="card_name" name="card_name" placeholder="请输入详姓名" value="{php echo $info['card_name'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">个人电话</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="card_tel" name="card_tel" placeholder="请输入个人电话" value="{php echo $info['card_tel'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">微信号</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="weixinid" name="weixinid" placeholder="请输入微信号" value="{php echo $info['weixinid'];}">
+				</div>
+			  </div>
+			  
+			    <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">点赞数</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="thumbs_num" name="thumbs_num" placeholder="请输入点赞数" value="{php echo $info['thumbs_num'];}">
+				</div>
+			  </div>
+			  
+			    <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">虚拟浏览量</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="view_people" name="view_people" placeholder="请输入点赞数" value="{php echo $info['view_people'];}">
+				</div>
+			  </div>
+			  
+			  
+			  
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">企业号帐号</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入企业号帐号" value="{php echo $info['userid'];}">
+				</div>
+				<span class="help-block">需要填写是唯一的,存在相同号的直接企业后台得到</span>
+			  </div>
+			  
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">邮箱</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱" value="{php echo $info['email'];}">
+				</div>
+			  </div>
+			  
+			   <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">性别</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="sex" value="0" {if intval($info['sex']) == 0}checked="checked"{elseif intval($info['sex']) == ''}checked="checked"{else} {/if}> 女
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="sex" value="1" {if intval($info['sex']) == 1}checked="checked"{/if}> 男
+					</label>
+				</div>
+			</div>
+			
+				{if $_W['role']=='founder'}
+				 <div class="form-group">
+					<label for="title" class="col-sm-2 control-label">公司名称</label>
+					<div class="col-sm-8">
+					  <input type="text" class="form-control" id="company_name" name="company_name" placeholder="请输入公司名称" value="{php echo $info['company_name'];}">
+					</div>
+				  </div>
+				{/if}
+			
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司电话</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入公司电话" value="{php echo $info['phone'];}">
+				</div>
+			  </div>
+			   <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司职位</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="role_name" name="role_name" placeholder="请输入公司职位" value="{php echo $info['role_name'];}">
+				</div>
+			  </div>
+			  
+			  
+			
+			
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">公司详细地址</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="detailed_address" name="detailed_address" placeholder="请输入详细地址" value="{php echo $info['detailed_address'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">分享标题</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="share_title" name="share_title" placeholder="请输入分享标题" value="{php echo $info['share_title'];}">
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">分享图片</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('share_img', $info['share_img']);}
+				</div>
+				<span class="help-block">图片长宽比是 5:4 的比例</span>
+			  </div>
+			  
+			  
+			  <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">个人简介</label>
+				<div class="col-sm-8">
+					<textarea class="form-control" rows="3" id="card_instr" name="card_instr"  placeholder="公司名称销售热线：*** 地址：***">{php echo $info['card_instr'];}</textarea>
+				</div>
+			  </div>
+		
+			  
+			  <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">语音简介</label>
+				<div class="col-xs-12 col-sm-8">
+					{php echo tpl_form_field_audio('music_voice',$info['music_voice']);}
+				</div>
+			</div>
+			  
+			   <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">个人照片</label>
+				<div class="col-sm-10">
+					{php echo tpl_form_field_multi_image('photo',$info['photo']);}
+				</div>
+			 </div>
+			 
+				
+				<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">默认显示</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="mrtype" value="0" {if intval($info['mrtype']) == 0}checked="checked"{elseif intval($info['mrtype']) == ''}checked="checked"{else} {/if}> 否
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="mrtype" value="1" {if intval($info['mrtype']) == 1}checked="checked"{/if}> 是
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">名片样式</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="template_type" value="0" {if intval($info['template_type']) == 0}checked="checked"{elseif intval($info['template_type']) == 1}checked="checked"{else} {/if}> 默认样式
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="template_type" value="2" {if intval($info['template_type']) == 2}checked="checked"{/if}> 样式一
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="template_type" value="3" {if intval($info['template_type']) == 3}checked="checked"{/if}> 样式二
+					</label>
+					<span class="help-block">样式一建议需要设置一个背景图片,样式二 只要上传一个logo图片就好670*394px,样式三的海报会有变化</span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">样式二背景图片</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('template_img', $info['template_img']);}
+				</div>
+				<span class="help-block">670px*394px</span>
+			 </div>
+			
+			
+			 
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-13">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+				  <input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			  </div>
+		</form>
+	</div>
+</div>
+{template 'common/footer'}

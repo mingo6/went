@@ -1,0 +1,163 @@
+{itemplate 'public/header'}
+<style type="text/css">
+@media (min-width: 1024px) {
+	.store-discount-notice{
+		top:5.45rem !important;
+	}
+	.store .store-notice{
+		top: 4.1rem !important;
+	}
+}
+	.shop-cart-bar, .order-bar{
+		background: #fff;
+		color: #000;
+	}
+	.shop-cart-bar .bg-grey, .order-bar .bg-grey{
+		background: #eee;
+	}
+	.shop-cart-bar .empty .cart{
+		background: #aaa;
+	}
+	.shop-cart-bar .cart{
+		border: .25rem solid #ddd;
+	}
+	.page header.bar {
+	    background-color: rgba(255,255,255,0);
+	}
+	.page header.bar a,.page header.bar .title{
+		color: #393d45;
+	}
+	.store-top{
+		width: 100%;
+		height: 170px;
+		position: absolute;
+		z-index: 9;
+		background: url(../addons/we7_wmall/static/img/store_top.png) no-repeat;
+		background-size: auto auto;
+		background-size: cover;
+	}
+	.store_logo{
+		position: absolute;
+		width: 3rem;
+		height: 3rem;
+		margin:2rem 1.3rem;
+		border-radius: 2rem;
+	}
+	.store .store-notice{
+		top: 4.5rem;
+		z-index: 10201;
+		background: none;
+		left: 4.7rem;
+		color: #000;
+	}
+	.store .buttons-tab{
+		top: 8.6rem;
+		z-index: 10200;
+	}
+	.store-discount-notice{
+		bottom:0;
+		top:7.3rem;
+		z-index: 10200;
+	}
+	.store .parent-category-wrapper,.store .content{
+		top:10.6rem;
+	}
+	.title{
+		top:1.8rem;
+		left: 5.6rem;
+		text-align: left;
+	}
+	.star-rank{
+		margin: 3.5rem 5rem;
+	}
+	.star-rank-outline{
+		width: 110px;
+		height: 20px;
+	}
+	.shoucang{
+		color: #7da6e8 !important;
+	}
+	.sale-badge{
+        display: inline-block;
+	    width: 1.4rem;
+	    text-align: center;
+	    color: #fff;
+	    font-size: .5rem;
+	    position: absolute;
+	    left: 3rem;
+	    top: 1rem;
+	    background: linear-gradient(to bottom,#FF9F00,#ff2d4b) !important;
+	    border-radius: 3px;
+	}
+</style>
+<script type='text/javascript' src='{WE7_WMALL_URL}static/js/components/light7/iscroll-probe.js' charset='utf-8'></script>
+<!--<div class="page store shopcategory" id="page-app-goods">-->
+    <!--<nav class="bar bar-tab no-gutter shop-cart-bar">-->
+        <!--<div class="" id="cartEmpty">-->
+            <!--<div class="left empty">-->
+				<!--<span class="cart">-->
+					<!--<span class="icon icon-cart"></span>-->
+				<!--</span>-->
+                <!--购物车是空的-->
+            <!--</div>-->
+            <!--<div class="right text-center bg-grey">{$store['send_price']}元起送</div>-->
+        <!--</div>-->
+        <!--<div class="hide" id="cartNotEmpty">-->
+            <!--<div class="left">-->
+				<!--<span class="cart">-->
+					<!--<span class="icon icon-cart"></span>-->
+					<!--<span class="badge bg-danger" id="cartNum">0</span>-->
+				<!--</span>-->
+                <!--共<span class="sum">￥<span id="totalPrice">0</span>元</span>-->
+            <!--</div>-->
+            <!--<div class="right text-center bg-grey" id="categoryCondition">还差￥0元起送</div>-->
+            <!--<div class="right text-center bg-grey">还差￥<span id="sendCondition">{$store['send_price']}</span>元起送</div>-->
+            <!--{if !$store['is_in_business_hours']}-->
+            <!--<div class="right text-center bg-grey hide" id="btnSubmit">休息中</div>-->
+            <!--{else}-->
+            <!--<div class="right text-center bg-danger hide" id="btnSubmit">选好了</div>-->
+            <!--{/if}-->
+        <!--</div>-->
+    <!--</nav>-->
+<!--</div>-->
+{itemplate 'store/goodsCommon'}
+{itemplate 'public/footer'}
+<div class="popup popup-goods-detail remove-on-close modal-in" style="display: block;">
+    <div class="content-block">
+        <header class="bar bar-nav common-bar-nav" style="background-color: #7da6e8;">
+            <h1 class="title open-popup" data-popup=".popup-privilege" style="text-align: center;left: 0.6rem;top: 0;color: #fff;">
+                奶茶店
+            </h1>
+        </header>
+        <div class="goods-img">
+            <img src="http://ptest.qinhantangtop.com/attachment/images/1/2018/08/Ap3u9PBps3LW1SJwh3J3u1Plw7w2PZ.png" width="alt=&quot;&quot;" style="margin-top:3rem;">
+            <a href="#" class="close-popup" data-popup=".popup-goods-detail">
+                <span class="icon icon-close"></span>
+            </a>
+        </div>
+        <div class="goods-name">
+            奶茶
+        </div>
+        <div class="sell-info">
+            已售9&nbsp;&nbsp;好评1
+        </div>
+        <div class="row no-gutter goods-num">
+            <div class="col-50 price">
+                ￥<span class="fee">10</span>
+            </div>
+            <div class="col-50 text-right operate-num ">
+                <span class="minus">
+                    <span class="icon icon-minus goods-detail-minus" data-goods-id="2" data-option-id="0"></span>
+                    <span class="num">1</span>
+                </span>
+                <span class="icon icon-plus goods-detail-plus" data-goods-id="2" data-option-id="0">
+
+                </span>
+            </div>
+        </div>
+        <div class="goods-desc">商品介绍</div>
+        <div class="goods-desc-con">
+            通风果茶111
+        </div>
+    </div>
+</div>

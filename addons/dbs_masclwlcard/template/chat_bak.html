@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>对话</title>
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/mobile/style/weui.css"/>
+</head>
+
+<div class="page">
+
+    <div class="page__bd">
+
+        <div class="weui-cells__title">发送对话</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="msg"  name="msg" placeholder="请输入文本" rows="3"></textarea>
+                    <div class="weui-textarea-counter"><span>0</span>/50</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:" onclick="send()" id="showTooltips">立即发送</a>
+        </div>
+    </div>
+
+</div>
+<script src="https://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
+
+<script type="text/javascript">
+var  doingsend = false;
+function send(){
+	if(doingsend){
+		return false;
+	}
+
+	var msg= $('#msg').val();
+
+	doingsend = true;
+	$.post("{php echo $this->createMobileUrl('Dosend',array('openId'=>$openId,'card_id'=>$card_id))}", {msg:msg}, function(json){
+		if(json.error==0){
+			$('#msg').html("");
+			alert(json.mess);
+			doingsend = false;
+			return false;
+		}else{
+			alert(json.mess);
+			doingsend = false;
+			return false;
+		}
+	},"json");
+}    
+</script>

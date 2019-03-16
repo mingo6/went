@@ -1,0 +1,146 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+	<li {if $_GPC['do'] =='' ||$_GPC['do'] == 'index_navi' && $_GPC['op'] <> 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('index_navi', array('rid' => $rid))}">导航管理</a></li>
+	<li {if $_GPC['op'] == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('index_navi', array('rid' => $rid, 'op' => 'post' ))}">添加导航</a></li>
+</ul>
+{if $operation == 'post'}   
+<div class="main">
+	<form action="" method="post" class="form-horizontal form"	enctype="multipart/form-data">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				导航设置(首页最多展示5个)
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">排序</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="displayorder" class="form-control" value="{$banner['displayorder']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>导航</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="navi_name" class="form-control" value="{$banner['navi_name']}" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red;">*</span>导航图标</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('thumb', $banner['thumb'])}
+						<span>图片大小：640*603</span>
+					</div>
+
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否显示</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class='radio-inline'>
+							<input type='radio' name='enabled' value='1' {if $banner['enabled']==1}checked{/if} /> 是
+						</label>
+						<label class='radio-inline'>
+							<input type='radio' name='enabled' value='0' {if $banner['enabled']==0}checked{/if} /> 否
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">链接方式</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class='radio-inline'>
+							<input type='radio' name='url_type' class="url_type" value='1' {if $banner['url_type']!=2}checked{/if} /> 内部
+						</label>
+						<label class='radio-inline'>
+							<input type='radio' name='url_type' class="url_type" value='2' {if $banner['url_type']==2}checked{/if} /> 外部
+						</label>
+					</div>
+				</div>
+				<div class="form-group" id="in_url" {if $banner['url_type']==2} style="display: none;" {/if}>
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red;">*</span>内部地址</label>
+					<div class="col-sm-9 col-xs-12">
+						<select name="in_url" id="" class="form-control">
+							<option value="{php echo $this->createMobileUrl('navi_list',array('type'=>hot_buy))}|hot_buy" {if $banner['url_type']==1&&$banner['in_type']=='hot_buy'} selected {/if}>热销榜</option>
+							<option value="{php echo $this->createmobileurl('payred_index')}|art" {if $banner['url_type']==1&&$banner['in_type']=='art'} selected {/if}>课程</option>
+							<option value="{php echo $this->createmobileurl('serialize')}|ser" {if $banner['url_type']==1&&$banner['in_type']=='ser'} selected {/if}>专栏</option>
+							<option value="{php echo $this->createmobileurl('navi_list',array('type'=>free))}|free" {if $banner['url_type']==1&&$banner['in_type']=='free'} selected {/if}>免费专区</option>
+							<option value="{php echo $this->createmobileurl('navi_list',array('type'=>money))}|money" {if $banner['url_type']==1&&$banner['in_type']=='money'} selected {/if}>付费专区</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group" id="out_url" {if $banner['url_type']!=2} style="display: none;" {/if}>
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>外部链接</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="out_url" class="form-control" value="{if $banner['url_type']==2}{$banner['redi_url']}{/if}" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+<script>
+	$('.url_type').click(function(){
+		if($(this).val()==1){
+			$('#out_url').hide();
+			$('#in_url').show();
+		}
+		if($(this).val()==2){
+			$('#in_url').hide();
+			$('#out_url').show();
+		}
+	})
+</script>
+{elseif $operation == 'display'}
+<div class="main">
+	
+		<div class="panel panel-default">
+			
+			<form method="post" class="form-horizontal" id="formfans">
+			<input type="hidden" name="op" value="del" />
+			<div style="position:relative">
+				<div class="panel-body table-responsive">
+					<table class="table table-hover" style="position:relative">
+					<thead class="navbar-inner">
+						<tr>
+							<th style="width:70px;">显示顺序</th>
+									<th>导航id</th>	
+									<th>导航</th>
+									 <th>图标</th>				
+									<th>时间</th>					
+									<th>链接</th>
+									<th>状态</th>
+									<th >操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{loop $list $banner}
+							<tr>
+								<td>{$banner['displayorder']}</td>
+								<td>{$banner['id']}</td>
+								<td>{$banner['navi_name']}</td>
+								<td><img src="{$banner['thumb']}" width="50"></td>
+								<td>{php echo date("Y-m-d H:i:s",$banner['create_time'])}</td>
+								<td>{if $banner['url_type']==1}内部{else}外部{/if}</td>
+								<td>{if $banner['enabled']}显示{else}隐藏{/if}</td>
+								<td style="text-align:left;">
+									<a href="{php echo $this->createWebUrl('index_navi', array('op' => 'post', 'id' => $banner['id'], 'rid' => $rid))}" data-toggle="tooltip" data-placement="top"  class="btn btn-default btn-sm manage"><i class="fa fa-edit"></i>修改</a>
+									<a onclick="return confirm('确认要删除吗？删除将不能恢复！');" href="{php echo $this->createWebUrl('index_navi', array('op' => 'delete', 'id' => $banner['id'],'rid' => $rid))}" data-toggle="tooltip" data-placement="top"  class="btn btn-default btn-sm manage"><i class="fa fa-del"></i>删除</a> 
+								</td>
+							</tr>
+						{/loop}
+						
+					</tbody>
+					</table>
+				</div>
+			</div>
+			</form>
+			{$pager}
+		</div>
+    </div>
+{/if}
+{template 'common/footer'}

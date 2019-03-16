@@ -1,0 +1,79 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+<script type="text/javascript" src="../../../addons/{php echo MODULE}/template/web/js/areatocounty.js"></script>
+<div class="title_tab">
+	<ul class="tab_navs title_tab">
+		<li class="tab_nav js_top " showme="answer_group"><a href="javascript:;">参与用户</a></li>
+	</ul>
+</div>
+{if $_GPC['op'] == 'list'||$_GPC['op'] == 'query'}
+{if !empty( $user_info )}
+<table class="table" cellspacing="0">
+	<thead class="thead">
+	<tr>
+		<th class="table_cell title td_col_1">
+			<label class="frm_checkbox_label" for="selectAll">
+				<i class="icon_checkbox"></i>
+				<span class="lbl_content">id</span>
+				<input type="checkbox" class="frm_checkbox" id="selectAll" />
+			</label>
+		</th>
+		<th class="table_cell tl td_col_2">用户头像</th>
+		<th class="table_cell tl td_col_2">用户名称</th>
+		<th class="table_cell tl td_col_2">点赞次数</th>
+		<th class="table_cell tl td_col_2">活动码</th>
+		<th class="table_cell tl td_col_2">是否使用</th>
+		<th class="table_cell tr td_col_1">操作</th>
+	</tr>
+	</thead>
+	<tbody class="tbody" id="js_goods">
+	<form method="post">
+		{loop $user_info $item}
+		<tr>
+			<td class="table_cell title td_col_1">
+				<div class="goods_info">
+					<label class="frm_checkbox_label" >
+						<i class="icon_checkbox"></i>
+						<input type="checkbox" name="checkall[]" class="frm_checkbox" value="{$item['id']}" />
+						{$item['id']}
+					</label>
+				</div>
+			</td>
+			<td class="table_cell price tl td_col_1">
+				<img src="{$item['avatar']}" alt="" style="width: 100px;height: 100px;">
+			</td>
+			<td class="table_cell price tl td_col_1">
+				{$item['nickname']}
+			</td>
+			<td class="table_cell price tl td_col_1">
+				{$item['fabulous_num']}
+			</td>
+			<td class="table_cell price tl td_col_1">
+				{php echo empty($item['activity_code'])?'用户暂未完成':$item['activity_code']}
+			</td>
+			<td class="table_cell price tl td_col_1">
+				{php echo $item['is_code']==1?'已使用':'未使用'}
+			</td>
+			<td class="table_cell oper last_child tr opclass td_col_1" style="position: relative;">
+				{if !empty($item['activity_code'])&&$item['is_code']==0}
+				<a href="{php echo $this->createWebUrl('user_list',array('op'=>'cancel','activity_code'=>$item['activity_code']))}" onclick="return confirm('您确定要核销吗？');">核销</a>
+				{/if}
+			</td>
+		</tr>
+		{/loop}
+	</tbody>
+</table>
+<div class="bottom_page item_cell_box">
+	<div class="tr dib item_cell_flex">
+		{$pager}
+	</div>
+</div>
+<input name="token" type="hidden" value="{$_W['token']}" />
+</form>
+{else}
+<div class="no_data">没有找到数据</div>
+{/if}
+
+{/if}
+
+
+{template '../../../addons/'.MODULE.'/template/web/common/myfooter'}

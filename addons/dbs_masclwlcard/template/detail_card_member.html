@@ -1,0 +1,187 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li>
+        <a href="{php echo $this->createWebUrl('member', array('status' => ''))}">授权号码客户</a>
+    </li>
+	
+	<li  class="active">
+        <a href="{php echo $this->createWebUrl('card_member', array('status' => ''))}">名片客户资料</a>
+    </li>
+   
+</ul>
+<style type="text/css">
+	.main .form-horizontal .form-group{margin-bottom:0;}
+	.main .form-horizontal .modal .form-group{margin-bottom:15px;}
+	#modal-confirmsend .control-label{margin-top:0;}
+</style>
+<div class="main">
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{$find['nickname']}详细信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">姓名 :{$find['name']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">手机 :{$find['phone']}</p>
+					</div>
+				</div>
+				
+				{loop $listaddres  $item} <!--循环客户地址信息-->
+			
+					<div class="form-group">
+						<div class="col-sm-9 col-xs-12">
+							<p class="form-control-static">姓名 :{$item['userName']}</p>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-9 col-xs-12">
+							<p class="form-control-static">手机 :{$item['telNumber']}</p>
+						</div>
+					</div>
+				
+					<div class="form-group">
+						
+						<div class="col-sm-9 col-xs-12">
+							<p class="form-control-static">地址:{$item['provinceName']}{$item['cityName']}{$item['countyName']}{$item['detailInfo']}</p>
+						</div>
+					</div>
+				
+				{/loop}
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{$find['nickname']}所属员工
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">姓名 :{$card['card_name']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">手机 :{$card['card_tel']}</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{$find['nickname']}佣金信息
+			</div>
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+
+						<th style="width:15%;">可以提现</th>
+						<th style="width:15%;">总金额</th>
+						<th style="width:20%;">已经提现</th>
+						<th style="width:15%;">提现中</th>
+						<th style="width:15%;">没有入账</th>
+					</tr>
+					</thead>
+					
+					<tr>
+
+						<td>{$find['canTake']}</td>
+						<td>{$find['totalBroker']}</td>
+						<td>{$find['hasTaken']}</td>
+						<td>{$find['inTaking']}</td>
+						<td>{$find['notInAccount']}</td>
+					</tr>
+				
+					
+				</table>
+			</div>
+		</div>
+		
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				上级信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">昵称 :{$source['nickname']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">姓名:{$source['name']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">手机 :{$source['phone']}</p>
+					</div>
+				</div>
+				
+
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				上级是否得到金额或者红包
+			</div>
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						
+						<th style="width:15%;">单号</th>
+						<th style="width:15%;">红包金额</th>
+						<th style="width:20%;">是否成功</th>
+			
+
+					</tr>
+					</thead>
+					
+					<tr>
+
+						<td>{$redpack['mch_billno']}</td>
+						<td>{$redpack['fee']}</td>
+						<td><?php if($redpack['status']){ echo '发放成功';}else{ echo '发放失败';}?></td>
+
+					</tr>
+
+				</table>
+			</div>
+			
+			<div class="panel-body">
+				<div class="form-group">
+
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">错误日志:{$redpack['log']}</p>
+					</div>
+				</div>
+				
+
+			</div>
+			
+		</div>
+
+</div>
+{template 'common/footer'}

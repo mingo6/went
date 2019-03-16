@@ -1,0 +1,276 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('base');}">编辑资料</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('footer');}">修改底部导航</a></li>
+	<li><a href="{php echo $this->createWebUrl('upload_cert');}">微信证书上传</a></li>
+</ul>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			底部导航设置
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		
+			  
+			  <div class="panel panel-success">
+				<div class="panel-heading">名片底部导航设置</div>
+				<div class="tab-pane" id="tab_param">
+				
+				  <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">修改名片名称</label>
+					<div class="col-sm-8 col-xs-12">
+					  <input type="text" class="form-control" id="card_name" name="card_name" placeholder="请修改名片名称" value="{php echo $info['card_name']?$info['card_name']:'名片';}">
+					</div>
+				  </div>
+			  
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">未激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('card_img_no', $info['card_img_no']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('card_img', $info['card_img']);}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			 <div class="panel panel-success">
+				<div class="panel-heading">商城底部导航设置</div>
+				<div class="tab-pane" id="tab_param">
+				
+				  <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">修改商城名称</label>
+					<div class="col-sm-8 col-xs-12">
+					  <input type="text" class="form-control" id="shop_name" name="shop_name" placeholder="请修改商城名称" value="{php echo $info['shop_name']?$info['shop_name']:'商城';}">
+					</div>
+				  </div>
+			  
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">未激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('shop_img_no', $info['shop_img_no']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('shop_img', $info['shop_img']);}
+						</div>
+					</div>
+					
+					 <div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>						
+						<div class="col-xs-12 col-sm-8">
+						
+							<label class="radio radio-inline">
+								<input type="radio" name="shop_type" value="0" {if $info['shop_type'] == '0' || $info['shop_type'] == ''}checked="checked" {/if}> 关闭
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="shop_type" value="1" {if $info['shop_type'] == '1'}checked="checked"{/if}>小程序
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="shop_type" value="2" {if $info['shop_type'] == '2'}checked="checked"{/if}> web页面
+							</label>
+							
+						</div>
+					</div>
+					
+					 <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">web链接页面:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="shop_url" name="shop_url" placeholder="请输入web链接页面" value="{php echo $info['shop_url'];}">
+						</div>
+						<span class="help-block">需要配置业务域名</span>
+					  </div>
+					  
+					 <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="shop_path" name="shop_path" placeholder="请输入跳转小程序路径" value="{php echo $info['shop_path'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>
+					 
+					  <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="shop_appid" name="shop_appid" placeholder="请输入跳转的小程序appid" value="{php echo $info['shop_appid'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>			
+				</div>
+			</div>
+			
+			
+			<div class="panel panel-success">
+				<div class="panel-heading">动态底部导航设置</div>
+				<div class="tab-pane" id="tab_param">
+				
+				  <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">修改动态名称</label>
+					<div class="col-sm-8 col-xs-12">
+					  <input type="text" class="form-control" id="friend_name" name="friend_name" placeholder="请修改商城名称" value="{php echo $info['friend_name']?$info['friend_name']:'动态';}">
+					</div>
+				  </div>
+			  
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">未激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('friend_img_no', $info['friend_img_no']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('friend_img', $info['friend_img']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>						
+						<div class="col-xs-12 col-sm-8">
+						
+							<label class="radio radio-inline">
+								<input type="radio" name="friend_type" value="0" {if $info['friend_type'] == '0' || $info['friend_type'] == ''}checked="checked" {/if}> 关闭
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="friend_type" value="1" {if $info['friend_type'] == '1'}checked="checked"{/if}>小程序
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="friend_type" value="2" {if $info['friend_type'] == '2'}checked="checked"{/if}> web页面
+							</label>
+							
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">web链接页面:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="friend_url" name="friend_url" placeholder="请输入web链接页面" value="{php echo $info['friend_url'];}">
+						</div>
+						<span class="help-block">需要配置业务域名</span>
+					  </div>
+					  
+					 <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="friend_path" name="friend_path" placeholder="请输入跳转小程序路径" value="{php echo $info['friend_path'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>
+					 
+					  <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="friend_appid" name="friend_appid" placeholder="请输入跳转的小程序appid" value="{php echo $info['friend_appid'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>			
+					  
+				</div>
+			</div>
+			
+			
+			<div class="panel panel-success">
+				<div class="panel-heading">官网底部导航设置</div>
+				<div class="tab-pane" id="tab_param">
+				
+				  <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">修改官网名称</label>
+					<div class="col-sm-8 col-xs-12">
+					  <input type="text" class="form-control" id="web_name" name="web_name" placeholder="请修改官网名称" value="{php echo $info['web_name']?$info['web_name']:'官网';}">
+					</div>
+				  </div>
+			  
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">未激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('web_img_no', $info['web_img_no']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">激活图标</label>
+						<div class="col-sm-8 col-xs-12">
+							{php echo tpl_form_field_image('web_img', $info['web_img']);}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>						
+						<div class="col-xs-12 col-sm-8">
+						
+							<label class="radio radio-inline">
+								<input type="radio" name="web_type" value="0" {if $info['web_type'] == '0' || $info['web_type'] == ''}checked="checked" {/if}> 关闭
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="web_type" value="1" {if $info['web_type'] == '1'}checked="checked"{/if}>小程序
+							</label>
+							
+							<label class="radio radio-inline">
+								<input type="radio" name="web_type" value="2" {if $info['web_type'] == '2'}checked="checked"{/if}> web页面
+							</label>
+							
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">web链接页面:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="web_url" name="web_url" placeholder="请输入web链接页面" value="{php echo $info['web_url'];}">
+						</div>
+						<span class="help-block">需要配置业务域名</span>
+					  </div>
+					  
+					 <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="web_path" name="web_path" placeholder="请输入跳转小程序路径" value="{php echo $info['web_path'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>
+					 
+					  <div class="form-group">
+						<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
+						<div class="col-sm-8">
+						  <input type="text" class="form-control" id="web_appid" name="web_appid" placeholder="请输入跳转的小程序appid" value="{php echo $info['web_appid'];}">
+						</div>
+						<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+					  </div>
+					  
+				</div>
+			</div>
+			  
+			  
+			  
+		
+			  
+				  
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-13">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+				  <input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			  </div>
+		</form>
+	</div>
+</div>
+{template 'common/footer'}

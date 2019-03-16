@@ -1,0 +1,101 @@
+{template '_header'}
+<style>
+    .fui-list-media img{height:2.5rem;}
+    .fui-list:first-child:before{display: block;}
+    .yen{border:none;height:0.75rem;width:0.75rem;display: inline-block;background: #   ff4753;color:#fff;font-size:0.4rem;line-height: 0.8rem;text-align: center;
+        font-style: normal;border-radius: 0.75rem;-webkit-border-radius: 0.75rem;margin-right:0.15rem;}
+    .fui-cell-group .fui-cell .fui-cell-label{width:5rem;}
+</style>
+<div class='fui-page order-detail-page'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back external" href="{php echo mobileUrl('member/aftersale')}"></a>
+        </div>
+        <div class="title">订单详情</div>
+        <div class="fui-header-right" data-nomenu="">&nbsp;</div>
+    </div>
+    <div class='fui-content navbar'>
+    <div class='fui-cell-group price-cell-group'>
+        <div class="fui-cell">
+            <div class="fui-cell-label">商品名称</div>
+            <div class="fui-cell-info">{$aftersaleinfo['goods_name']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">商品型号</div>
+            <div class="fui-cell-info">{$aftersaleinfo['goods_model']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">联系人姓名</div>
+            <div class="fui-cell-info">{$aftersaleinfo['mobile']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">联系人电话</div>
+            <div class="fui-cell-info">{$aftersaleinfo['name']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">快递名称</div>
+            <div class="fui-cell-info">{$aftersaleinfo['express_name']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">快递单号</div>
+            <div class="fui-cell-info">{$aftersaleinfo['express_numbers']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">图片（保修卡、发票等）</div>
+            <div class="fui-cell-info">
+                {if !empty($aftersaleinfo['image'])}
+                    {loop $aftersaleinfo['image'] $image}
+                        <img style="width:100px;" src="{php echo tomedia($image)}" />
+                    {/loop}
+                {/if}
+            </div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">备注</div>
+            <div class="fui-cell-info">{$aftersaleinfo['remark']}</div>
+        </div>
+        <div class="fui-cell">
+            <div class="fui-cell-label">状态</div>
+            <div class="fui-cell-info">
+                {loop $applystatus $status}
+                    {if $status['id'] == $aftersaleinfo['status']}
+                        {php echo $status['name'];break;}
+                    {/if}
+                {/loop}
+            </div>
+        </div>
+    </div>
+
+    <div class="fui-cell-group info-cell-group"  style='table-layout:fixed;'>
+        <div class="fui-cell">
+            <div class="fui-cell-label">创建时间:</div>
+            <div class="fui-cell-info">{php echo date('Y-m-d H:i:s', $aftersaleinfo['create_time'])}</div>
+        </div>
+    </div>
+
+    {template '_copyright'}
+</div>
+
+{if $aftersaleinfo['canverify']}
+{template 'order/verify'}
+{/if}
+
+<div class='fui-footer'>
+    {if $aftersaleinfo['status']==$aftersale::STATUS_WAIT}
+        <div class="btn btn-default btn-default-o aftersale-cancel" data-orderid="{$aftersaleinfo['id']}">取消申请</div>
+    {/if}
+    {if $aftersaleinfo['status']==$aftersale::STATUS_WAIT || $aftersaleinfo['status']==$aftersale::STATUS_COMPLETED || $aftersaleinfo['status']==$aftersale::STATUS_CANCEL || $aftersaleinfo['status']==$aftersale::STATUS_REFUSE}
+    <div class="btn btn-default btn-default-o aftersale-deleted" data-orderid="{$aftersaleinfo['id']}">删除订单</div>
+    {/if}
+
+    <!-- <div class="btn btn-default btn-default-o order-finish" data-orderid="{$aftersaleinfo['id']}">确认收货</div> -->
+</div>
+<script language='javascript'>
+    require(['biz/member/aftersaledetail'], function (modal) {
+        FoxUI.according.init();
+        modal.init({orderid: "{$aftersaleinfo['id']}",fromDetail:true});
+    });
+
+</script>
+</div>
+{template '_footer'}

@@ -1,0 +1,111 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('website');}">基础设置</a></li>
+	<li><a href="{php echo $this->createWebUrl('adv');}">轮播图片</a></li>
+	<li><a href="{php echo $this->createWebUrl('adv_list');}">轮播列表</a></li>
+	
+	<li class="active"><a href="{php echo $this->createWebUrl('nav');}">导航图标</a></li>
+	<li><a href="{php echo $this->createWebUrl('nav_list');}">导航列表</a></li>
+	
+	<li><a href="{php echo $this->createWebUrl('news');}">添加最新活动</a></li>
+	<li><a href="{php echo $this->createWebUrl('news_list');}">最新活动列表</a></li>
+</ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			导航图标管理
+		</h3>
+	</div>
+	<div class="panel-body">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		
+			<?php if($info['id']){ ?>
+				 <input type="hidden" id="id" name="id"  value="{php echo $info['id'];}">
+			<?php}?>
+		
+			 <div class="form-group">
+				<label for="title" class="col-sm-2 control-label">标题</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="title" name="title" placeholder="请输入活动标题" value="{php echo $info['title'];}">
+				</div>
+			  </div>
+			
+			<div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">缩略图片</label>
+				<div class="col-sm-8">
+				 	{php echo tpl_form_field_image('images', $info['images']);}
+				</div>
+				<span class="help-block">150*150px</span>
+			</div>
+
+			  
+			  <div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">链接类型</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="linkType" value="new" {if $info['linkType'] == 'new'}checked="checked"{elseif $info['linkType'] == ''}checked="checked"{else} {/if}> 文章
+					</label>
+					
+					<label class="radio radio-inline">
+						<input type="radio" name="linkType" value="miniProgram" {if $info['linkType'] == 'miniProgram'}checked="checked"{/if}> 小程序
+					</label>
+					
+					<label class="radio radio-inline">
+						<input type="radio" name="linkType" value="openaddress" {if $info['linkType'] == 'openaddress'}checked="checked"{/if}> 导航
+					</label>
+					
+					<label class="radio radio-inline">
+						<input type="radio" name="linkType" value="new_web" {if $info['linkType'] == 'new_web'}checked="checked"{/if}> web页面
+					</label>
+				</div>
+			</div>
+			
+			 
+			  
+			  <div class="form-group">
+				 <label for="newid" class="col-sm-2 control-label">选择文章:</label>
+					<select class="xizn" id="newid" name="newid">
+						<option value="0">请选择</option>
+						{loop $newset $item} 
+							<option value="{$item['id']}" {if intval($item['id']) == $info['newid'] } selected="selected" {/if} >{$item['title']}</option>
+						{/loop}	
+					</select>
+			</div>
+			
+			  
+			  <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">跳转网址:</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="path_web" name="path_web" placeholder="请输入跳转网址" value="{php echo $info['path_web'];}">
+				</div>
+				<span class="help-block">需要配置业务域名</span>
+			  </div>
+			  
+			   <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">跳转小程序路径:</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="path" name="path" placeholder="请输入跳转小程序路径" value="{php echo $info['path'];}">
+				</div>
+				<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+			  </div>
+			 
+			  <div class="form-group">
+				<label for="lastname" class="col-sm-2 control-label">跳转的小程序appid:</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control" id="appid" name="appid" placeholder="请输入跳转的小程序appid" value="{php echo $info['appid'];}">
+				</div>
+				<span class="help-block">打开同一公众号下关联的另一个小程序</span>
+			  </div>
+			  
+			
+			 
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-13">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+				  <input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			  </div>
+		</form>
+	</div>
+</div>
+{template 'common/footer'}

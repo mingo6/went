@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <!--pages/dusk/dusk.wxml-->
+    <div class='scene dusk'>
+        <img class='scene-bg' src='../addons/{MODULE}/public/images/huanghun.png?ver=3'>
+        <div class='content-wrapper'>
+            <div class='field-wrapper'>
+                <div class='item'>
+                    <div class='title'>一、乘客服务类</div>
+                    <div class='options' v-for="item in arr_1">
+                        <div class="radio" :class="[item.check?'active':'']" @click="select(item)"></div>
+                        <div class='value' v-html="item.content"></div>
+                    </div>
+                </div>
+                <div class='item'>
+                    <div class='title'>二、乘客安全类</div>
+                    <div class='options' v-for="item in arr_2">
+                        <div class="radio" :class="[item.check?'active':'']" @click="choose(item)"></div>
+                        <div class='value' v-html="item.content">公共安全（防控、安检）</div>
+                    </div>choose
+                </div>
+                <div class='item'>
+                    <div class='title'>三、其他</div>
+                    <textarea v-model="value_3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class='submit-btn' onclick="submit()"></div>
+    </div>
+    {template './common/_footer'}
+    <script type="text/javascript" src="../addons/{MODULE}/public/js/vue.min.js"></script>
+    <script type="text/javascript">
+        $('.scene.dusk').css({
+            width: $(window).width(),
+            height: $(window).height()
+        })
+
+        var vm = new Vue({
+            el: '.dusk',
+            data: {
+                arr_1: [{check: true, content: '1）乘客环境及体验', value: '乘客环境及体验'}, {check: false, content: '2）列车运营服务', value: '列车运营服务'}, {check: false, content: '3）网络化支付服务及设备', value: '网络化支付服务及设备'}, {check: false, content: '4）人员服务', value: '人员服务'}],
+                arr_2: [{check: true, content: '公共安全（防控、安检）', value: '公共安全（防控、安检）'}, {check: false, content: '乘客出行安全<车站设备使用安全（闸机、垂直电梯）、站台候车安全>', value: '乘客出行安全<车站设备使用安全（闸机、垂直电梯）、站台候车安全>'}],
+                value_1: '',
+                valeu_2: '',
+                value_3: ''
+            },
+            mounted () {
+                this.value_1 = this.arr_1[0].value
+                this.value_2 = this.arr_2[0].value
+            },
+            methods: {
+                select: function (item) {
+                    for (var i = 0; i < this.arr_1.length; i++) {
+                        this.arr_1[i].check = false
+                    }
+                    item.check = true
+                    this.value_1 = item.value
+                },
+                choose: function (item) {
+                    for (var i = 0; i < this.arr_2.length; i++) {
+                        this.arr_2[i].check = false
+                    }
+                    item.check = true
+                    this.value_2 = item.value
+                }
+            }
+        })
+
+        function submit () {
+            $.ajax({
+                url:"{php echo $this->createMobileUrl('dusk')}",
+                type:'POST',
+                data:{
+                    'type':'post',
+                    'quest_one': vm.value_1,
+                    'quest_two': vm.value_2,
+                    'content':vm.value_3,
+                },
+                dataType:'json',
+                success:function(res){
+                    if(res.code == 200) {
+                        alert('提交成功!');
+                        location.href = "{php echo $this->createMobileUrl('index')}"
+                    } else if(res.code == 10000) {
+                        alert(res.msg)
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

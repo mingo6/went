@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<title>动态</title>
+<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+
+<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/app.css">
+<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/blog.css">
+
+
+<link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/mescroll.min.css">
+<style>
+#mescroll li{line-height:1.5;margin-top:15px;padding-bottom:15px}
+#mescroll li,.po-hd{position:relative}
+#mescroll li,.cmt-wrap,.r,.time{clear:both}
+.po-cmt{margin-bottom:28px;}
+.po-avt{left:13px}
+.po-cmt{padding-left:70px}
+.com-del{padding-left:5px}
+.tag-company {border:solid 1px #ccc; border-radius:3px; padding: 0 3px 0 3px}
+.tag-top {border:solid 1px #ff8427; border-radius:3px; padding: 0 3px 0 3px;color:#ff8427}
+</style>
+</head>
+<body>
+  <div class="content1">
+    <div id="mescroll" class="mescroll" style="width: 100%;margin-left: auto;margin-right: auto;">
+      <!--动态列表-->
+      <ul class="content" style="margin-top: 25px;">
+      </ul>
+        <div style="height:10px;"></div>
+    </div>
+  </div>
+  <div class="float-btn">
+    <img src="../addons/dbs_masclwlcard/template/wxapp/images/10_1.png">
+  </div>
+  <div class="sendMsg">
+    <div class="sendMsg_content">
+      <input type="text" id="bloginput" value="">
+      <span onclick="click_pl()">评论</span>
+    </div>
+  </div>
+	
+	<div class="weui-tabbar tabbar">
+	<a href="{php echo $this->createMobileUrl('staffer_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" >雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a href="{php echo $this->createMobileUrl('client_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">客户</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('friend_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/16.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">动态</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">我</p>
+	</a>
+</div>
+
+</body>
+
+
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script src="../addons/dbs_masclwlcard/template/wxapp/js/mescroll.min.js"></script>
+<script type="text/javascript">
+
+//分页控件
+function getPager(callback, mescroll_id) {
+    if (mescroll_id == null)
+        mescroll_id = "mescroll";
+    var mescroll = new MeScroll(mescroll_id, {
+        down: {
+            auto: false, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            use: false
+        },
+        up: {
+            page: {
+                num: 0, //当前页码,默认0,回调之前加1,即callback(page)从1开始;
+                size: 1, //每页数据的数量; 
+                time: null //加载第一页数据服务器返回的时间 (可空); 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+            },
+            offset: 50, //列表滚动到距离底部小于100px,即可触发上拉加载的回调
+            auto: true, //初始化完毕,是否自动触发上拉加载的回调
+            isBoth: false, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+            callback: callback, //上拉加载的回调
+            autoShowLoading: true
+        }
+    });
+    return mescroll;
+}
+   
+    var mescroll = getPager(loadBlog);
+  var pl_fid = null;
+  $(function() {
+      //发动态
+      $(".float-btn").on("click", function () {
+		//跳转发布动态的页面
+			var url = "{php echo $this->createMobileUrl('friend_editor')}";
+			to_url(url);
+      })
+
+  })
+  
+
+	//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+
+	function getNoDataMsg(page) {
+		if (page != null && page > 1)
+			return "<div class='no-data' style='margin:center;text-align:center' >已经到底了</div>";
+
+	}
+	function isNoData(list) {
+		if (list == null || list.length == 0)
+			return true;
+		return false;
+	}
+  //加载微博动态
+  function loadBlog(pageObj) {
+      if (pageObj == null)
+          pageObj = { num: 1 };
+      var html = "";
+       $.post("{php echo $this->createMobileUrl('get_friendlist')}", {page:pageObj.num}, function(data){
+				if (data.error>0) {
+					alert(data.msg);
+                    mescroll.endErr();
+                    return;
+                }
+              if (isNoData(data.Data)) {
+                  $('.content').append(getNoDataMsg(pageObj.num));
+                  mescroll.endSuccess(0);  //设置条数
+                  return;
+              }
+			  
+
+          mescroll.endSuccess(data.Data.length);  //设置条数
+		  
+          for (var i = 0; i < data.Data.length; i++) {
+              html += getItemHtml(data.Data[i]);
+          }
+          $(".content").append(html);
+         loadBtn();
+        },"json");
+  }   
+
+  //预览图片
+function viewImg() {
+    $('.list-img').on('click', function () {
+      
+		var src = $(this).attr('data-src');
+      
+		 var gallery = weui.gallery(src)
+        
+    });
+}
+//获取图片列表
+function get_img(list) {
+
+    var html = "";
+    if (list.length == 1) {
+
+        if (list == null || list[0].trim == '') return "";
+        html += "<img class='list-img list-img-1' data-all='" + list[0] + "' data-src='" + list[0] + "' data-index ='0' src='" + list[0] + "' style='height: auto;' onclick='viewImg()'>";
+    } else {
+        for (var i = 0; i < list.length; i++) {
+            var src = list[i]
+            if (src == null || src.trim == '') continue;
+			
+            var clearfloat = list.length == 4 && i == 2 ? " clearfloat" : "";
+            html += "<div class='list-img list-img-3" + clearfloat + "' data-all='" + list + "'  data-src='" + src + " 'data-index ='" + i + "'  ><img src='" + src + "' style='width:100%;height: 80px;' onclick='viewImg()'></div>"
+        }
+    }
+    return html;
+}
+
+
+
+//删除评论
+var del_pl=false;
+function deletepl(fid) {
+
+	if(del_pl){
+		return;
+	}
+	del_pl =true;
+	//评论列表div
+      var cmt_list = $(".comment_" + fid).parent();
+		
+	var r=confirm("确定要删除该评论吗")
+	  if (r==true){
+		 $.post("{php echo $this->createMobileUrl('deletepl')}", {fid:fid}, function(data){
+					if (data.Code>0) {
+						alert(data.msg);
+						
+					}else{
+						 $(".comment_" + fid).remove();
+					}
+					del_pl=false;
+					return;
+					
+			},"json");
+		}else{
+			del_pl =false;
+		}	
+}
+
+//删除动态
+var del_dt=false;
+function deletedt(fid) {
+
+	if(del_dt){
+		return;
+	}
+	del_dt =true;
+	var r=confirm("确定要删除该评论吗")
+	  if (r==true){
+		$.post("{php echo $this->createMobileUrl('deletedt')}", {fid:fid}, function(data){
+				if (data.Code>0) {
+					alert(data.msg);
+				}else{
+					$(".blog_" + fid).remove();
+				}
+				del_dt=false;
+				return ;
+				
+		},"json");
+	}else{
+		del_dt =false;
+	}	
+}
+//评论
+var pl_1 = false;
+function click_pl() {
+
+
+    var fid = pl_fid;
+    var content = $("#bloginput").val();
+    if (content == "") {
+        alert("评论的内容不能为空！");
+        return false;
+    }
+	//更新评论
+	if(pl_1){
+		return;
+	}
+	pl_1 =true;
+	
+	
+	$.post("{php echo $this->createMobileUrl('add_pl')}", {fid:fid,content:content}, function(data){
+			if (data.Code>0) {
+				alert(data.msg);
+			}else{
+			
+				var commentList = Pl_list(data.Data, data.is_my); //评论列表
+				$('.cmt-list' + fid + '').html(commentList);
+				$(".tabbar").show();
+				$(".sendMsg").hide();
+				$("#bloginput").val("");
+			
+			}
+			pl_1=false;
+			return ;
+			
+	},"json");
+	
+
+}
+
+//点赞
+var zan_1= false;
+function click_zan(fid) {
+	if(zan_1){
+		return;
+	}
+	zan_1 =true;
+    $('#actions_67').hide();
+    $('.f12').hide();
+
+	$.post("{php echo $this->createMobileUrl('add_zan')}", {fid:fid}, function(data){
+			if (data.Code>0) {
+				alert(data.msg);
+			}else{
+			
+				$(".up_" + fid).html(Z_list(data.Data));
+				
+				if (data.Data.length > 0)
+					$(".up_" + fid).parent().removeClass("hide");
+				else
+					$(".up_" + fid).parent().addClass("hide");
+
+				//有点赞或有评论时,显示div容器
+				if (data.Data.length > 0 || $(".cmt-list" + fid).html() != '')
+					$(".up_box_" + fid).removeClass("hide");
+				else
+					$(".up_box_" + fid).addClass("hide");
+			
+			}
+			zan_1=false;
+			return ;
+			
+	},"json");
+
+}
+
+
+//点赞列表
+function Z_list(z_list) {
+    if (z_list == null) return "";
+    var html = "";
+    for (var i = 0; i < z_list.length; i++) {
+        if (i > 0)
+            html += " ,"
+        html += z_list[i].nickname;
+    }
+    return html;
+}
+//评论列表
+function Pl_list(commentList, is_my) {
+    if (commentList == null) return "";
+    var html = ''
+    for (var i = 0; i < commentList.length; i++) {
+        var item = commentList[i]
+        var delete_html = '';
+		if(is_my){
+			delete_html = ' <span class="com-del" onclick="deletepl(' + item.id + ')">删除</span>';
+		}
+  
+        html += '<p class="comment_' + item.id + '"><span>' + item.nickname + '：</span>' + item.content + delete_html + '</p>'
+    }
+    return html;
+}
+
+  function getItemHtml(item) {
+      var z_list = Z_list(item.z_list);
+      var pl_list = Pl_list(item.pl_list, item.is_my); //评论列表
+
+      var html = "";
+      html += "<li class='blog_" + item.id + "'>";
+	  
+      
+	  
+	   if (item.card_id == 0){
+		 html += "<div class='po-avt-wrap'><img class='po-avt data-avt' src='" + item.base_set.company_logo + "'></div>"
+	  }else{
+		html += "<div class='po-avt-wrap'><img class='po-avt data-avt' src='" + item.card_info.card_logo + "'></div>"
+	  }
+	  
+      html += "<div class='po-cmt'>"
+
+      html += "<div class='po-hd'>"
+      html += "<p class='po-name' style='margin-top: -5px;'>"
+	  
+	   if (item.card_id == 0){
+		 html += "<span class='data-name f15'>" + item.base_set.company_name + "</span>"
+	  }else{
+		 html += "<span class='data-name f15'>" + item.card_info.card_name + "</span>"
+	  }
+     
+	  
+	  
+      if (item.card_id == 0)
+          html += "&nbsp;&nbsp;<span class='tag-company f14'>公司</span>";
+      html += "</p>"
+
+      html += "<div class='post'>"
+	  if (item.card_id == 0){
+		html += "<p style='padding: 8px 0 10px;word-break:break-all; width:95%;'>" + item.title.replace(new RegExp('\n', 'gm'), "<br>") + "</p>"
+	  }else{
+		html += "<p style='padding: 8px 0 10px;word-break:break-all; width:95%;'>" + item.content_card.replace(new RegExp('\n', 'gm'), "<br>") + "</p>"
+	  }
+      html += "<div id='picList'>"
+	  if (item.card_id == 0){
+		      html += "<img class='list-img list-img-1' data-all='" + item.head_img + "' data-src='" + item.head_img + "' data-index ='0' src='" + item.head_img + "' style='height: auto;' onclick='viewImg()'>";
+	  }else{
+		 html += get_img(item.all_img.split(",")); //图片列表
+	  }
+     
+	  
+      html += "</div>"
+      html += "</div>"
+
+      html += "<div style='width: 100%;height: 20px;clear: both;'></div>"
+      html += "<div class='padding-top:20px;'>"
+      html += "<p class='time'>" + item.time
+      if (item.is_my == 1)
+          html += "<span class='delect'  onclick=deletedt(" + item.id + ")>删除</span>"; //自己发布的才能删除
+      html += "</p>"
+
+      html += "<div style='position: relative;'>"
+      //点赞操作
+      html += "<div class='actions_box f12' id='actions_" + item.id + "' style='display: none; width: 0px;'>"
+      html += "<div class='actions-left'onclick='click_zan(" + item.id + ")'  style='border-right: 1px solid #2E2E32'><img src='../addons/dbs_masclwlcard/template/wxapp/images/like2.png' alt='' ><span>赞</span></div>"
+      html += "<div class='actions-left tailk' data-index='" + item.id + "' ><img src='../addons/dbs_masclwlcard/template/wxapp/images/taik.png' alt=''><span>评论</span></div>"
+      html += "</div>"
+
+      html += "<img class='c-icon' data-index='" + item.id + "' src='../addons/dbs_masclwlcard/template/wxapp/images/12.png' id='up' >"
+      html += "</div>"
+
+      html += "<div style='clear: both;'></div>"
+      html += "</div>"
+
+      if (z_list != '' || pl_list != '') {
+          html += "<div class='r up_box_" + item.id + "'></div>"
+          html += '<div class="cmt-wrap up_box_' + item.id + '">'
+      }
+      else {
+          html += "<div class='r up_box_" + item.id + " hide'></div>"
+          html += '<div class="cmt-wrap up_box_' + item.id + ' hide">'
+      }
+      
+      //点赞列表
+      if (z_list != '')
+          html += '<div class="like"><img src="../addons/dbs_masclwlcard/template/wxapp/images/like1.png"><span class="up_' + item.id + '">' + z_list + '</span></div>';
+      else
+          html += '<div class="like hide"><img src="../addons/dbs_masclwlcard/template/wxapp/images/like1.png"><span class="up_' + item.id + '"></span></div>';
+      //评论列表
+      if (pl_list != '')
+          html += '<div class="cmt-list cmt-list' + item.id + '" data-blogid="' + item.id + '">' + pl_list + '</div>'
+      else
+          html += '<div class="cmt-list hide cmt-list' + item.id + '"></div>'
+
+      html += "</div>"
+
+      html += "</li><div class='blog_" + item.id + "' style='clear: both;border-bottom: 1px solid #ddd;margin-bottom: 20px;width:100%;'></div>"
+      return html;
+  }
+
+  function loadBtn() {
+    
+    
+    $(".c-icon").unbind('click');
+    //点赞评论弹出框
+    $(".c-icon").click(function (e) {
+        var index = $(this).attr("data-index");
+        var width = $("#actions_" + index).css("width");
+        if (width == '0px') {
+            //隐藏弹出框
+            $(".actions_box").css("width", "0px");
+            $(".actions_box").css("display", "none");
+            //显示弹出框
+            $("#actions_" + index).css("display", "flex").animate({
+                width: "150px"
+            });
+        } else {
+            //隐藏弹出框
+            $(".actions_box").css("width", "0px");
+            $(".actions_box").css("display", "none");
+            $(".sendMsg").hide();   //隐藏评论框
+            $(".tabbar").show();    //显示底部导航
+        }
+    })
+
+
+    //评论
+    $(".tailk").on("click", function () {
+        $('.f12').hide();
+        pl_fid = $(this).attr('data-index');
+      $('#actions_67').hide();
+      $(".tabbar").hide();
+      $(".sendMsg").show();
+
+        ///隐藏弹出框
+      $(".actions_box").css("width", "0px");
+      $(".actions_box").css("display", "none");
+        //文本框焦点
+      $("#bloginput").focus();
+    })   
+  }
+</script>
+
+</html>

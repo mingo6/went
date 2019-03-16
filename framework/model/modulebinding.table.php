@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * [WeEngine System] Copyright (c) 2014 WE7.CC
+ * WeEngine is NOT a free software, it under the license terms, visited http://www.qinhantangtop.com/ for more details.
+ */
+class ModulebindingTable extends ModuleTable {
+
+	protected $tableName = 'modules_bindings';
+
+
+}

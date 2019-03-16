@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta charset="UTF-8">
+		<title>{$title}</title>		
+		<link rel="stylesheet" href="{RES}new_style/css/style.css" />
+		<link rel="stylesheet" href="{RES}new_style/css/swiper.min.css" />
+		<link rel="stylesheet" href="{RES}new_style/font/iconfont.css" />
+		<link rel="stylesheet" href="{RES}new_style/css/base.css" />
+		<script type="text/javascript" src="{RES}js/jquery-2.1.4.min.js" ></script>
+		{php echo register_jssdk(false);}
+    <script type="text/javascript" src="{RES}js/script.js" ></script>
+    <script type="text/javascript" src="{RES}js/swiper.min.js" ></script>
+    <script>
+    	var search_url="{php echo $this->createmobileurl('search')}";
+    	function search(){
+    		var keyword=$("#keyword").val();
+    		location.href=search_url+"&my_type=article&keyword="+keyword;
+    	}
+    	function tagClick(obj){
+		   	var pcate=$(obj).attr('data-pcate');
+		   	var ccate=$(obj).attr('data-ccate');
+		   	location.href=search_url+"&my_type=article&pcate="+pcate+"&ccate="+ccate;
+		   
+	   }
+    	$(function() {
+			
+			$('.top .topNav').click(function() {
+				$('.chooseBox,.choose').addClass('active');
+			})
+			$('.choose .btn a:first-child').click(function() {
+				$('.chooseBox,.choose').removeClass('active');
+			})
+
+		})
+    </script>
+	</head>
+	<body>
+	   <!--搜索 start-->
+		<!-- <div class="search">
+			<div class="searchMin flex bWhite hi36 m-auto overflow">
+				<label class="sub">
+					<input class="w100 h100 pl15 pr15" type="text" placeholder="请输入您搜索的内容" />
+				</label>
+				<i class="iconfont icon-icon117 hi36 tc grey"></i>
+			</div>			
+		</div> -->
+		<!--搜索 end-->
+		<!-- banner start -->
+		<style>
+		.top {
+			background: rgb(139, 150, 176);
+			padding: 10px;
+		}
+		
+		.searchMin button {
+			width: 36px;
+		}
+		
+		.searchMin button:active {
+			background: #fff;
+			color: #8B96B0;
+		}
+		
+		.top .topNav {
+			width: 36px;
+		}
+		.choose .btn{
+			width:80%;
+			position: fixed;
+			bottom: 0;
+			right: 0;
+		}
+		
+		.choose .btn a:first-child {
+			background: #8B96B0;
+			color:#fff;
+		}
+		.choose .btn a:last-child{
+			background: #f5f5f5;
+		}
+		.choose {
+			width: 80%;
+			height: 100vh;
+			overflow: hidden;
+			overflow-y: auto;
+			position: fixed;
+			top: 0;
+			right: -80%;
+			z-index: 999;
+			-webkit-animation: popup 0.4s ease forwards;
+			-webkit-opacity: 0;
+			display: none;
+			padding: ;
+			
+		}
+		
+		.choose.active {
+			display: block;
+			right: 0%;
+		}
+		
+		.chooseMin dl {
+			flex-wrap: wrap;
+			width: 100%;
+			display: block;
+		}
+		
+		.chooseMin li dd {
+			width: 32%;
+			margin: 0;
+			display: inline-block;
+		}
+		
+		.chooseMin li dd a {
+			padding: 5px;
+			display: inline-block;
+		}
+		.popup .popup-box{ -webkit-animation: popup 0.4s ease forwards; -webkit-transform: translateY(36vh); -webkit-opacity: 0;}
+		@-webkit-keyframes popup {
+		  0% { right:-80%; -webkit-opacity: 0;}
+		  100%{right:0%; -webkit-opacity: 1;}
+		}
+		.catecolor{color: red;}
+		.class i{width: 45%;padding-bottom: 45%;margin: 0 auto 5px;font-size: 22px;}
+	</style>
+		<div class="top">
+			<div class="search">
+				<div class="searchMin flex bWhite hi36 m-auto bd3 overflow">
+					<label class="sub">
+	                    <input class="text pl15 pr15" id="keyword" type="text" placeholder="请输入课程标题" />
+	                 
+	                </label>
+					<button class="hi36 tc grey">
+	                	<i class="iconfont icon-icon117 " onclick="search();" ></i>
+	                </button>
+
+				</div>
+			</div>
+			<!-- <div class="topNav h36 tc ml10">
+				<i class="iconfont icon-daohang hi36 blank"></i>
+			</div> -->
+		</div>
+		<div class="banner pr">
+			
+			<div class="swiper-container" id="swiper-container01">
+		        <div class="swiper-wrapper">
+		             {loop $adv $banner}
+		            <div class="swiper-slide" style="padding: 0;"><a class="img" href="{$banner['adv_href']}" style="padding-bottom:50%;background-image: url({php echo tomedia($banner['adv_img'])}");"><!-- <img src="{php echo tomedia($banner['adv_img'])}"> --></a></div>		         
+		            {/loop}
+		        </div>
+		        <!-- Add Pagination -->
+		        <div class="swiper-pagination"></div>
+	    	</div>
+			{if count($adv)>1}
+		    <!-- Swiper JS -->
+		    <script type="text/javascript" src="{RES}new_style/js/swiper.min.js" ></script>
+		    <!-- Initialize Swiper -->
+		     <script>
+		      var mySwiper01 = new Swiper('#swiper-container01', {
+		        pagination: '#swiper-container01 > .swiper-pagination',
+		        nextButton: '.swiper-button-next',
+		        prevButton: '.swiper-button-prev',
+		        paginationClickable: true,
+		        spaceBetween: 30,
+		        centeredSlides: true,
+		        autoplay: 2500,
+		        loop:true,
+		        autoplayDisableOnInteraction: false
+		    });
+		    </script>
+			{/if}
+		</div>	     
+	    <!-- banner end -->
+	    <div class="content">
+	    	<!-- 分类 start -->
+	    	{if $navi_list}
+		    <div class="class tc bWhite" >
+	    		<ul class="flex">
+					{loop $navi_list $val}
+		    		<li class="sub">
+		    			<a class="disb pt10 pb10 disb" href="{$val['redi_url']}">
+		    				<i class="iconfont img disb" style="background-image: url({$val['thumb']})"></i>
+		    				{$val['navi_name']}
+		    			</a>
+		    		</li>
+		    		{/loop}
+	    		</ul>
+		    </div>
+		    {/if}
+	        <!-- 分类 end -->	   
+	        <!-- 推荐 start -->
+	        {if $tj_article}
+	        <div class="Recommend bWhite mt10 pb15 f14">
+	        	<div class="tit pr after flex-jb">
+	        		<h2 class="f16">推荐课程</h2>
+	        		<a class="tr grey f12" href="{php echo $this->createmobileurl('payred_index',array('recommend'=>2))}">
+	        			更多
+	        			<i class="iconfont icon-xiangyoujiantou f12"></i>
+	        		</a>
+	        	</div>
+	        	<div class="RecommendMin">
+
+	        		 <ul class="overflow-x">
+	        		 {loop $tj_article $val}
+	        		 	<li>
+	        		 		<a href="{php echo $this->createmobileurl('detail',array('id'=>$val['id']))}">
+	        		 			<div class="img imgWH bd3" style="background-image:url({$_W['attachurl']}{$val['thumb']});"></div>
+	        		 			<h3 class="f16 line-text mt10">{$val['title']}</h3>
+	        		 			<p class="grey f14 line-text">{$val['author_name']}</p>
+	        		 		</a>
+	        		 	</li>
+	        		 	{/loop}
+	        		 </ul>
+	        	</div>
+	        </div>
+	        {/if}
+	        <!-- 推荐 end -->
+	        <!--新品 start-->
+	        {if $one_article}
+	        <div class="New bWhite mt10">
+	        	<div class="tit pr after flex-jb">
+	        		<h2 class="f16">最新课程</h2>
+	        		<a class="tr grey f12" href="{php echo $this->createmobileurl('payred_index')}">
+	        			更多
+	        			<i class="iconfont icon-xiangyoujiantou f12"></i>
+	        		</a>
+	        	</div>
+	        	<div class="NewMin">
+	        		<ul>
+	        			{loop $one_article $val}
+		        			<li class="gridXb">
+		        				<a class="flex p15" href="{php echo $this->createmobileurl('detail',array('id'=>$val['id']))}">
+		        					<div class="img imgWH bd3" style="background-image: url({$_W['attachurl']}{$val['thumb']});"></div>
+		        					<div class="info sub ml15 flex-column-c">
+		        						<h3 class="line-text f14">{$val['title']}</h3>
+		        						<p class="line-text f12 mt5 grey">{php echo strip_tags(htmlspecialchars_decode($val['description']))}</p>	        						
+	        							<div class="flex grey mt5 f12">
+		        							<span class="left line-text">
+		        								<i class="iconfont icon-zuozhe f12"></i>
+		        								{$val['author_name']}
+		        							</span>
+		        							<div class="right sub flex tr">
+		        								<span class="line-text sub">
+		        									<i class="iconfont icon-yanjing f12 pr5"></i>{$val['clickNum']}
+		        								</span>
+		        								<span class="line-text sub">
+		        									<i class="iconfont icon-dianzan f12 pr5"></i>{$val['zanNum']}
+		        								</span>
+												{if $val['pay_money']>0}
+												<span class="line-text sub">
+		        									<i class="iconfont  f12 pr5">&#xe602;</i>{$val['pay_money']}
+		        								</span>
+												{/if}
+		        							</div>
+	        							</div>
+		        					</div>		        					
+		        				</a>
+		        			</li>
+	        			{/loop}
+	        		</ul>
+	        	</div>
+	        </div>
+	        {/if}
+	        {if $list}
+	          <div class="Recommend bWhite mt10 pb15 f14">
+	        	<div class="tit pr after flex-jb">
+	        		<h2 class="f16">推荐专栏</h2>
+	        		<a class="tr grey f12" href="{php echo $this->createmobileurl('serialize',array('recommend'=>2))}">
+	        			更多
+	        			<i class="iconfont icon-xiangyoujiantou f12"></i>
+	        		</a>
+	        	</div>
+	        	<div class="RecommendMin">
+
+	        		 <ul class="overflow-x">
+	        		 {loop $list $val}
+	        		 	<li>
+	        		 		<a href="{php echo $this->createmobileurl('serialize_detail',array('id'=>$val['id']))}">
+	        		 			<div class="img imgWH bd3" style="background-image:url({$val['serialize_img']});"></div>
+	        		 			<h3 class="f16 line-text mt10">{$val['serialize_title']}</h3>
+	        		 			<p class="grey f14 line-text">{$val['author_nickname']}</p>
+	        		 		</a>
+	        		 	</li>
+	        		 	{/loop}
+	        		 </ul>
+	        	</div>
+	        </div>
+	        {/if}
+	        <!-- 推荐 end -->
+	        <!--新品 start-->
+	        {if $list_s}
+	        <div class="New bWhite mt10">
+	        	<div class="tit pr after flex-jb">
+	        		<h2 class="f16">最新专栏</h2>
+	        		<a class="tr grey 12" href="{php echo $this->createmobileurl('serialize')}">
+	        			更多
+	        			<i class="iconfont icon-xiangyoujiantou f12"></i>
+	        		</a>
+	        	</div>
+	        	<div class="NewMin">
+	        		<ul>
+	        			{loop $list_s $val}
+		        			<li class="gridXb">
+		        				<a class="flex p15" href="{php echo $this->createmobileurl('serialize_detail',array('id'=>$val['id']))}">
+		        					<div class="img imgWH" style="background-image: url({$val['serialize_img']});"></div>
+		        					<div class="info sub ml15 flex-column-c">
+		        						<h3 class="line-text f14">{$val['serialize_title']}</h3>
+		        						<p class="line-text f12 mt5 grey">{$val['serialize_desc']}</p>	        						
+	        							<div class="flex grey mt5 f12">
+		        							<span class="left line-text">
+		        								<i class="iconfont icon-zuozhe f12"></i>
+		        								{$val['author_nickname']}
+		        							</span>
+		        							<div class="right sub flex tr">
+		        								<span class="line-text sub">
+		        									<i class="iconfont icon-yanjing f12 pr5"></i>{$val['clickNum']}
+		        								</span>
+		        								<!-- <span class="line-text sub">
+		        									<i class="iconfont icon-dianzan f12 pr5"></i>{$val['zanNum']}
+		        								</span> -->
+												{if $val['serialize_price']>0}
+												<span class="line-text sub">
+		        									<i class="iconfont  f12 pr5">&#xe602;</i>{$val['serialize_price']}
+		        								</span>
+												{/if}
+		        							</div>
+	        							</div>
+		        					</div>		        					
+		        				</a>
+		        			</li>
+	        			{/loop}
+	        		</ul>
+	        	</div>
+	        </div>
+	        {/if}
+	        <div style="height: 65px;"></div>
+	        <!--新品 end-->
+	        <!--foot start-->
+	        {template footer}
+	        <!--foot end-->
+	    </div>
+	    <div class="chooseBox">
+			<div class="choose bWhite">
+			<div class="title tc f16">分类筛选</div>
+			<div class="chooseMin  p15">
+				<ul>
+				{loop $category $val}
+					{if empty($val['parentid'])}
+						<li>
+							{if empty($val['parentid'])}
+								<h2 class="gridXb pt10 pb10 f14">{$val['name']}</h2>
+							{/if}
+							<dl class="flex  mt10">
+								<dd>
+									<a class="grey cate" href="javascript:;" data-pcate="{$val['id']}" data-cate="0" onclick="tagClick(this)">全部</a>
+								</dd>
+								{loop $category $row}
+									{if $row['parentid']==$val['id']}
+										<dd>
+											<a class="grey cate" href="javascript:;" data-pcate="{$row['parentid']}" data-ccate="{$row['id']}" onclick="tagClick(this)">{$row['name']}</a>
+										</dd>
+									{/if}
+								{/loop}
+							</dl>
+						</li>
+					{/if}
+				{/loop}	
+				</ul>
+			</div>	
+			<div class="btn flex tc">
+				<a class="sub hi40 disb c_close" style="background: #8B96B0;" href="javascript:;">关闭</a>
+				<!-- <a ></a> -->
+			</div>
+		</div>		
+		</div>	
+	   <script>
+	   $('.c_close').click(function(){
+	   		$('.chooseBox').removeClass('active');
+	   })
+	   	 wx.ready(function() {
+			shareMeta = {
+				imgUrl: "{php echo $_W['attachurl'].$shares['shareimg']}",
+				link: "{$share_url}",
+				desc: "{$shares['sharedesc']}",
+				title: "{$shares['sharetitle']}",
+				success: function() {
+
+				},
+				cancel: function() {
+					// alert("分享失败，可能是网络问题，一会儿再试试？");
+				}
+			};
+			wx.onMenuShareTimeline(shareMeta);
+			wx.onMenuShareAppMessage(shareMeta);
+			wx.onMenuShareWeibo(shareMeta);
+			wx.onMenuShareQQ(shareMeta);
+			wx.onMenuShareQZone(shareMeta);
+		});
+	   </script>
+	</body>
+</html>

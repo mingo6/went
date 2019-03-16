@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>AI销售助手</title>
+	<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/rule.css">
+</head>
+<body>
+<div class="weui-flex" style="position: fixed;top: 0;width: 100%;">
+        <div class="weui-flex__item navbar">
+            <a href="{php echo $this->createMobileUrl('staffer_index')}">
+                <div class="placeholder">时间</div>
+                <div class="border" ></div>
+            </a>
+        </div>
+        <div class="weui-flex__item navbar active_navbar">
+            <a href="{php echo $this->createMobileUrl('member_act')}">
+                <div class="placeholder">行为</div>
+                <div class="border" style="display:block"></div>
+            </a>
+        </div>
+        <div class="weui-flex__item navbar">
+            <a href="{php echo $this->createMobileUrl('interact')}">
+                <div class="placeholder">人</div>
+                <div class="border"></div>
+            </a>
+        </div>
+    </div>
+<div class="container" style="margin-top: 55px;">
+	<div class="weui-tab__panel">
+		<div>
+			<div class="tongji">
+				<div class="tongji-lft" style="padding-left:20px">
+					7天内被查看的行为统计
+				</div>
+				
+			</div>
+			<div class="detail-info">
+				<div class="detail-info-items chkhref" data-id="0">
+					<img class="detail-info-items-img" src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/25.png" alt="">
+					<div class="check">
+						<div class="">
+							查看商品
+						</div>
+						<span class="type0">{$type0_num}</span> 次
+					</div>
+				</div>
+				<div class="detail-info-items chkhref" data-id="1">
+					<img class="detail-info-items-img" src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/27.png" alt="">
+					<div class="check">
+						<div class="">
+							查看官网
+						</div>
+						<span class="type1">{$type1_num}</span> 次
+					</div>
+				</div>
+				<div class="detail-info-items chkhref" data-id="2">
+					<img class="detail-info-items-img" src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/26.png" alt="">
+					<div class="check">
+						<div class="">
+							复制微信
+						</div>
+						<span class="type2">{$type2_num}</span> 次
+					</div>
+				</div>
+				<div class="detail-info-items chkhref" data-id="4">
+					<img class="detail-info-items-img" src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/28.png" alt="">
+					<div class="check">
+						<div class="">
+							查看名片
+						</div>
+						<span class="type4">{$type4_num}</span> 次
+					</div>
+				</div>
+			</div>
+			<div class="weui-cell-other" style="background-color: #FAFAFA;">
+				<div class="weui-cell chkhref" data-id="4">
+					<div class="weui-cell__hd">
+						<img src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/1.png" alt="" style="width:20px;margin-right:20px;display:block">
+					</div>
+					<div class="weui-cell__bd">
+						<p>查看名片</p>
+					</div>
+					<div class="weui-cell__ft type4">{$type4_num}</div> 次
+				</div>
+				<div class="weui-cell chkhref" data-id="5">
+					<div class="weui-cell__hd">
+						<img src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/2.png" alt="" style="width:20px;margin-right:20px;display:block">
+					</div>
+					<div class="weui-cell__bd">
+						<p>查看动态</p>
+					</div>
+					<div class="weui-cell__ft type5">{$type5_num}</div> 次
+				</div>
+				<!--div class="weui-cell chkhref" data-id="6">
+					<div class="weui-cell__hd">
+						<img src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/3.png" alt="" style="width:20px;margin-right:20px;display:block">
+					</div>
+					<div class="weui-cell__bd">
+						<p>咨询产品</p>
+					</div>
+					<div class="weui-cell__ft type6">{$type6_num}</div> 次
+				</div-->
+				<div class="weui-cell chkhref" data-id="7">
+					<div class="weui-cell__hd">
+						<img src="../addons/dbs_masclwlcard/template/wxapp/images/pk/show/4.png" alt="" style="width:20px;margin-right:20px;display:block">
+					</div>
+					<div class="weui-cell__bd">
+						<p>保存电话</p>
+					</div>
+					<div class="weui-cell__ft type7">{$type7_num}</div> 次
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="weui-tabbar tabbar">
+	<a href="{php echo $this->createMobileUrl('staffer_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/9.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a href="{php echo $this->createMobileUrl('client_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">客户</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('friend_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">动态</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/18_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">我</p>
+	</a>
+</div>
+	
+
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+   <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+
+
+	<script type="text/javascript">
+	var startTime1 = null;
+	$(function () {
+
+		loadBtn();
+		
+	});
+
+	function loadBtn() {
+		var index;
+		$('.placeholder').on('click', function () {
+			index = $(this).parents('.weui-flex__item').index()
+			$(this).parents('.weui-flex__item').addClass('active_navbar').siblings().removeClass('active_navbar');
+			$(this).parents().children('.border').css('display', 'block').parents().siblings().children('.border').css(
+				'display', 'none')
+			$('.weui-tab__panel').children().eq(index).css('display', 'block').siblings().css('display', 'none')
+		});
+	
+		$('.chkhref').on('click', function () {
+			window.location = "{php echo $this->createMobileUrl('get_member_act')}&type=" + $(this)[0].dataset['id'];
+		});
+	}
+
+
+</script>
+</body>
+</html>

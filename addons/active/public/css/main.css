@@ -1,0 +1,525 @@
+@font-face {
+    font-family: 'custom';
+    src: url('../font/custom.TTF')
+}
+
+/* @font-face {
+    font-family: 'normal';
+    src: url('../font/normal.TTF')
+} */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-weight: 600;
+    -webkit-tap-highlight-color: transparent;
+}
+
+img:not(.luck), img:not(.unluck), img:not(.voice) {
+    pointer-events: none;
+}
+
+input[type="text"], input[type="number"], textarea {
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+/* index */
+
+.scene.index, .success, .fail {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+    z-index: 1;
+}
+
+.scene.index {
+    background-color: #000;
+}
+
+.fail img.game_start,
+.success img.game_start,
+.index img.game_start {
+    width: 100%;
+    height: 100%;
+}
+
+.fail .start_btn,
+.success .start_btn,
+.index .start_btn {
+    position: absolute;
+    width: 45.62vw;
+    height: 8.28vh;
+    top: 37.95%;
+    left: 29.64%;
+    background-color: transparent;
+    border-radius: 8.28vh;
+}
+
+.fail .game_rules,
+.success .game_rules,
+.index .game_rules {
+    position: absolute;
+    width: 33.44vw;
+    height: 6.09vh;
+    top: 48.09%;
+    left: 14.05%;
+    background-color: transparent;
+    border-radius: 6.09vh;
+}
+
+.fail .questionnaire,
+.success .questionnaire,
+.index .questionnaire {
+    position: absolute;
+    width: 33.44vw;
+    height: 6.09vh;
+    top: 48.09%;
+    left: 53.87%;
+    background-color: transparent;
+    border-radius: 6.09vh;
+}
+
+.fail .game_rules,
+.success .game_rules,
+.fail .questionnaire,
+.success .questionnaire {
+    top: 44.09%;
+}
+
+
+/* rules */
+.rules-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 15.68vh 11.6vw;
+}
+
+.rules-content {
+    width: 100%;
+    height: 100%;
+    background-color: #2bc3f1;
+    border-radius: 10px;
+}
+
+/* dusk */
+.scene.dusk {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+}
+
+.dusk img.scene-bg {
+    width: 100%;
+    height: 100%;
+}
+
+.dusk .content-wrapper {
+    position: absolute;
+    width: 76.80vw;
+    height: 45.85%;
+    top: 30.25%;
+    left: 11.60%;
+    background-color: transparent;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dusk .field-wrapper .item {
+    margin-bottom: 5px;
+}
+
+.dusk .field-wrapper .item .title {
+    font-size: 13px;
+    font-family: 'normal';
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.dusk .field-wrapper .item .options {
+    margin-bottom: 4px;
+    padding-left: 10px;
+}
+
+.dusk .field-wrapper .item .radio, .dusk .field-wrapper .item .value {
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+.dusk .field-wrapper .item .radio {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.dusk .field-wrapper .item .radio.active {
+    background-color: #f4dc30;
+}
+
+.dusk .field-wrapper .item .value {
+    font-size: 12px;
+    max-width: calc(100% - 25px);
+    font-family: 'normal';
+    font-weight: 600;
+}
+
+.dusk .field-wrapper .item textarea {
+    width: 65.50vw;
+    height: 70px;
+    border: 2px solid #000;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 14px;
+    font-family: 'normal';
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.dusk .submit-btn {
+    position: absolute;
+    width: 33.51vw;
+    height: 5.10vh;
+    top: 75.10%;
+    left: 32.22%;
+    background-color: transparent;
+    border-radius: 5.10vh;
+}
+
+/* main_scene */
+
+.main_scene {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.main_scene .score {
+    position: absolute;
+    width: 34.79vw;
+    height: 5.83vh;
+    border: 1px solid #000;
+    border-top: 0;
+    border-left: 0;
+    top: 0;
+    left: 0;
+    background-color: #F9A923;
+    color: #fff;
+    font-family: 'custom';
+    font-size: 5vw;
+    line-height: 5.83vh;
+    text-align: center;
+    border-bottom-right-radius: 20px;
+}
+.main_scene .plus {
+    position: absolute;
+    font-size: 10vw;
+    color: #fff;
+    width: 50%;
+    text-align: center;
+    left: 25%;
+    top: 15%;
+    margin: 0 auto;
+    opacity: 0;
+    z-index: 2;
+    animation-duration: 2s;
+    transition: all 2s;
+}
+.answer-area {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.subject-order {
+    position: absolute;
+    width: 34vw;
+    height: 7vh;
+    top: 6.16%;
+    left: 33%;
+    background-image: url('../images/level_bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.5vw;
+    font-family: 'custom';
+    color: #329eab;
+}
+.subject-content {
+    position: absolute;
+    width: 66vw;
+    height: 51.79vh;
+    top: 17.09%;
+    left: 17%;
+    background-image: url('../images/content_bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    padding: 7.00vh 5px 9vh;
+    padding-left: 4.90vw;
+    transform-origin: center;
+}
+.subject-content .options {
+    padding-left: 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #fff;
+}
+.subject-content .options > div {
+    display: inline-block;
+    vertical-align: text-top;
+}
+.subject-content .options .radio {
+    width: 12px;
+    height: 12px;
+    flex-basis: auto;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-right: 10px;
+}
+
+.subject-content .title {
+    font-size: 14px;
+    color: #fff;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+.subject-content .options .radio.active {
+    background-color: #f4dc30;
+}
+.subject-content .options .label {
+    max-width: calc(100% - 32px);
+}
+.submit {
+    position: absolute;
+    width: 29.64vw;
+    height: 6.56vh;
+    top: 54%;
+    left: 36.08%;
+    background-color: transparent;
+}
+.left-btn {
+    position: absolute;
+    width: 10vw;
+    height: 6.56vh;
+    top: 72%;
+    left: 27.06%;
+    background-color: transparent;
+}
+.right-btn {
+    position: absolute;
+    width: 10vw;
+    height: 6.56vh;
+    top: 72%;
+    left: 65.00%;
+    background-color: transparent;
+}
+/* info */
+
+.scene.info {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+    background-color: #000;
+    box-sizing: border-box;
+}
+.scene.info > img {
+    width: 100%;
+    height: 100%;
+}
+.scene.info .confirm {
+    position: absolute;
+    width: 45.10vw;
+    height: 7.07%;
+    top: 75.36%;
+    left: 25.77%;
+    background-color: transparent;
+}
+.scene.info .field {
+    position: absolute;
+    width: 56.70vw;
+    height: 32.81vh;
+    top: 32.00%;
+    left: 19.33%;
+    background-color: transparent;
+    font-size: 5vw;
+    font-family: 'normal'
+}
+.scene.info .field .field-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+.scene.info .field .field-control {
+    flex: 1;
+}
+.scene.info .field .field-control > input,
+.scene.info .field .field-control > textarea {
+    width: 100%;
+}
+.scene.info .field .field-control > input {
+    height: 22px;
+    border: 1px solid #e8114a;
+    border-radius: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+.scene.info .field .field-control > textarea {
+    height: 100px;
+    border: 1px solid #e8114a;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.scene.luck {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 0;
+}
+.scene.luck img.luck_bg {
+    width: 100%;
+    height: 100%;
+}
+
+.scene.luck img.inluck {
+    position: absolute;
+    width: 80%;
+    top: 20%;
+    left: 10%;
+    opacity: 0;
+}
+.scene.luck img.inluck.bounceIn {
+    opacity: 1;
+}
+
+.scene.luck .confirm {
+    position: absolute;
+    width: 50vw;
+    height: 8vh;
+    top: 84%;
+    left: 25%;
+    background-color: transparent;
+}
+/* loading */
+.load {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    z-index: 4;
+}
+.load > div {
+    position: absolute;
+    width: 100%;
+    top: 30%;
+    text-align: center;
+    line-height: 10vh;
+}
+.load > div p {
+    color: #fff;
+    font-size: 9vw;
+    font-family: 'custom';
+    margin-bottom: 20px;
+}
+.load > div img {
+    width: 40%;
+}
+
+@media screen and (max-width: 320px) {
+    .dusk .field-wrapper .item {
+        margin-bottom: 5px;
+    }
+    .dusk .field-wrapper .item .title {
+        margin-bottom: 2px;
+    }
+    .dusk .field-wrapper .item .options {
+        margin-bottom: 0;
+    }
+    .dusk .field-wrapper .item textarea {
+        height: 55px;
+    }
+}
+
+.voice {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+.voice img {
+    width: 30px;
+    height: 30px;
+}
+
+.footer_info {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    font-size: 0;
+}
+.footer_info img {
+    width: 100%;
+}
+
+.rule-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: none;
+}
+.rule-mask.active {
+    display: block;
+}
+.rule-mask .rule-wrapper {
+    position: absolute;
+    width: 84%;
+    height: 65%;
+    top: 8%;
+    left: 8%;
+    /* background-color: #2bc3f1; */
+    border-radius: 10px;
+    transform-origin: center;
+    transition: all 0.5s;
+    animation-duration: 0.5s;
+}

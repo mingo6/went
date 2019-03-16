@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {template './common/_header'}
+</head>
+<body>
+    <div class='success'>
+      <img class='game_start' src='../addons/{MODULE}/public/images/success.png'>
+      <div class='game_rules' onclick='router(1)'></div>
+      <div class='questionnaire' onclick='router(2)'></div>
+    </div>
+    {template './common/_footer'}
+    <script type="text/javascript">
+        function router (type) {
+            switch (parseInt(type)) {
+                case 1:
+                    location.href = '{php echo $this->createMobileUrl("info")}'
+                    break
+                case 2:
+                    location.href = '{php echo $this->createMobileUrl("dusk")}'
+                    break
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active">
+        <a href="{php echo $this->createWebUrl('member', array('status' => ''))}">授权号码客户</a>
+    </li>
+	
+	<li>
+        <a href="{php echo $this->createWebUrl('card_member', array('status' => ''))}">名片客户资料</a>
+    </li>
+   
+</ul>
+	
+<div class="main">
+<div>
+
+</div>
+	<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		  <input type="hidden" name="uniacid" value="{$_W['uniacid']}" />
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<!--th style="width:20px;">订单号</th-->
+						<th  class="select" style="width:5px;"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th>
+						<th style="width:20px;">姓名</th>
+						<th style="width:20px;">电话</th>
+						<th style="width:80px;">昵称</th>
+						<th style="width:80px;">性别</th>
+						<th style="width:10px;">头像</th>
+						
+			
+						
+						<th style="width:20px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $alltuan $item}
+					<tr>
+						<td style="width:5px;"><input type="checkbox" value="{$item['id']}" class="cbitem" name="id[]"></td>
+						<td style="width:30px;">{$item['name']}</td>
+						<td style="width:50px;">{$item['phone']}</td>
+						<td style="width:30px;">{$item['nickname']}</td>
+						<td style="width:30px;">{if $item['gender'] == 1}  男 {elseif $item['gender'] == 2}  女 {else} 未知  {/if}</td>
+						<td style="width:30px;"><img src="{$item['avatarUrl']}" style="width:40px;height:40px;"></td>
+						
+						
+						<td style="width:20px;text-align:right;">
+	
+								<a href="{php echo $this->createWebUrl('deletemember', array('id' => $item['id']))}" onclick="return confirm('此操作不可恢复，确认删除？');"
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i>
+								</a>
+								
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+					<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-13">
+						<input type="submit" name="submit" value="选中删除" class="btn btn-primary" />
+					  <input type="hidden" name="token" value="{$_W['token']}" />
+					</div>
+				  </div>
+			</form>
+		</div>
+	</div>
+</div>
+{$pager}
+{template 'common/footer'}
+
+<script type="text/javascript">
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").prop('checked')== false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+		
+	} else {	
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script>

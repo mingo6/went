@@ -1,0 +1,81 @@
+{template '_header'}
+<style>
+    * { touch-action: none; }
+</style>
+<div class='fui-page {if empty($order['refundstate'])}fui-page-current{/if}' id='page-refund-edit' >
+<div class="fui-header">
+    <div class="fui-header-left">
+        <a class="back" onclick='history.back()'></a>
+    </div>
+    <div class="title">退款申请</div>
+    <div class="fui-header-right">&nbsp;</div>
+</div>
+<div class='fui-content margin navbar'>
+    <div class="fui-cell-group">
+        <div class="fui-cell">
+            <div class="fui-cell-label">处理方式</div>
+            <div class="fui-cell-info">
+
+                <select id="rtype">
+                    <option value="1" {if $refund['rtype']=='1'}selected{/if}>退货退款</option>
+                </select>
+            </div>
+            <div class="fui-cell-remark"></div>
+
+        </div>
+
+
+        <div class="fui-cell">
+            <div class="fui-cell-label"><span class="re-g">{if $refund['rtype']=='2'}换货{else}退款{/if}</span>说明</div>
+            <div class="fui-cell-info">
+                <input type="text" id="content" class='fui-input' placeholder="选填" value="{$refund['content']}"/>
+            </div>
+        </div>
+
+
+
+    </div>
+    <!--<div class="fui-cell">
+        <div class="fui-cell-label">上传凭证</div>
+        <div class="fui-cell-info">
+
+            <ul class="fui-images fui-images-sm" id="images">
+
+                {loop $refund['imgs'] $k $v}
+                <input type="hidden" name="images[]" value="{$v}" />
+                <li style="background-image:url({php echo tomedia($v)})" class="image image-sm" data-filename="{$v}"><span class="image-remove"><i class="icon icon-roundclose"></i></span></li>
+                {/loop}
+
+
+            </ul>
+            <div class="fui-uploader fui-uploader-sm refund-container-uploader" {if count($refund['imgs'])==5}style='display:none'{/if}
+            data-name="images[]"
+            data-max="5"
+            data-count="{php echo count($refund['imgs'])}">
+            <input type="file" name='imgFile0' id='imgFile0'>
+        </div>
+
+    </div>
+</div>-->
+
+
+</div>
+
+
+</div>
+<div class='fui-footer text-right'>
+    <a class='btn btn-danger btn-submit'>提交申请</a>
+    <a class="btn btn-default btn-default-o back">取消</a>
+</div>
+</div>
+
+
+
+    <script language='javascript'>
+        require(['biz/order/refundwater'], function (modal) {
+            modal.init({orderid: "{$orderid}"});
+        });
+
+    </script>
+</div>
+{template '_footer'}

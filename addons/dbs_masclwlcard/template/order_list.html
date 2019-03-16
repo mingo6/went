@@ -1,0 +1,218 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+
+	<li><a href="{php echo $this->createWebUrl('shops', array('op'=>'display'));}">商品列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('shops', array('op'=>'edit'));}">添加商品</a></li>
+	
+	<li><a href="{php echo $this->createWebUrl('category', array('op' => 'edit'))}">添加分类</a></li>
+	<li><a href="{php echo $this->createWebUrl('category', array('op' => 'display'))}">管理分类</a></li>
+	
+	<li><a href="{php echo $this->createWebUrl('spec_goods', array('op'=>'edit'));}">商品属性列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('spec_goods', array('op'=>'edit'));}">添加商品属性</a></li>
+	
+	<li class="active">
+        <a href="{php echo $this->createWebUrl('order_list', array('op' => 'display'))}">全部订单</a>
+    </li>
+    
+</ul>
+
+{if $op == 'display'}
+<div class="main">
+    <div class="panel panel-info">
+	    <div class="panel-heading">筛选</div>
+	    <div class="panel-body">
+            <form action="./index.php" method="get" class="form-horizontal" role="form" id="form1">
+                <input type="hidden" name="c" value="site" />
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="m" value="dbs_masclwlcard" />
+                <input type="hidden" name="do" value="order_list" />
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">订单号</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" name="keyword" id="" type="text" value="{$_GPC['keyword']}" placeholder="可查询订单号">
+                    </div>
+                </div>
+				
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">用户信息</label>
+                    <div class="col-sm-8 col-lg-9 col-xs-12">
+                        <input class="form-control" name="info_member" id="" type="text" value="{$_GPC['info_member']}" placeholder="可查询手机号 / 姓名">
+                    </div>
+                </div>
+              
+                
+                <div class="form-group">
+				 <div class="col-sm-3 col-lg-2" style="text-align:right;"><button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                </div>
+            </form>
+            <!--a href='{php echo $this->createWebUrl('order', array('op' => 'output','status'=>$status))}'><button class="btn btn-default"><i class="fa fa-align-justify"></i> 导出订单</button></a>
+	   		<a href='{php echo $this->createWebUrl('order', array('op' => 'refundall'))}'><button class="btn btn-default"><i class="fa fa-align-justify"></i> 一键退款</button></a-->
+	    </div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th style="width:80px;">订单号</th>
+						<th style="width:80px;">姓名</th>
+						<th style="width:80px;">电话</th>				
+
+						<th style="width:100px;">单价</th>
+						<th style="width:100px;">总价</th>
+				
+						<th style="width:120px;">下单时间</th>
+						<th style="width:120px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $list $item}
+					<tr>
+						<td>{$item['orderid']}</td>
+						<td>{$item['name']}</td>
+						<td>{$item['phone']}</td>
+						<td>{$item['price']}元</td>
+						<td>{$item['all_price']} 元</td>
+						<td>{php echo date('Y-m-d H:i:s', $item['addtime'])}</td>
+						<td style="text-align:right;">
+							<a href="{php echo $this->createWebUrl('order_list', array('op' => 'detail', 'id' => $item['id']))}" class="btn btn-success btn-sm">查看订单</a>
+							<a href="{php echo $this->createWebUrl('order_list', array('id' => $item['id'], 'op' => 'delete'))}" onclick="return confirm('此操作不可恢复，确认删除？');"
+								class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i>
+							</a>
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{$pager}
+
+{/if}
+
+{if $op == 'detail'}
+<style type="text/css">
+	.main .form-horizontal .form-group{margin-bottom:0;}
+	.main .form-horizontal .modal .form-group{margin-bottom:15px;}
+	#modal-confirmsend .control-label{margin-top:0;}
+</style>
+<div class="main">
+	<form class="form-horizontal form" action="" method="post" enctype="multipart/form-data" >
+	
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				订单信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">总价 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{$item['price']} 元 </p>
+					</div>
+				</div>
+		
+			
+                {if !empty($item['orderid'])}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">微信订单号 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$item['orderid']}</p>
+                    </div>
+                </div>
+                {/if}
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">下单日期 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{php echo date('Y-m-d H:i:s', $item['addtime'])}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				用户信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{$item['name']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">手机 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{$item['phone']}</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">地址 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{$item['address']}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				员工信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名 :</label>
+					<div class="col-sm-9 col-xs-12">
+						<p class="form-control-static">{$item['card']['card_name']}  </p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">头像:</label>
+					<div class="col-sm-9 col-xs-12">
+				
+                            <img src="<?php echo tomedia($item['card']['card_logo']);?>" style=" width:40px;height:40px;" alt="" title="">
+                       
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+					<tr>
+						<th style="width:5%;">ID</th>
+						<th style="width:15%;">商品标题</th>
+						<th style="width:15%;">商品图片</th>
+						<th style="width:20%;">单价</th>
+						<th style="width:15%;">数量</th>
+					</tr>
+					</thead>
+					
+					<tr>
+						<td>{$item['shops']['id']}</td>
+						<td>{$item['shops']['shop_name']}</td>
+						<td>
+						<div style=" width:40px;height:40px;">
+                            <img src="<?php echo tomedia($item['shops']['gimg']);?>" style=" width:40px;height:40px;" alt="" title="">
+                        </div>  
+						</td>
+						<td>{$item['shops']['price']}元</td>
+						<td>{$item['shops_num']}</td>
+					</tr>
+				
+					
+				</table>
+			</div>
+		</div>
+
+		
+		
+	</form>
+</div>
+
+{/if}

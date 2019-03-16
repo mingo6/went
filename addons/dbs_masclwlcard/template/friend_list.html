@@ -1,0 +1,122 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('friend');}">添加动态</a></li>
+	<li  class="active"><a href="{php echo $this->createWebUrl('friend_list');}">最新动态列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('friend_manage');}">评论管理</a></li>
+</ul>
+	
+<div class="main">
+	<!--div class="panel panel-default">
+		<div class="panel-body table-responsive">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		  <input type="hidden" name="uniacid" value="{$_W['uniacid']}" />
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				
+					<tr>	
+						<th  class="select" style="width:5px;"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th>
+						<th style="width:30px;">标题</th>
+						<th style="width:30px;">图片</th>
+
+						<th style="width:20px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $activity $item}
+					<tr>
+						<td style="width:5px;"><input type="checkbox" value="{$item['id']}" class="cbitem" name="id[]"></td>
+						<td style="width:30px;">{$item['title']}</td>
+						<td style="width:30px;"><img src="{php echo tomedia($item['head_img'])}" style="width:30px;height:30px;"></td>
+						
+						<td style="width:20px;text-align:right;">
+								<a href="{php echo $this->createWebUrl('friend', array('id' => $item['id']))}"
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="编辑">编辑
+								</a>
+
+								<a href="{php echo $this->createWebUrl('deletefriend', array('id' => $item['id']))}" onclick="return confirm('此操作不可恢复，确认删除？');"
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i>
+								</a>
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+					<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-13">
+						<input type="submit" name="submit" value="选中删除" class="btn btn-primary" />
+					  <input type="hidden" name="token" value="{$_W['token']}" />
+					</div>
+				  </div>
+			</form>
+		</div>
+	</div-->
+	
+<div class="panel panel-default">
+	<div class="panel-heading">最新动态列表</div>
+		<form action="" method="post" onsubmit="return formcheck(this)">
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		  <input type="hidden" name="uniacid" value="{$_W['uniacid']}" />
+		<div class="table-responsive panel-body">
+			<table class="table table-hover" style="min-width: 300px;">
+				<thead class="navbar-inner">
+					<tr>
+						<th class="col-sm-1">显示顺序</th>
+						<th class="col-sm-1">标题</th>
+						<th class="col-sm-1">图片</th>
+						<th class="col-sm-3 text-right">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $activity $item}
+					<tr>
+						<td><input type="text" class="form-control" name="sort[{$item['id']}]" value="{$item['sort']}"></td>
+						<td>{$item['title']}</td>
+						<td><img src="{php echo tomedia($item['head_img'])}" style="width:30px;height:30px;"></td>
+
+						<td class="text-right">
+							<a href="{php echo $this->createWebUrl('friend', array('id' => $item['id']))}"
+								class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="编辑">编辑
+							</a>
+
+							<a href="{php echo $this->createWebUrl('deletefriend', array('id' => $item['id']))}" onclick="return confirm('此操作不可恢复，确认删除？');"
+								class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i>
+							</a>
+						</td>
+						
+					</tr>
+					{/loop}
+					{if !empty($activity)}		
+						<tr>
+							<td colspan="12">
+								<input name="submit" type="submit" class="btn btn-primary" value="提交">
+								<input type="hidden" name="token" value="{$_W['token']}" />
+							</td>
+						</tr>
+					{/if}
+					
+				</tbody>
+			</table>
+		</div>
+		</form>
+	</div>
+	
+</div>
+{$pager}
+{template 'common/footer'}
+
+<!--script type="text/javascript">
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").prop('checked')== false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+		
+	} else {	
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script-->

@@ -1,0 +1,70 @@
+.title-line {
+    position: relative;
+}
+.title-line:after {
+    content: '';
+    position: absolute;
+    width: 1.86rem;
+    height: 1px;
+    background-color: #ED773B;
+    left: 0;
+    bottom: -0.714rem;
+}
+.white-bg {
+    background-color: #fff;
+}
+.content-p {
+    padding: 0 2.14rem;
+}
+.white-space {
+    padding: 0 2.14rem;
+}
+.image-picker > a {
+    margin-top: 9px;
+    margin-right: 10px;
+}
+.image-picker-view {
+    margin-top: -5px;
+}
+.image-picker-view-item {
+    /* display: inline-block; */
+    margin-top: 1rem;
+}
+.form-title {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+.border-7 {
+    border-radius: 0.5rem;
+}
+.border-t-l {
+    border-top-left-radius: 0.5rem;
+}
+.border-t-r {
+    border-top-right-radius: 0.5rem;
+}
+.border-b-l {
+    border-bottom-left-radius: 0.5rem;
+}
+.border-b-r {
+    border-bottom-right-radius: 0.5rem;
+}
+.btn, .form-control, .modal-content, .card-block {
+    border-radius: 0.21rem;
+}
+.btn.btn-orange {
+    background-color: #EE7B3B;
+    color: #fff;
+}
+.btn.btn-cancel {
+    background-color: #E6EAED;
+    color: #A8ABAD;
+    border: 0;
+}
+.form-btn-submit {
+    width: 100%;
+    padding: 1rem 0;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #5C5F64;
+}

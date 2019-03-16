@@ -1,0 +1,17 @@
+{itemplate 'public/header'}
+<style>
+</style>
+<div class="page my-comment" id="page-app-my-comment">
+	<div class="big_img_box">
+		<img class="close" src="{WE7_WMALL_TPL_URL}static/img/close_fff.png">
+		<img class="img" src="">
+	</div>
+	<header class="bar bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="icon icon-arrow-left"></i></a>
+		<h1 class="title">开票入口</h1>
+	</header>
+    {php get_mall_menu();}
+    <div class="content infinite-scroll js-infinite" data-href="{php echo imurl('wmall/member/invoice/more');}" data-distance="50" data-min="{$min}" data-container=".comment-list" data-tpl="tpl-invoice" style="text-align: center;">
+        <img src="{WE7_WMALL_TPL_URL}static/img/entrance_invoice.jpg" style="display: inline-block; vertical-align: middle;" />
+    </div>
+{itemplate 'public/footer'}

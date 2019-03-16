@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+	
+    <title>BOSS管理</title>
+
+	<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/boss_rader.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="weui-flex navbar">
+                <div class="weui-flex__item">
+                    <div class="placeholder active_navbar">汇总</div>
+                </div>
+                <div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_ranking')}">
+                    <div class="placeholder">销售排行</div>
+                </div>
+                <div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_ai')}">
+                    <div class="placeholder">AI分析</div>
+                </div>
+            </div>
+            <div class="weui-flex taps tap1" id='1'>
+                <div class="weui-flex__item"><div id="d1" class="placeholder actived_item active_item">汇总</div></div>
+                <div class="weui-flex__item"><div id="d2" class="placeholder actived_item">昨日</div></div>
+                <div class="weui-flex__item"><div id="d3" class="placeholder actived_item">近7天</div></div>
+                <div class="weui-flex__item"><div id="d4" class="placeholder actived_item">近30天</div></div>
+            </div>
+            <div class="weui-flex count_box f15">
+                <div class="weui-flex__item">
+                    <div class="placeholder item_count">
+                        <div class="total_count">
+                            <div class="count">客户总数</div>
+                            <div class="count_title f20" id="clientCount">加载中</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder item_count">
+                        <div class="count">跟进总数</div>
+                        <div class="count_title f20" id="followUp">加载中</div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder item_count">
+                        <div class="count">浏览总数</div>
+                        <div class="count_title f20" id="browse">加载中</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex count_box f15">
+                <div class="weui-flex__item">
+                    <div class="placeholder item_count">
+                        <div class="count">被保存总数</div>
+                        <div class="count_title f20" id="isPopCard">加载中</div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder item_count">
+                        <div class="count">被点赞总数</div>
+                        <div class="count_title f20" id="showzan">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+        <div class="rate">
+            <div class="rate_title f18">30天内成交率漏斗</div>
+            <div class="mask_box">
+                <div class="mask mask_item1">
+                    <span class="rate_count" id="rate_count1"></span>
+                </div>
+                <div class="mask mask_item2">
+                    <span class="rate_count" id="rate_count2"></span>
+                </div>
+                <div class="mask mask_item3">
+                    <span class="rate_count" id="rate_count3"></span>
+                </div>
+                <div class="mask_footer">
+                    <div class="mask_item4">
+                        <span id="rate_count4"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex rate_point">
+                <div class="weui-flex__item point_item">
+                    <div class="placeholder item_p">
+                        <span class="circular c1"></span>
+                        <span id="circular1"></span>
+                    </div>
+                </div>
+                <div class="weui-flex__item point_item">
+                    <div class="placeholder item_p">
+                        <span class="circular c2"></span>
+                        <span id="circular2"></span>
+                    </div>
+                </div>
+                <div class="weui-flex__item point_item">
+                    <div class="placeholder item_p">
+                        <span class="circular c3"></span>
+                        <span id="circular3"></span>
+                    </div>
+                </div>
+                <div class="weui-flex__item point_item">
+                    <div class="placeholder item_p">
+                        <span class="circular c4"></span>
+                        <span id="circular4"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="customer">
+            <div class="rate_title f18">客户统计</div>
+            <div class="rate_title f18">新增客户数</div>
+            <div class="weui-flex navbar tap2" id='2'>
+                <div class="weui-flex__item"><div id="n1" class="placeholder actived_item active_item">近七天</div></div>
+                <div class="weui-flex__item"><div id="n2" class="placeholder actived_item">近15天</div></div>
+                <div class="weui-flex__item"><div id="n3" class="placeholder actived_item">近30天</div></div>
+            </div>
+            <div id="main1" style="width: 98%;height:350px;margin-left: auto;margin-right: auto;"></div>
+        </div>
+        <div class="customer">
+            <div class="rate_title f18">咨询客户数</div>
+            <div class="weui-flex navbar tap3" id='3'>
+                <div class="weui-flex__item"><div id="n4" class="placeholder actived_item active_item">近七天</div></div>
+                <div class="weui-flex__item"><div id="n5" class="placeholder actived_item">近15天</div></div>
+                <div class="weui-flex__item"><div id="n6" class="placeholder actived_item">近30天</div></div>
+            </div>
+            <div id="main2" style="width: 98%;height:350px;margin-left: auto;margin-right: auto;"></div>
+        </div>
+        <div class="customer">
+            <div class="rate_title f18">客户跟进数</div>
+            <div class="weui-flex navbar tap4" id='4'>
+                <div class="weui-flex__item"><div id="n7" class="placeholder actived_item active_item">近七天</div></div>
+                <div class="weui-flex__item"><div id="n8" class="placeholder actived_item">近15天</div></div>
+                <div class="weui-flex__item"><div id="n9" class="placeholder actived_item">近30天</div></div>
+            </div>
+            <div id="main3" style="width: 98%;height:350px;margin-left: auto;margin-right: auto;"></div>
+        </div>
+        <div class="customer">
+            <div class="rate_title f18">客户与我的互动</div>
+            <div id="main4" style="width: 98%;height:350px;margin-left: auto;margin-right: auto;"></div>
+        </div>
+    </div>
+</body>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/echarts.min.js"></script>
+<script type="text/javascript">
+var clientDateList = [];  
+var clientTotalList = []; 
+var gjdatalist = []; 
+var gjvaluelist = []; 
+var zxdatalist = [];  
+var  zxdatavalue = []; 
+				
+   
+   $(function () {
+	   probability();
+	   client_Data(7);
+	   zx_Data(7);
+	   gj_Data(7);
+	   loadData();
+       getTotalByDate();
+       loadBtn();
+   })
+	
+	function getNoDataMsg(page) {
+		if (page != null && page > 1)
+			return "<div class='no-data'>已经到底了</div>";
+		return "<div class='no-data'>没有数据</div>";
+	}
+	function isNoData(list) {
+		if (list == null || list.length == 0)
+			return true;
+		return false;
+	}
+	//30天成交数据
+    function probability() {
+        var days = 30; 
+        $.post("{php echo $this->createMobileUrl('boss_probability')}", {days:days}, function(data){    
+			if (data.Code>0) {
+				alert(data.msg);
+				return;
+			}
+  
+            var values = data.value;
+            var column = data.rate;
+            if(values.length > 0){
+                $("#rate_count1").text(values[0]);
+                $("#rate_count2").text(values[1]);
+                $("#rate_count3").text(values[2]);
+                $("#rate_count4").text(values[3]);
+            }
+            if(column.length > 0){
+                $("#circular1").text(column[0]);
+                $("#circular2").text(column[1]);
+                $("#circular3").text(column[2]);
+                $("#circular4").text(column[3]);
+            }
+         },"json");
+    }
+	//新增客户数据
+    function client_Data(days) {
+        $.post("{php echo $this->createMobileUrl('boss_addpeople')}", {days:days}, function(data){  
+            if (data.Code>0) {
+				alert(data.msg);
+				return;
+			}
+            if(data.Code == 0){
+                var list = data.value;
+				
+                var values = mapData(list,days);
+                for(var h = 0; h < values.length; h++){
+                    clientDateList.push(values[h].newdates);
+                    if(values[h].total){
+                        clientTotalList.push(values[h].total);
+                    }else{
+                        clientTotalList.push(0);
+                    }
+                }
+
+                Chart1();
+           
+            }
+       },"json");
+    }
+	//客户咨询数量
+	function zx_Data(days){
+       $.post("{php echo $this->createMobileUrl('boss_zx')}", {days:days}, function(data){ 
+             if (data.Code>0) {
+				alert(data.msg);
+				return;
+			}
+            if(data.Code == 0){
+                var list = data.value;
+				
+                var values = mapData(list,days);
+                for(var h = 0; h < values.length; h++){
+                     zxdatalist.push(values[h].newdates);
+                    if(values[h].total){
+                        zxdatavalue.push(values[h].total);
+                    }else{
+                        zxdatavalue.push(0);
+                    }
+                }
+
+                chart2();
+           
+            }
+        },"json");
+    }
+	//更近的客户
+	function gj_Data(days){
+       $.post("{php echo $this->createMobileUrl('boss_gj')}", {days:days}, function(data){ 
+             if (data.Code>0) {
+				alert(data.msg);
+				return;
+			}
+            if(data.Code == 0){
+                var list = data.value;	
+                var values = mapData(list,days);
+                for(var h = 0; h < values.length; h++){
+                    gjdatalist.push(values[h].newdates);
+                    if(values[h].total){
+                        gjvaluelist.push(values[h].total);
+                    }else{
+                        gjvaluelist.push(0);
+                    }
+                }
+
+                chart3();
+           
+            }
+        },"json");
+    }
+	
+	 /*
+    *加载客户与我的互动
+    * 6	咨询产品、 7保存电话、 8名片点赞
+    */
+    var sourceValue = [['score', 'amount', 'product']];
+
+    //var actionType = ',0,7,8,9,10,16';  // 0 咨询产品, 7 保存电话, 8 点赞(名片点赞)
+
+    function loadData(){
+         $.post("{php echo $this->createMobileUrl('boss_hd')}", {}, function(data){ 
+            if (data.Code>0) {
+				alert(data.msg);
+				return;
+			}
+            if(data.Code == 0){
+                
+                var list = data.value;
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].type == 1) {
+                        sourceValue.push([list[i].total, list[i].total, "咨询产品"])
+                    }
+                    if (list[i].type == 2) {
+                        sourceValue.push([list[i].total, list[i].total, "保存电话"])
+                    }
+                    if (list[i].type == 3) {
+                        sourceValue.push([list[i].total, list[i].total, "名片点赞"])
+                    }          
+                }
+                chart4();
+            }
+         },"json");
+    }
+
+
+
+//处理接口返回图表数据格式
+function mapData(list,days){
+    var dateList = getDates(days);
+    var values = [];
+    for(var k = 0; k < dateList.length; k++){
+        values.push({newdates:(dateList[k].year +  "-" + dateList[k].newdates),year:dateList[k].year});
+    }
+    for(var j = 0; j < values.length; j++){
+        for(var i = 0; i < list.length; i++){
+            list[i].showDate = list[i].newdates.substr(5,5);
+            list[i].year = list[i].newdates.substr(0,4);
+            if(values[j].newdates == (list[i].year + "-" + list[i].showDate)){
+                values[j].total = list[i].total;
+            }
+        }
+    }
+    return values;
+}
+
+//获取当前时间多少天后的日期和对应星期
+function getDates(days,todate) {//todate默认参数是当前日期
+    var dateArry = [];
+    if (todate == null)
+        todate = getCurrentToday();
+    for (var i = days-1; i >=0; i--) {
+        var dateObj = dateLater(todate, -i);
+        dateArry.push(dateObj)
+    }
+    return dateArry;
+}
+
+
+    function getCurrentToday() {
+        const date = new Date()
+        var year = date.getFullYear();
+        var mouths = (date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1);
+        var day = date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate();
+        var currentdate = year + "-" + mouths + "-" + day;
+        return currentdate
+    }
+
+    function dateLater(dates,later) {
+        var dateObj = {};
+        var show_day = new Array('周日', '周一', '周二', '周三', '周四', '周五', '周六');
+        var date = new Date(dates);
+        date.setDate(date.getDate() + later);
+        var day = date.getDay();
+        dateObj.dates = ((date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : date.getMonth() + 1) + "月" + (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate()) + "日";
+        dateObj.newdates = ((date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : date.getMonth() + 1) + "-" + (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate());
+        dateObj.year = date.getFullYear();
+        dateObj.month = ((date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : date.getMonth() + 1);
+        dateObj.day = (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate());
+        dateObj.week = show_day[day];
+        return dateObj;
+    }
+
+	
+    function getTotalByDate (days){
+        if(days){
+            days = days;
+        }else{
+            days = "";
+        }
+        $.post("{php echo $this->createMobileUrl('boss_totle')}", {days:days}, function(data){
+            
+				if (data.Code>0) {
+					alert(data.msg);
+                    return;
+                }
+				
+                //客户总数 , 跟进总数, 浏览总数, 保存总数, 点赞总数
+                var clientCount = 0 , followUp = 0 , browse = 0 ,  isPopCard = 0 , showzan = 0;
+                if(data.Code == 0){
+                    var browse = data.browse;
+					//客户总数					
+                    var clientCount = data.clientCount;
+					//跟进
+					var followUp = data.followUp;
+					//保存总数
+					var isPopCard = data.isPopCard;
+					//点赞总数
+					var showzan = data.showzan;
+					
+                    $("#clientCount").text(clientCount);
+                    $("#followUp").text(followUp);
+                    $("#browse").text(browse);					
+                    $("#isPopCard").text(isPopCard);
+                    $("#showzan").text(showzan);
+                }
+           },"json");
+  
+    }
+
+
+
+    function loadBtn() {
+
+        //标签切换
+        $(".weui-flex").on("click", function (e) {
+            var currid = e.currentTarget.id;
+            var id = e.target.id;
+            if (id != 1 && id != 2 && id != 3 && id != 4 && id != "") {
+                $(".tap" + currid + " .actived_item").removeClass("active_item")
+                $("#" + id).addClass("active_item");
+            }
+            if (id == "n1" || id == "n2" || id == "n3") {
+                clientDateList = [];  //日期轴数据
+                clientTotalList = []; //值数据
+            }
+            if (id == "n4" || id == "n5" || id == "n6") {
+                zxdatalist = [];  //日期轴数据
+                zxdatavalue = []; //值数据
+            }
+            if (id == "n7" || id == "n8" || id == "n9") {
+                gjdatalist = [];
+                gjvaluelist = [];
+            }
+            switch (id) {
+                case "n1": client_Data(7); break;
+                case "n2": client_Data(15); break;
+                case "n3": client_Data(30); break;
+                case "n4": zx_Data(7); break;
+                case "n5": zx_Data(15); break;
+                case "n6": zx_Data(30); break;
+                case "n7": gj_Data(7); break;
+                case "n8": gj_Data(15); break;
+                case "n9": gj_Data(30); break;
+                case "d1": getTotalByDate(); break;
+                case "d2": getTotalByDate(1); break;
+                case "d3": getTotalByDate(7); break;
+                case "d4": getTotalByDate(30); break;
+            }
+        })
+
+		
+
+        //导航切换
+        $(".a-tab").click(function () {
+			
+            var url = $(this).attr("data-url");
+			to_url(url);
+			
+        })
+    }
+		//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+	function Chart1(){
+        var option1 = {
+            title: {
+                text: ''
+            },
+            grid:{
+                x:'15%',//左边距
+                y:30,   //上边距
+                x2:10,  //右边距
+                y2:30   //下边距
+            },
+            xAxis: {
+                type: 'category',
+                axisTick: { show: false },//是否显示刻度线
+                data: clientDateList.map(function (item) {
+                    return item.date;
+                }),
+                axisLabel: {
+                    formatter: function (value, idx) {
+                        var date = new Date(value);
+                        return [date.getMonth() + 1, date.getDate()].join('-');
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                boundaryGap: false,
+                boundaryGap: ['20%', '20%'] //两边留白
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                splitLine: { show: false },
+                axisTick: { show: false },//是否显示刻度线
+                min: 0,
+                //max: 100,
+                axisLabel: {
+                    texts: [10, 40, 60, 80, 100]
+                }
+            },
+            color: {
+                type: 'linear',
+                colorStops: [{ offset: 1, color: '#FE7B00' }], // 100% 处的颜色
+                globalCoord: false, // 缺省为 false
+            },
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true, //是否显示小圆点
+                symbol: 'circle',//实体圆点
+                symbolSize: 10, //圆点大小
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top',
+                        color: "#151D32" //标点文字颜色
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FA8429', //小圆点颜色
+                        borderWidth: "2", //边框
+                        borderColor: "#fff",
+                        lineStyle: {
+                            color: '#FD892D'
+                        }
+                    }
+                },
+                data: clientTotalList,
+            }]
+        };
+
+        var myChart1 = echarts.init(document.getElementById('main1'));
+        myChart1.setOption(option1);   
+        myChart1.setOption({
+            xAxis: { data: clientDateList },
+            series: [{ data: clientTotalList }]
+        })
+    }
+ function chart2(){
+        
+        var option2 = {
+            title: {
+                text: ''
+            },
+            grid:{
+                x:'15%',//左边距
+                y:30,   //上边距
+                x2:10,  //右边距
+                y2:30   //下边距
+            },
+            xAxis: {
+                type: 'category',
+                axisTick: { show: false },//是否显示刻度线
+                data: zxdatalist.map(function (item) {
+                    return item.date;
+                }),
+                axisLabel: {
+                    formatter: function (value, idx) {
+                        var date = new Date(value);
+                        return [date.getMonth() + 1, date.getDate()].join('-');
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                boundaryGap: false,
+                boundaryGap: ['20%', '20%'] //两边留白
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                splitLine: { show: false },
+                axisTick: { show: false },//是否显示刻度线
+                min: 0,
+                //max: 200,
+                axisLabel: {
+                    texts: [10, 40, 60, 80, 100]
+                }
+            },
+            color: {
+                type: 'linear',
+                colorStops: [{ offset: 1, color: '#FE7B00' }], // 100% 处的颜色
+                globalCoord: false, // 缺省为 false
+            },
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true, //是否显示小圆点
+                symbol: 'circle',//实体圆点
+                symbolSize: 10, //圆点大小
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top',
+                        color: "#151D32" //标点文字颜色
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FA8429', //小圆点颜色
+                        borderWidth: "2", //边框
+                        borderColor: "#fff",
+                        lineStyle: {
+                            color: '#FD892D'
+                        }
+                    }
+                },
+                data: zxdatavalue,
+            }]
+        };
+
+        var myChart2 = echarts.init(document.getElementById('main2'));
+        myChart2.setOption(option2);
+        myChart2.setOption({
+            xAxis: { data : zxdatalist },
+            series: [{ data: zxdatavalue }]
+        })
+    }
+
+//根进数图表
+   function chart3(){
+        var option3 = {
+            title: {
+                text: ''
+            },
+            grid:{
+                x:'15%',//左边距
+                y:30,   //上边距
+                x2:10,  //右边距
+                y2:30   //下边距
+            },
+            xAxis: {
+                type: 'category',
+                axisTick: { show: false },//是否显示刻度线
+                data: gjdatalist.map(function (item) {
+                    return item.date;
+                }),
+                axisLabel: {
+                    formatter: function (value, idx) {
+                        var date = new Date(value);
+                        return [date.getMonth() + 1, date.getDate()].join('-');
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                boundaryGap: false,
+                boundaryGap: ['20%', '20%'] //两边留白
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                splitLine: { show: false },
+                axisTick: { show: false },//是否显示刻度线
+                min: 0,
+                //max: 100,
+                axisLabel: {
+                    texts: [10, 40, 60, 80, 100]
+                }
+            },
+            color: {
+                type: 'linear',
+                colorStops: [{ offset: 1, color: '#FE7B00' }], // 100% 处的颜色
+                globalCoord: false, // 缺省为 false
+            },
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true, //是否显示小圆点
+                symbol: 'circle',//实体圆点
+                symbolSize: 10, //圆点大小
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'top',
+                        color: "#151D32" //标点文字颜色
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#FA8429', //小圆点颜色
+                        borderWidth: "2", //边框
+                        borderColor: "#fff",
+                        lineStyle: {
+                            color: '#FD892D'
+                        }
+                    }
+                },
+                data: gjvaluelist,
+            }]
+        };
+        var myChart3 = echarts.init(document.getElementById('main3'));
+        myChart3.setOption(option3);
+        myChart3.setOption({
+            xAxis: { data : gjdatalist },
+            series: [{ data: gjvaluelist }]
+        })
+    }
+	function chart4(){
+        
+        var option4 = {
+            dataset: {
+                source: [
+                    ['score', 'amount', 'product']//颜色 x值 y值
+                ]
+            },
+            grid: { containLabel: true },
+            xAxis: {
+                splitLine: { show: false },
+                axisTick: { show: false },//是否显示刻度线
+                name: ''
+            },
+            yAxis: {
+                type: 'category',
+                splitLine: { show: false },
+                axisTick: { show: false },//是否显示刻度线
+            },
+            visualMap: {
+                show: false,
+                orient: 'horizontal',
+                left: 'center',
+                min: 10,
+                max: 100,
+                text: ['High Score', 'Low Score'],
+                // Map the score column to color
+                dimension: 0,
+                inRange: {
+                    color: ['#B2B2B2', '#FDC844', '#FEAB2B']
+                }
+            },
+            series: [
+                {
+                    type: 'bar',
+                    barWidth: 20,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'right',
+                            color: "#151D32" //标点文字颜色
+                        }
+                    },
+                    encode: {
+                        // Map the "amount" column to X axis.
+                        x: 'amount',
+                        // Map the "product" column to Y axis
+                        y: 'product'
+                    }
+                }
+            ]
+        };
+
+        var myChart4 = echarts.init(document.getElementById('main4'));
+        myChart4.setOption(option4);
+        myChart4.setOption({
+            dataset: {source: sourceValue}
+        });
+    }
+</script>
+</html>

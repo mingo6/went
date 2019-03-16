@@ -1,0 +1,421 @@
+{template '../../../addons/zofui_sitetemp/template/web/common/myheader'}
+
+	{if $_GPC['op'] == 'add' || $_GPC['op'] == 'edit'}
+		<link rel="stylesheet" type="text/css" href="{php echo MODULE_URL}template/web/css/style.css{php echo '?t='.TIMESTAMP}">
+		<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/angular.min.js"></script>
+		<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/angular-ueditor.js"></script>
+		<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/sortable.js"></script>
+		<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+		<script type="text/javascript" src="./resource/components/ueditor/ueditor.config.js"></script>
+		<script type="text/javascript" src="./resource/components/ueditor/ueditor.all.min.js"></script>
+		<script type="text/javascript" src="./resource/components/ueditor/ueditor.parse.js"></script>
+		<script type="text/javascript" src="./resource/components/ueditor/lang/zh-cn/zh-cn.js"></script>
+		<link href="{php echo MODULE_URL}template/web/css/jquery-ui.css" rel="stylesheet">
+
+		
+		<div class="my_article_box" ng-app="myyapp" ng-controller="ctr">
+		  	<div class="" ng-cload>
+			  	<div class="item_cell_box">
+					<div class="article_left">
+						<div class="article_left_top" focus-item viewid="00000000" ng-click="getFocus('00000000','basic')">
+							设置页面基本信息
+						</div>
+						<div class="article_left_mobile">
+							<div class="mobile_top"></div>
+							<div class="mobile_head">
+								<span class="title" ng-cloak></span> 
+							</div>
+							<div class="page-content" style="padding: 5px">
+								<div class="mobile_body">
+									<div ng-repeat="item in items track by $index" ng-if="item.name != 'fix'"  ng-click="getFocus(item.id)"  class="view_item" viewid="{{item.id}}"  ng-class="{'article_view_selected' : focus.id == item.id}">
+										<div  view-delete ng-mouseover="move(item.id)" ng-include="'./../addons/zofui_sitetemp/template/web/temp/view-'+item.name+'.html'"></div>
+										<div class="del_modules" ng-mousedown="delItem(item.id,$event)">删除</div>
+									</div>
+									<div ng-repeat="item in items track by $index" ng-if="item.name == 'fix'"  ng-click="getFocus(item.id)" class=" view_item_fix"   viewid="{{item.id}}"  ng-class="{'article_view_selected' : focus.id == item.id}" ng-style="{'background':item.params.mbg,'padding':item.params.padding+'px','top':item.params.top+'%','right':item.params.right+'%'}" >
+										<div  view-delete ng-include="'./../addons/zofui_sitetemp/template/web/temp/view-'+item.name+'.html'"></div>
+										<div class="del_modules" ng-mousedown="delItem(item.id,$event)">删除</div>
+									</div>
+								</div>
+							</div>							
+							<div class="mobile_bottom"></div>
+						</div>
+
+					</div>
+					<div class="article_right item_cell_flex">
+						<div class="portable_editor ">
+							<div class="editor_inner" id="js_editFormContent">
+								<div ng-include="'./../addons/zofui_sitetemp/template/web/temp/edit-basic.html'" editid="00000000" ng-show="focus.id == '00000000'"></div>
+									
+								<div ng-repeat="item in items track by $index" class="edit_item simple" editid="{{item.id}}"  ng-show="focus.id == item.id" >
+									<div ng-include="'./../addons/zofui_sitetemp/template/web/temp/edit-'+item.name+'.html'"></div>
+								</div>
+							</div>
+							<span class="editor_arrow_wrp js_arrow">
+								<i class="editor_arrow editor_arrow_out"></i>
+								<i class="editor_arrow editor_arrow_in"></i>
+							</span>
+						</div>
+					</div>
+
+			  	</div>	
+
+				<div class="module_box">
+					<li class="modules_list" ng-show="params.showmodules" ng-mouseleave="params.showmodules = false">
+						<span ng-repeat="item in modules" class="btn btn_default btn_p20" ng-bind="item.title" name="{{item.name}}" add-module></span>
+					</li>
+					<span class="btn btn_primary btn_p20" ng-click="params.showmodules = !params.showmodules">模块</span>
+					<span ng-click="saveData()" class="btn btn_primary btn_p20">保存</span>
+				</div>
+			</div>
+
+
+			<div class="my_model" url style="display: none">
+			    <div class=" ui-draggable " >
+			        <div class="dialog">
+			            <div class="dialog_hd">
+			                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+			            </div>
+			            <div class="dialog_bd info_box item_cell_box" >
+			                <div class="setlink_l">
+			                	<li ng-class="seturltype == 'page' ? 'setlink_act' : ''" ng-click="pagetype('page')">程序页面</li>
+			                	<li  ng-class="seturltype == 'news' ? 'setlink_act' : ''" ng-click="pagetype('news')">文章页面</li>
+			                	<li  ng-class="seturltype == 'other' ? 'setlink_act' : ''" ng-click="pagetype('other')">其他页面</li>
+			                </div>
+			                <div class="setlink_r item_cell_flex">
+			                	<div ng-show="urltype == 'my' && seturltype == 'page'" ng-repeat="item in allpage" class="item_cell_box setlink_r_item">
+			                		<li>{{item.name}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.name)">选择</span>
+			                		</li>
+			                	</div>
+			                	<div ng-show="urltype == 'my' && seturltype == 'news'" ng-repeat="item in allnews" class="item_cell_box setlink_r_item">
+			                		<li>{{item.title}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.title)">选择</span>
+			                		</li>
+			                	</div>
+			                	<div ng-show="urltype == 'my' && seturltype == 'other'" ng-repeat="item in otherurl" class="item_cell_box setlink_r_item">
+			                		<li>{{item.title}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.title)">选择</span>
+			                		</li>
+			                	</div>			                	
+			                	<div ng-show="urltype == 'app'" ng-repeat="item in allapp" class=" setlink_r_item">
+			                		<div ng-repeat="initem in item.list" class="item_cell_box">
+				                		<li>
+				                			<img class="setlink_logoimg" ng-src="{{item.logo}}">
+				                		</li>
+				                		<li class="setlink_in_item setlink_in_mname">{{item.appname}}</li>
+				                		<li class="setlink_in_item">{{initem.title}}</li>
+				                		<li class="setlink_in_item">{{initem.url}}</li>
+				                		<li class="setlink_r_box item_cell_flex setlink_in_item">
+				                			<span ng-click="setotherLink(item,initem)">选择</span>
+				                		</li>
+			                		</div>
+			                	</div>
+			                </div>
+			            </div>
+			            <div class="dialog_ft">
+			                <span class="btn btn_default btn_input js_btn_p model_close" >
+			                    <button type="button" class="js_btn">取消</button>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="mask ui-draggable" style="display: block;"></div>
+			</div>
+			<div class="my_model" loadpage style="display: none">
+			    <div class=" ui-draggable " >
+			        <div class="dialog">
+			            <div class="dialog_hd">
+			                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+			            </div>
+			            <div class="dialog_bd info_box item_cell_box" >
+			                <div class="setlink_l">
+			                	<li class="setlink_act" >页面列表</li>
+			                </div>
+			                <div class="setlink_r item_cell_flex">
+			                	<div ng-repeat="item in loadpagelist" class="item_cell_box setlink_r_item">
+			                		<div class="model_temp_name">{{item.name}}</div>
+			                		<div class="setlink_r_box item_cell_flex " >
+			                			<div class="item_cell_box setlink_r_item" ng-repeat="inn in item.page">
+			                				<div>{{inn.name}}</div>
+			                				<div class="setlink_r_box item_cell_flex " >
+			                					<span ng-click="loadPageByid(inn.id)">选择</span>
+			                				</div>
+			                			</div>
+			                			
+			                		</div>
+			                	</div>
+			                </div>
+			            </div>
+			            <div class="dialog_ft">
+			                <span class="btn btn_default btn_input js_btn_p model_close" >
+			                    <button type="button" class="js_btn">取消</button>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="mask ui-draggable" style="display: block;"></div>
+			</div>	
+
+			<div class="my_model" map style="display: none">
+			    <div class=" ui-draggable " >
+			        <div class="dialog">
+			            <div class="dialog_hd">
+			                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+			            </div>
+			            <div class="dialog_bd info_box" >
+			            	<div class="font_mini">左键点击所在出现红色标记，点击确定即可</div>
+							<div class="map_box" style="margin: 0 auto;">
+								<!-- <div class="map_search">
+									<span class="frm_input_box frm_input_box_100">
+										<input type="text" class="frm_input"  name="searaddress" value="">
+									</span><a href="javascript:;" id="find_address">搜索</a>
+								</div>
+								<div class="baidu_map" id="map"></div> -->
+								<div class="map_search">
+									<span class="frm_input_box frm_input_box_100">
+										<input type="text" class="frm_input"  name="searaddress" id="searaddress" value="">
+									</span><a href="javascript:;" id="find_address">搜索</a>
+								</div>
+								<div class="baidu_map" id="map"></div>
+							</div>
+			            </div>
+			            <div class="dialog_ft">
+			            	<span class="btn btn_primary btn_input js_btn_p" ng-click="setLocation()">
+			            		<button type="button" class="js_btn">确定</button>
+			            	</span>
+			                <span class="btn btn_default btn_input js_btn_p model_close" >
+			                    <button type="button" class="js_btn">取消</button>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="mask ui-draggable" style="display: block;"></div>
+			</div>
+
+		</div>
+	<script type="text/javascript">
+		var page = {php echo json_encode($page)};
+		var tempid = {php echo intval( $_GPC['tid'] )};
+		var article = {php echo json_encode($article)};
+		var allsort = {php echo json_encode($allsort)};
+		var op = "{$_GPC['op']}";
+	</script>
+	<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/addart.js{php echo '?t='.TIMESTAMP}"></script>
+
+	{elseif $_GPC['op'] == 'list'}
+
+  <table class="table" cellspacing="0"> 
+   <thead class="thead"> 
+    	<tr> 
+     		<th class="table_cell title"> 
+     			<label class="frm_checkbox_label" for="selectAll"> 
+     				<i class="icon_checkbox"></i> 
+     				<span class="lbl_content">id</span> 
+     				<input type="checkbox" class="frm_checkbox" id="selectAll" /> 
+     			</label>
+     		</th> 
+     		<th class="table_cell tl">页面名称</th> 
+     		<th class="table_cell tr">操作</th>
+    	</tr> 
+   </thead> 
+   <tbody class="tbody" id="js_goods">
+   <form method="post">
+	   {loop $list $item}
+	    	<tr> 
+	     		<td class="table_cell title"> 
+	      			<div class="goods_info">
+	      			 	<label class="frm_checkbox_label" > 
+	       					<i class="icon_checkbox"></i> 
+	       					<input type="checkbox" name="checkall[]" class="frm_checkbox" value="{$item['id']}" /> 
+	       					{$item['id']}
+	       				</label>
+	      			</div>
+	     		</td> 	    		
+	    		<td class="table_cell tl">
+	    			{$item['name']}
+	    		</td> 			    		
+			    <td class="table_cell oper last_child tr" style="position: relative;">
+
+			    	<a href="{php echo $this->createWebUrl('page',array('op'=>'edit','id'=>$item['id'],'tid'=>$item['tempid']))}">编辑</a>
+			    	<a href="{php echo $this->createWebUrl('page',array('op'=>'delete','id'=>$item['id'],'tid'=>$item['tempid']))}" onclick="return confirm('删除不能恢复，确定要删除吗？');">删除</a>
+			    </td>
+	    	</tr>
+	    {/loop}
+   	</tbody> 
+  	</table>
+	<div class="bottom_page item_cell_box">
+		<div class="dib tl">
+  			<div class="filter_content dropdown_topbar"> 
+		   		<div class="dropdown_menu ">
+		    		<a href="javascript:;" class="btn dropdown_switch jsDropdownBt">
+		    			<label class="jsBtLabel">批量操作</label>
+		    			<i class="arrow"></i>
+		    		</a> 
+		    		<div class="dropdown_data_container jsDropdownList" > 
+			     		<ul class="dropdown_data_list"> 
+			      			<li class="dropdown_data_item "> 
+			      				<input name="deleteall" class="alldeal_btn" value="删除所选" onclick="return confirm('确定要删除选择的吗？');" type="submit">
+			      			</li> 
+			    		</ul> 
+		    		</div> 
+		   		</div>
+  			</div>
+		</div>
+		<div class="tr dib item_cell_flex">
+			{$pager}
+		</div>
+	</div>
+		<input name="token" type="hidden" value="{$_W['token']}" />
+	</form>
+
+	{elseif $_GPC['op'] == 'bar'}
+
+		<link rel="stylesheet" type="text/css" href="{php echo MODULE_URL}template/web/css/style.css{php echo '?t='.TIMESTAMP}">
+		<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/angular.min.js"></script>
+		<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+		<link href="{php echo MODULE_URL}template/web/css/jquery-ui.css" rel="stylesheet">
+		
+		<div class="my_article_box" ng-app="myyapp" ng-controller="ctr">
+		  	<div class="" ng-cload>
+			  	<div class="item_cell_box">
+					<div class="article_left">
+						<div class="article_left_mobile">
+							<div class="page-content" style="padding: 5px">
+								<div class="mobile_body" style="min-height: 200px;">
+									<div class="nav_list item_cell_box" ng-style="{'background':items.bgcolor}">
+										<div ng-repeat="item in items.data track by $index" class="item_cell_flex nav_list_item">
+											<div class="nav_list_img">
+												<img ng-src="{{item.img}}">
+											</div>
+											<div class="nav_list_name">{{item.name}}</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="mobile_bottom"></div>
+						</div>
+
+					</div>
+					<div class="article_right item_cell_flex">
+						<div class="portable_editor ">
+							<div class="editor_inner" id="js_editFormContent" style="margin-top: 100px;">
+								<div ng-include="'./../addons/zofui_sitetemp/template/web/temp/edit-bar.html'" ></div>
+							</div>
+							<span class="editor_arrow_wrp js_arrow">
+								<i class="editor_arrow editor_arrow_out"></i>
+								<i class="editor_arrow editor_arrow_in"></i>
+							</span>
+						</div>
+					</div>
+
+			  	</div>	
+
+				<div class="module_box">
+					<span ng-click="saveData()" class="btn btn_primary btn_p20">保存</span>
+				</div>
+			</div>
+			<div class="my_model" url style="display: none">
+			    <div class=" ui-draggable " >
+			        <div class="dialog">
+			            <div class="dialog_hd">
+			                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+			            </div>
+			            <div class="dialog_bd info_box item_cell_box" >
+			                <div class="setlink_l">
+			                	<li ng-class="seturltype == 'page' ? 'setlink_act' : ''" ng-click="pagetype('page')">程序页面</li>
+			                	<li ng-show="setindex != 0"  ng-class="seturltype == 'news' ? 'setlink_act' : ''" ng-click="pagetype('news')">文章页面</li>
+			                	<li ng-show="setindex != 0" ng-class="seturltype == 'other' ? 'setlink_act' : ''" ng-click="pagetype('other')">其他页面</li>
+			                </div>
+			                <div class="setlink_r item_cell_flex">
+			                	<div ng-show="urltype == 'my' && seturltype == 'page'" ng-repeat="item in allpage" class="item_cell_box setlink_r_item">
+			                		<li>{{item.name}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.name,item.id)">选择</span>
+			                		</li>
+			                	</div>
+			                	<div ng-show="urltype == 'my' && seturltype == 'news' && setindex != 0" ng-repeat="item in allnews" class="item_cell_box setlink_r_item">
+			                		<li>{{item.title}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.title)">选择</span>
+			                		</li>
+			                	</div>
+			                	<div ng-show="urltype == 'my' && seturltype == 'other' && setindex != 0" ng-repeat="item in otherurl" class="item_cell_box setlink_r_item">
+			                		<li>{{item.title}}</li>
+			                		<li class="setlink_r_box item_cell_flex">
+			                			<span ng-click="setLink(item.url,item.title)">选择</span>
+			                		</li>
+			                	</div>			                	
+			                	<div ng-show="urltype == 'app' && setindex != 0" ng-repeat="item in allapp" class=" setlink_r_item">
+			                		<div ng-repeat="initem in item.list" class="item_cell_box">
+				                		<li>
+				                			<img class="setlink_logoimg" ng-src="{{item.logo}}">
+				                		</li>
+				                		<li class="setlink_in_item setlink_in_mname">{{item.appname}}</li>
+				                		<li class="setlink_in_item">{{initem.title}}</li>
+				                		<li class="setlink_in_item">{{initem.url}}</li>
+				                		<li class="setlink_r_box item_cell_flex setlink_in_item">
+				                			<span ng-click="setotherLink(item,initem)">选择</span>
+				                		</li>
+			                		</div>
+			                	</div>
+			                </div>
+			            </div>
+			            <div class="dialog_ft">
+			                <span class="btn btn_default btn_input js_btn_p model_close" >
+			                    <button type="button" class="js_btn">取消</button>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="mask ui-draggable" style="display: block;"></div>
+			</div>
+
+			<div class="my_model" map style="display: none">
+			    <div class=" ui-draggable " >
+			        <div class="dialog">
+			            <div class="dialog_hd">
+			                <a href="javascript:;" class="icon16_opr closed pop_closed model_close" >关闭</a>
+			            </div>
+			            <div class="dialog_bd info_box" >
+			            	<div class="font_mini">左键点击所在出现红色标记，点击确定即可</div>
+							<div class="map_box" style="margin: 0 auto;">
+								<!-- <div class="map_search">
+									<span class="frm_input_box frm_input_box_100">
+										<input type="text" class="frm_input"  name="searaddress" value="">
+									</span><a href="javascript:;" id="find_address">搜索</a>
+								</div>
+								<div class="baidu_map" id="map"></div> -->
+								<div class="map_search">
+									<span class="frm_input_box frm_input_box_100">
+										<input type="text" class="frm_input"  name="searaddress" id="searaddress" value="">
+									</span><a href="javascript:;" id="find_address">搜索</a>
+								</div>
+								<div class="baidu_map" id="map"></div>
+							</div>
+			            </div>
+			            <div class="dialog_ft">
+			            	<span class="btn btn_primary btn_input js_btn_p" ng-click="setLocation()">
+			            		<button type="button" class="js_btn">确定</button>
+			            	</span>
+			                <span class="btn btn_default btn_input js_btn_p model_close" >
+			                    <button type="button" class="js_btn">取消</button>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="mask ui-draggable" style="display: block;"></div>
+			</div>
+				
+		</div>
+	<script type="text/javascript">
+		var page = {php echo json_encode($page)};
+		var tempid = {php echo intval( $_GPC['tid'] )};
+	</script>
+	<script type="text/javascript" src="{php echo MODULE_URL}template/web/js/bar.js{php echo '?t='.TIMESTAMP}"></script>
+
+	{/if}
+	
+{template '../../../addons/zofui_sitetemp/template/web/common/myfooter'}

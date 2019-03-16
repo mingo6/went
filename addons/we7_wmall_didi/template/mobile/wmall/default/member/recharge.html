@@ -1,0 +1,457 @@
+{itemplate 'public/header'}
+<style type="text/css">
+	.button-danger.button-fill{
+		background-color: #7da6e8;
+	}
+	.recharge .list-block .item-after{
+		color:#10aeff;
+	}
+	.is-invoice input,.invoice-type input{
+		vertical-align:middle;
+		margin-top:-.05rem;
+		margin-right:.2rem;
+	}
+	.list-block .item-content.invoice-type-added{
+		display: none;
+	}
+	.recharge .list-block .item-after.file{
+		height:3.6rem;
+		max-height:none;
+		flex:1;
+		display:flex;
+		display:-webkit-flex;
+		justify-content:flex-end;
+		justify-content:-webkit-flex-end;
+		overflow:visible;
+	}
+	.recharge .list-block .item-after.file #addImgArr{
+		display:flex;
+	}
+	.recharge .list-block .item-after.file #addImgArr .img{
+		width:3.6rem;
+		height:3.6rem;
+		margin-right:.3rem;
+		position:relative;
+	}
+	.recharge .list-block .item-after.file #addImgArr .img .icon{
+		position:absolute;
+		right:-.25rem;
+		top:-.25rem;
+		width:1rem;
+		height:1rem;
+		z-index:1;
+	}
+	.recharge .list-block .item-after.file #addImgArr .img .content{
+		width:100%;
+		height:100%;
+	}
+	.recharge .list-block .item-after.file #addImgArr .img:nth-child(3){
+		margin-right:0;
+	}
+	.recharge .list-block .item-after.file .add{
+		position:relative;
+		width:3.6rem;
+		height:3.6rem;
+	}
+	.recharge .list-block .item-after.file .add img,
+	.recharge .list-block .item-after.file .add input{
+		position:absolute;
+		width:100%;
+		height:100%;
+	}
+	.recharge .list-block .item-after.file .add img{
+		max-width:none;
+	}
+	.recharge .list-block .item-after.file .add input{
+		opacity:0;
+		z-index:1;
+	}
+	.list-block .item-content.hide,.list-block .item-content.transfer-msg{
+		display:none;
+	}
+	.qrcode{
+		margin:1rem auto;
+		width: 60%;
+		padding:.5rem;
+		background-color:white;
+	}
+	.qrcode img{
+		width:100%;
+		height:100%;
+	}
+	.list-block .item-content.taxes-box,
+	.list-block .item-content.taxes-hint{
+		display:none;
+	}
+</style>
+{if $ta == 'index'}
+<div class="page recharge">
+	<header class="bar bar-nav common-bar-nav">
+		<a class="pull-left back" href="javascript:;"><i class="icon icon-arrow-left"></i></a>
+		<h1 class="title">充值优惠</h1>
+	</header>
+	{php get_mall_menu();}
+	<div class="content">
+		<div class="recharge-list row">
+			{loop $recharges $recharge}
+				<div class="col-33 recharge-item" data-recharge="{$recharge['charge']}">
+					<div class="recharge-num">￥<span>{$recharge['charge']}</span></div>
+					<div class="back-num" data-back="{$recharge['back']}" data-type="{$recharge['type']}">
+						送{$recharge['back']}{if $recharge['type'] == 'credit1'}积分{else}元{/if}
+					</div>
+					<span class="selected-status"></span>
+				</div>
+			{/loop}
+			<div class="col-33 recharge-item last-item" data-recharge="0">
+				<input type="text" class="hide" placeholder="输入金额" name="inputpay" id="inputpay" value="">
+				<span class="entry-text">其他金额</span>
+				<span class="selected-status"></span>
+			</div>
+		</div>
+		<div class="list-block">
+			<ul>
+				<li class="item-content">
+					<div class="item-inner">
+						<div class="item-title">支付金额</div>
+						<div class="item-after pay-num" data-charge="0">￥0元</div>
+					</div>
+				</li>
+
+				<li class="item-content taxes-box">
+					<div class="item-inner">
+						<div class="item-title">税金</div>
+						<div class="item-after taxes">￥0元</div>
+					</div>
+				</li>
+
+				<li class="item-content hide">
+					<div class="item-inner">
+						<div class="item-title">图片</div>
+						<div class="item-after file">
+							<div id="addImgArr"></div>
+							<div class="add">
+								<img src="{WE7_WMALL_TPL_URL}static/img/add_pic.png">
+								<input id="addImgBtn" multiple type="file">
+							</div>
+							<input id="addImgAfter" type="hidden" name="invoice_images" value="">
+						</div>
+					</div>
+				</li>
+
+				<li class="item-content label-checkbox">
+					<div class="item-inner">
+						<div class="item-title">支付方式</span></div>
+						<div class="item-after invoice-type">
+							<input type="radio" value="wechat" name="pay_type" checked /><span style="margin-right:.2rem;">微信支付</span>
+							<input type="radio" value="transfer" name="pay_type" />对公转账
+						</div>
+					</div>
+					
+				</li>
+				<li class="item-content label-checkbox transfer-msg">
+					<div class="item-inner">
+						<div class="item-title" style="color: #ff0000;text-align: right;width: 100%;">对公转账请上传转账记录后（30分钟后）查看余额</div>
+					</div>
+				</li>
+				<li class="item-content label-checkbox">
+					<div class="item-inner">
+						<div class="item-title">是否需要发票</div>
+						<div class="item-after is-invoice">
+							<input type="radio" value="1" name="is_invoice" /><span style="margin-right:.2rem;">需要</span>
+							<input type="radio" value="0" name="is_invoice" checked />不需要
+						</div>
+					</div>
+				</li>
+				<li class="item-content label-checkbox invoice">
+					<div class="item-inner">
+						<div class="item-title">发票类型</div>
+						<!-- (税费：<span id="invoice-fee-scale">{$config_recharge['invoice_fee_scale']}</span>%)</span> -->
+						<div class="item-after invoice-type">
+							<input type="radio" value="1" name="invoice_type" data-scale-value="{$config_recharge['invoice_fee_scale']}" checked /><span style="margin-right:.2rem;">普通发票</span>
+							<input type="radio" value="2" name="invoice_type" data-scale-value="{$config_recharge['added_invoices_fee_scale']}" />增值发票
+						</div>
+					</div>
+				</li>
+				<li class="item-content taxes-hint">
+					<div class="item-inner">
+						<div class="item-title" style="color: #ff0000;text-align: right;width: 100%;">普票税率3% 专用发票税率6%</div>
+					</div>
+				</li>
+				<!-- <li class="item-content invoice-type-common invoice">
+						<div class="item-inner">
+							<div class="item-title label">公司名称</div>
+							<div class="item-input">
+								<input type="text" name="company_name" placeholder="请输入公司名称" >
+							</div>
+						</div>
+				</li>
+				<li class="item-content invoice-type-common invoice">
+					<div class="item-inner">
+						<div class="item-title label">纳税人识别号</div>
+						<div class="item-input">
+							<input type="text" name="tax_identification" placeholder="请输入纳税人识别号" >
+						</div>
+					</div>
+				</li>
+				<li class="item-content invoice-type-common invoice">
+					<div class="item-inner">
+						<div class="item-title label">开户银行</div>
+						<div class="item-input">
+							<input type="text" name="out_bank" placeholder="请输入开户银行" >
+						</div>
+					</div>
+				</li>
+				<li class="item-content invoice-type-common invoice">
+					<div class="item-inner">
+						<div class="item-title label">银行账号</div>
+						<div class="item-input">
+							<input type="text" name="bank_account" placeholder="请输入银行账号" >
+						</div>
+					</div>
+				</li>
+				<li class="item-content invoice-type-common invoice-type-added invoice">
+					<div class="item-inner">
+						<div class="item-title label">单位地址</div>
+						<div class="item-input">
+							<input type="text" name="unit_address" placeholder="请输入单位地址" >
+						</div>
+					</div>
+				</li>
+				<li class="item-content invoice-type-common invoice-type-added invoice">
+					<div class="item-inner">
+						<div class="item-title label">联系人电话</div>
+						<div class="item-input">
+							<input type="text" name="phone" placeholder="请输入联系人电话" >
+						</div>
+					</div>
+				</li> -->
+			</ul>
+		</div>
+		<div class="content-block">
+			<a href="javascript:;" class="button button-danger button-fill button-big btn-submit">确认充值</a>
+		</div>
+		<div class="content-block" style="text-align: center;">
+			<span>若您需要开票，请扫码操作</span>
+			<div class="qrcode">
+				<img src="{WE7_WMALL_TPL_URL}static/img/entrance_invoice.jpg">
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function() {
+	$(document).on('click', '.recharge-item', function() {
+		$('#inputpay').addClass('hide');
+		$('.recharge-item').removeClass('selected');
+		$(this).addClass('selected');
+		var recharge = $(this).data('recharge');
+		if($(this).hasClass('last-item')) {
+			$('#inputpay').removeClass('hide').focus();
+			recharge = $('#inputpay').val() ? $('#inputpay').val() : 0;
+		};
+		calculateMoney(recharge);
+	});
+
+	$('#inputpay').bind('input propertchange', function() {
+		$('.recharge-item').removeClass('selected');
+		$('.last-item').addClass('selected');
+		var recharge = $(this).val();
+		calculateMoney(recharge);
+	});
+
+	$('.is-invoice input').change(function(){
+		calculateMoney();
+	})
+
+	$('.invoice-type input').change(function(){
+		calculateMoney();
+	})
+
+	$('.btn-submit').click(function(){
+		var $this = $(this);
+		var price = parseFloat($('.pay-num').data('charge'));
+		if(isNaN(price) || !price) {
+			$.toast('充值金额有误');
+			return false;
+		}
+		var postData = {price: price};
+		postData.is_invoice = $('input[name=is_invoice]:checked').val();
+		postData.pay_type = $('input[name=pay_type]:checked').val();
+		postData.invoice_images = $('input[name=invoice_images]').val();
+		if(postData.is_invoice == 1){
+			postData.invoice_type = $('input[name=invoice_type]:checked').val();
+			postData.company_name = $('input[name=company_name]').val();
+			postData.tax_identification = $('input[name=tax_identification]').val();
+			postData.out_bank = $('input[name=out_bank]').val();
+			postData.bank_account = $('input[name=bank_account]').val();
+			if(postData.invoice_type == 2){
+				postData.unit_address = $('input[name=unit_address]').val();
+				postData.phone = $('input[name=phone]').val();
+			}
+		}
+		$this.addClass('disabled');
+		$.post("{php echo imurl('wmall/member/recharge/submit');}", postData, function(data){
+			var result = $.parseJSON(data);
+			$this.removeClass('disabled');
+			if(result.message.errno == -1) {
+				$.toast(result.message.message);
+			} else if(result.message.errno == 1){
+				$.toast('下单支付成功');
+				location.href = "{php echo imurl('wmall/member/mine');}";
+			}else {
+				$.toast('下单成功');
+				location.href = "{php echo imurl('system/paycenter/pay', array('order_type' => 'recharge'));}&id=" + result.message.message;
+			}
+		});
+	});
+
+	$("input[name='pay_type']").click(function(){
+		if ($(this).val() == 'transfer') {
+			$(".list-block .item-content.hide,.transfer-msg").show();
+		} else {
+			$(".list-block .item-content.hide,.transfer-msg").hide();
+		}
+	});
+
+	// 图片上传
+	var uploadUrl = "{php echo imurl('wmall/member/recharge/upload_invoice_img');}";
+    $("#addImgBtn[type='file']").change(function() {
+    	if (this.files.length + $("#addImgArr .img").length > 3) {
+          	for (var i = 0; i < 3 - $("#addImgArr .img").length; i++) {
+              	uploadImg(this, i);
+          	};
+        } else {
+          	for (var i = 0; i < this.files.length; i++) {
+              	uploadImg(this, i);
+          	};
+        }
+        function uploadImg(that,nub){
+            var file = that.files[nub];
+            //图片上传
+            var formData = new FormData();
+            formData.append('invoice_images', file);
+            $.ajax({
+                url: uploadUrl,
+                type: 'POST',
+                data: formData,
+                dataType: 'JSON',
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.message.errno == 0) {
+                    	if ($("#addImgAfter").val()) {
+                    		$("#addImgAfter").val($("#addImgAfter").val() + ',' + res.message.data.path);
+                    	} else {
+                    		$("#addImgAfter").val(res.message.data.path);
+                    	}
+	                    //图片预览
+	                    if (window.FileReader) {
+	                        var reader = new FileReader();
+	                        reader.readAsDataURL(file);
+	                        reader.onloadend = function(e) {
+	                        	if ($("#addImgArr .img").length == 2) $(".recharge .list-block .item-after.file .add").hide();
+	                        	var item = $('<div class="img"></div>');
+	                        	var icon = $('<img class="icon" src="{WE7_WMALL_TPL_URL}static/img/close.png">');
+	                        	var content = $('<img class="content" src="' + e.target.result + '">');
+							    item.append(icon);
+							    item.append(content);
+							    $("#addImgArr").append(item);
+							    icon.click(function(){
+							    	item.remove();
+							    	$(".recharge .list-block .item-after.file .add").show();
+							    });
+	                        }
+	                    }
+	                } else {
+						console.log(res.message.message);
+					}
+                },
+            });
+        };
+    });
+});
+calculateMoney();
+function calculateMoney(recharge){
+	var payType = $('input[name=pay_type]:checked').val();
+	if(!recharge){
+		var recharge = parseFloat($('.pay-num').attr('data-charge'));
+	} else {
+		var recharge = parseFloat(recharge);
+	}
+	if(isNaN(recharge)){
+		recharge = 0;
+	}
+	var final_recharge = recharge;
+	if (!recharge) {
+		recharge = 0;
+	}
+	var isInvoice = $('input[name=is_invoice]:checked').val();
+	if (isInvoice == 1) {
+		$('.invoice').show();
+		invoiceTypeChange();
+		if( recharge > 0){
+			var invoice_fee_scale = parseFloat($('input[name=invoice_type]:checked').attr('data-scale-value')) / 100;
+			if(invoice_fee_scale > 0){
+				var invoice_money = recharge * invoice_fee_scale;
+				final_recharge += invoice_money;
+			}
+		}
+	} else {
+		$('.invoice').hide();
+	}
+	if (payType == 'transfer') {
+		if (isInvoice == 1 && invoice_money) {
+			final_recharge = invoice_money;
+		} else {
+			final_recharge = 0;
+		}
+	}
+	// $('.pay-num').text('￥' + final_recharge + '元');
+	// $('.pay-num').attr('data-charge', recharge);
+	
+
+	if (payType == 'transfer') {
+		$('.pay-num').text('￥0元');
+	} else {
+		$('.pay-num').text('￥' + recharge + '元');
+	}
+	$('.pay-num').attr('data-charge', recharge);
+	if (isInvoice == 1) {
+		if (invoice_money) {
+			$('.taxes').text('￥' + invoice_money + '元');
+		} else {
+			$('.taxes').text('￥0元');
+		}
+	}
+}
+
+function invoiceTypeChange()
+{
+	var invoice_type = $('input[name=invoice_type]:checked').val();
+	var invoice_fee_scale = $('input[name=invoice_type]:checked').attr('data-scale-value');
+	$('#invoice-fee-scale').html(invoice_fee_scale);
+	console.log(invoice_type)
+	if(invoice_type == 1){
+		$('.invoice-type-added').hide();
+	} else {
+		$('.invoice-type-added').show();
+	}
+}
+$('input[name=is_invoice]').click(function(){
+	if ($(this).val() == 1) {
+		$(".list-block .item-content.taxes-box").show();
+		$(".list-block .item-content.taxes-hint").show();
+	} else {
+		$(".list-block .item-content.taxes-box").hide();
+		$(".list-block .item-content.taxes-hint").hide();
+	}
+});
+
+	
+
+
+
+</script>
+{/if}
+{itemplate 'public/footer'}

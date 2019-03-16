@@ -1,0 +1,194 @@
+{template 'common/header'}
+<script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('shops', array('op'=>'display'));}">商品列表</a></li>
+	<li {if empty($id)}class="active"{/if}><a href="{php echo $this->createWebUrl('shops', array('op'=>'edit'));}">添加商品</a></li>
+	{if !empty($id)}
+	<li class="active"><a href="{php echo $this->createWebUrl('shops', array('op'=>'edit', 'id'=>$id));}">编辑商品</a></li>
+	{/if}
+
+	
+	<li><a href="{php echo $this->createWebUrl('category', array('op' => 'edit'))}">添加分类</a></li>
+	<li><a href="{php echo $this->createWebUrl('category', array('op' => 'display'))}">管理分类</a></li>
+
+	
+	<li><a href="{php echo $this->createWebUrl('spec_goods', array('op'=>'edit'));}">商品属性列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('spec_goods', array('op'=>'edit'));}">添加商品属性</a></li>
+	<li><a href="{php echo $this->createWebUrl('shops_fx');}">分佣设置</a></li>
+
+	
+</ul>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" id="form">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">排序</label>
+				<div class="col-xs-12 col-sm-8">
+					<input type="text" name="goods[sort]" class="form-control" value="{$goods['sort']}" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品名称</label>
+				<div class="col-xs-12 col-sm-8">
+					<input type="text" name="goods[shop_name]" class="form-control" value="{$goods['shop_name']}" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品缩略图</label>
+				<div class="col-xs-12 col-sm-8">
+				{php echo tpl_form_field_image('goods[gimg]', $goods['gimg']);}
+				<span class="help-block"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>商品分类</label>
+				<div class="col-sm-8 col-xs-12">
+					<select name="goods[typeid]" class="form-control">
+					<option value="0" >无</option>
+					{loop $category $row}
+						<option value="{$row['id']}" {if $goods['typeid']==$row['id']}selected="selected"{/if}>{$row['title']}</option>
+					{/loop}}
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>商品属性</label>
+				<div class="col-sm-8 col-xs-12">
+					<select name="goods[specid]" class="form-control">
+					<option value="0" >无</option>
+					{loop $spec $row}
+						<option value="{$row['id']}" {if $goods['specid']==$row['id']}selected="selected"{/if}>{$row['title']}</option>
+					{/loop}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品库存</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="input-group">
+						<input type="text" name="goods[shops_num]" class="form-control" value="{$goods['shops_num']}" />
+						<span class="input-group-addon">件</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">商品销量</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="input-group">
+						<input type="text" name="goods[sale_num]" class="form-control" value="{$goods['sale_num']}" />
+						<span class="input-group-addon">件</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">价格</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="input-group">
+						<input type="text" name="goods[price]" class="form-control" value="{$goods['price']}" />
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页轮播</label>
+				<div class="col-sm-9">
+					{php echo tpl_form_field_multi_image('top_pic',$top_pic);}
+					<span class="help-block">商品详情幻灯片，建议400X300</span>
+				</div>
+			</div>
+
+
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">商品介绍</label>
+				<div class="col-sm-9">
+					{php echo tpl_form_field_multi_image('cp_bs_img',$cp_bs_img);}
+					<span class="help-block">商品详情幻灯片，建议宽400px</span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">状态</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[is_show]" value="0" {if intval($goods['is_show']) ==0}checked="checked"{/if}> 下架
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[is_show]" value="1" {if intval($goods['is_show']) ==1 }checked="checked"{/if}> 上架
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分佣设置</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[fx_type]" value="0" {if intval($goods['fx_type']) ==0}checked="checked"{/if}> 关闭
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[fx_type]" value="1" {if intval($goods['fx_type']) ==1 }checked="checked"{/if}> 全局
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[fx_type]" value="2" {if intval($goods['fx_type']) ==2 }checked="checked"{/if}> 自定义
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否显示价格</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[no_show_price]" value="0" {if intval($goods['no_show_price']) ==0}checked="checked"{/if}>是
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[no_show_price]" value="1" {if intval($goods['no_show_price']) ==1 }checked="checked"{/if}>否
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">是否推荐</label>
+				<div class="col-xs-12 col-sm-8">
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[is_recommend]" value="0" {if intval($goods['is_recommend']) ==0}checked="checked"{/if}>否
+					</label>
+					<label class="radio radio-inline">
+						<input type="radio" name="goods[is_recommend]" value="1" {if intval($goods['is_recommend']) ==1 }checked="checked"{/if}>是
+					</label>
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">自定义佣金</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="input-group">
+						<input type="text" name="goods[fx_price]" class="form-control" value="{$goods['fx_price']}" />
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+			
+
+			
+			<div class="form-group col-sm-12">
+				<input type="hidden" name="id" value="{$goods['id']}" />
+				<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+				<input type="hidden" name="token" value="{$_W['token']}" />
+			</div>
+
+	</form>
+</div>
+
+
+{template 'common/footer'}

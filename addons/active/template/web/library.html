@@ -1,0 +1,188 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+
+	{if $_GPC['op'] == 'add' || $_GPC['op'] == 'edit'}
+		<form method="post" action="">
+			<div class="frm_control_group">
+				<label for="" class="frm_label"></label>
+				<div class="frm_controls">
+				</div>
+			</div>
+			<div class="frm_control_group">
+				<label for="" class="frm_label">标题</label>
+				<div class="frm_controls msg">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input"  name="title" value="{$info['title']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+            </div>
+            <div class="frm_control_group" >
+                <label for="" class="frm_label">所属分类</label>
+                 <div class="frm_controls">
+                    <div class="filter_content dropdown_topbar"> 
+                         <div class="dropdown_menu ">
+                          <a href="javascript:;" class="btn dropdown_switch jsDropdownBt width_200">
+                              <label class="jsBtLabel">
+                                {if empty($info)}
+									请选择分类
+								{else}
+									{loop $classArr $item}
+										{if $item['id'] == $info['class_id']}
+											{$item['name']}
+										{/if}
+									{/loop}
+								{/if}
+                              </label>
+                              <i class="arrow"></i>
+                          </a> 
+                          <div class="dropdown_data_container jsDropdownList width_200" > 
+                               <ul class="dropdown_data_list">
+                                    {loop $classArr $item}
+                                        <li class="dropdown_data_item "> <a href="javascript:;" id="{$item['id']}" class="select_item">{$item['name']}</a> </li> 
+                                    {/loop}
+                              </ul>
+                          </div> 
+                          <input type="hidden" name="class_id" value="{$info['class_id']}">
+                         </div>
+                    </div>
+                 </div>
+            </div>
+            <div class="frm_control_group">
+				<label for="" class="frm_label">背景图片</label>
+				<div class="frm_controls msg">
+                    {php echo tpl_form_field_image('bg_img', $info['bg_img']);}
+					<p class="frm_tips"></p>
+				</div>
+            </div>
+			<div class="frm_control_group">
+				<label for="" class="frm_label">背景持续时间</label>
+				<div class="frm_controls msg">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input"  name="bg_time" value="{$info['bg_time']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+            </div>
+            <div class="frm_control_group">
+				<label for="" class="frm_label">答对可获得分数</label>
+				<div class="frm_controls msg">
+					<span class="frm_input_box">
+						<input type="text" class="frm_input"  name="grade" value="{$info['grade']}">
+					</span>
+					<p class="frm_tips"></p>
+				</div>
+            </div>
+            <div class="frm_control_group">
+                <label for="" class="frm_label">正确答案</label>
+                <div class="frm_controls msg">
+                    <span class="frm_input_box">
+                        <input type="text" class="frm_input"  name="correct_response" value="{$info['correct_response']}">
+                    </span>
+                    <p class="frm_tips"></p>
+                </div>
+            </div>
+            <div class="frm_control_group">
+                <label for="" class="frm_label">排序</label>
+                <div class="frm_controls msg">
+                    <span class="frm_input_box">
+                        <input type="text" class="frm_input"  name="sort" value="{if empty($info)}1{else}{$info['sort']}{/if}">
+                    </span>
+                    <p class="frm_tips"></p>
+                </div>
+            </div>
+			<div class="tool_bar">
+				<input type="submit" name="create" class="btn btn_primary" value="确定" >
+				<input name="token" type="hidden" value="{$_W['token']}" />
+			</div>
+		</form>
+	
+{elseif $_GPC['op'] == 'list'}
+	{if !empty( $list )}
+  	<table class="table" cellspacing="0"> 
+   	<thead class="thead"> 
+    	<tr> 
+     		<th class="table_cell title td_col_1"> 
+     			<label class="frm_checkbox_label" for="selectAll"> 
+     				<i class="icon_checkbox"></i> 
+     				<span class="lbl_content">id</span> 
+     				<input type="checkbox" class="frm_checkbox" id="selectAll" /> 
+     			</label>
+     		</th>	
+     		<th class="table_cell tl td_col_2">题目标题</th>
+     		<th class="table_cell tl td_col_1">正确答案编号</th>
+     		<th class="table_cell tl td_col_1">分数</th>
+     		<th class="table_cell tl td_col_1">排序</th>
+     		<th class="table_cell tr td_col_2">操作</th>
+    	</tr> 
+   </thead> 
+   <tbody class="tbody" id="js_goods">
+   <form method="post">
+	   {loop $list $item}
+	    	<tr> 
+	     		<td class="table_cell title td_col_1"> 
+	      			<div class="goods_info">
+	      			 	<label class="frm_checkbox_label" > 
+	       					<i class="icon_checkbox"></i> 
+	       					<input type="checkbox" name="checkall[]" class="frm_checkbox" value="{$item['id']}" /> 
+	       					{$item['id']}
+	       				</label>
+	      			</div>
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			{$item['title']}
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			{$item['correct_response']}
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			{$item['grade']}
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			{$item['sort']}
+	     		</td>
+			    <td class="table_cell oper last_child tr opclass td_col_2" style="position: relative;">
+			    	<a  href="{php echo $this->createWebUrl('answer',array('op'=>'list', 'library_id' => $item['id']))}" class="edit_listitem" >答案列表</a>
+			    	<a  href="{php echo $this->createWebUrl('library',array('op'=>'edit','id'=>$item['id'],'page'=>$_GPC['page']))}" class="edit_listitem" >编辑</a>
+			    	<a href="{php echo $this->createWebUrl('library',array('op'=>'delete','id'=>$item['id']))}" onclick="return confirm('删除不能恢复，确定要删除吗？');">删除</a>
+			    </td>
+	    	</tr>
+	    {/loop}
+   	</tbody>
+  	</table>
+	<div class="bottom_page item_cell_box">
+		<div class="dib tl">
+     			<label class="frm_checkbox_label" for="selectAll"> 
+     				<i class="icon_checkbox"></i> 
+     				<span class="lbl_content">全选</span> 
+     				<input type="checkbox" class="frm_checkbox" id="selectAll" /> 
+     			</label>
+  			<div class="filter_content dropdown_topbar"> 
+		   		<div class="dropdown_menu ">
+		    		<a href="javascript:;" class="btn dropdown_switch jsDropdownBt">
+		    			<label class="jsBtLabel">批量操作</label>
+		    			<i class="arrow"></i>
+		    		</a> 
+		    		<div class="dropdown_data_container jsDropdownList" > 
+			     		<ul class="dropdown_data_list"> 
+			      			<li class="dropdown_data_item "> 
+			      				<input name="deleteall" class="alldeal_btn" value="删除所选" onclick="return confirm('确定要删除选择的吗？');" type="submit">
+			      			</li>			      			
+			    		</ul> 
+		    		</div> 
+		   		</div>
+  			</div>
+		</div>
+		<div class="tr dib item_cell_flex">
+			{$pager}
+		</div>
+	</div>
+		<input name="token" type="hidden" value="{$_W['token']}" />
+	</form>
+    {else}
+    	<div class="no_data">没有找到数据</div>
+    {/if}
+
+{/if}
+	
+	
+{template 'common/footer'}

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{$info['title']}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+<link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/aiui.css">
+<link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+<link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/page.css">
+    
+<style>
+  .weui-footer { display: none; } 
+  .weui-header,
+  audio { display: none; } 
+  strong {font-weight: 700!important}
+  table {display: table;width: 100%!important;} 
+  .more-card { margin-bottom: 3px; color:#000!important; }
+  .more-card .icon {margin-top: -1px} 
+  .for-me { right: 0; font-size: 14px; border: 1px solid #127BFF; padding: 0 5px; border-radius: 3px; } 
+  .head-img {border-radius: 50%;} 
+  .user-info {padding: .5rem 15px;border-bottom: 1px solid #F1F1F1;margin-bottom: .5rem} 
+  .weui-media-box:before {left:0;} 
+  .weui-photo-browser-modal {z-index: 10} 
+  .favorite {color:#1587ff; border:1px solid #1587ff;padding:0 .85em;} 
+  .favorite.weui-btn_disabled {color:#ccc; border:1px solid #ccc;} h1, h2, h3, h4, h5, h6 { font-weight: 400; font-size: 16px; } 
+  .weui-btn:after {border:0;} 
+  #myiframe {vertical-align:bottom;display: block;box-shadow: 0 0 7px rgba(0, 0, 0, .4);}
+  .share_tologin {width: 320px; height: 337px; position: fixed; top: 50%; margin-top: -168px; left: 50%; margin-left: -160px; background: url(/assets/img/mobile/sharedraw/login_bg.png) no-repeat; background-size: 320px; z-index: 999; display: none;}
+.share_towatch {width: 100%; height: 402px; position: fixed; top: 50%; margin-top: -201px; left: 0; z-index: 1002; display: none;}
+.share_toclose {position: absolute; top: -10px; right: 15px; display: inline-block; width: 30px; height: 30px;}
+.share_toclose img {width: 30px; height: 30px;}
+.share_tologin .s_bottom {width: 80%; margin: 0 auto; padding-top: 160px; border-bottom: none;}
+.share_tologin .b_input li input {background: #fff;}
+.share_toto {text-align: center;}
+.share_toto a {width: 80%; height: 48px; display: inline-block; color: #fff; font-size: 26px; line-height: 48px; border-radius: 5px; background: #952dcc; text-align: center; border-radius: 15px;}
+.share_tologin ul li span {background: #952dcc;}
+.base_tcdiv_mobile5 {position: fixed; display: none; display: block; top: 0px; right: 0px; bottom: 0px; left: 0px; z-index: 1001; width: 100%; height: 100%; filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; background: none repeat scroll 0% 0% rgb(0, 0, 0);}
+</style>
+
+<body>
+<!--名片展示-->
+
+<!--公众号文章内容-->
+
+<!---原文链接--->
+
+<div class="weui-weixin" >
+  <div class="weui-weixin-ui">
+    <!--页面开始-->
+    <div class="weui-weixin-page rel">
+      <h2 class="weui-weixin-title">{$info['title']} </h2>
+      <div href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg rel user-info">
+        <div class="weui-media-box__hd" style="width: 2.25rem;height: 2.25rem">
+          <a href=""><img class="weui-media-box__thumb head-img" src="<?php echo tomedia($card['card_logo']);?>"></a>
+        </div>
+        <div class="weui-media-box__bd">
+          <h4 class="weui-media-box__title">
+            <a class="f-black bold">{$card['card_name']}</a>
+                <span class="icon"><img src="../addons/dbs_masclwlcard/template/wxapp/images/test.png" width="20px" style="margin-bottom: -4px"></span>
+           </h4>
+          <p class="weui-media-box__desc">{$card['role_name']}</p>
+        </div>
+        <a class="weui-weixin-a for-me abs" style="color: #127BFF" id="forme">访问我的名片</a>
+     </div>
+      <!--meta结束-->
+      <!--内容-->
+      <!-- 用户自定义内容头部 -->
+            <div class="weui-weixin-content">
+
+			<div class="article-content mystyle"><?php echo htmlspecialchars_decode($info['content']);?> </div>
+			
+			<!--div class="get-share-poster fixed icon f23 f-darkgrey">&#xe613;</div-->
+  
+        <!-- 用户自定义内容尾部 -->
+            <div class="weui-weixin-tools">
+				<div class="iblock f-grey" style="font-size: 15px;line-height: 21px;margin-top: 1.115rem">版权声明：感谢原作者的辛苦创作，如转载涉及版权等问题，请与我们联系处理！</div>
+			</div>
+		</div>  
+</body>
+
+<div class="base_tcdiv_mobile5" style="display: none"></div>
+<div class="share_towatch" style="display: none">
+	<a id="share_toclose2" class="share_toclose" style="top: 30px;" href="javascript:;">
+	<img src="../addons/dbs_masclwlcard/template/wxapp/images/close.png" alt="" ></a>
+	<p style="text-align:center;color:red"> 亲!长按识别小程序查看哦！</p>
+	<img class="lazy" src="{$wx_png}" alt="" style="width:100%">
+</div>
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+
+<script>
+
+$(".base_tcdiv_mobile5,#share_toclose2").click(function(){
+	$(".share_towatch").slideUp(500);
+	$(".base_tcdiv_mobile5").hide();
+});
+$("#forme").click(function() {
+	$(".share_towatch").show();
+	$(".base_tcdiv_mobile5").show();
+});
+
+    $(function() {
+       wx.config({
+				debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+				appId: "{$Sign['appId']}", // 必填，公众号的唯一标识
+				timestamp: "{$Sign['timestamp']}", // 必填，生成签名的时间戳
+				nonceStr: "{$Sign['nonceStr']}", // 必填，生成签名的随机串
+				signature: "{$Sign['signature']}", // 必填，签名
+				jsApiList: ['onMenuShareAppMessage','onMenuShareWechat','onMenuShareTimeline'] // 必填，需要使用的JS接口列表
+			})
+		})
+
+    function checkApi(){
+        wx.checkJsApi({
+            jsApiList: ['onMenuShareAppMessage','onMenuShareWechat','onMenuShareTimeline'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function(res) {
+              //  alert(res)
+            // 以键值对的形式返回，可用的api值true，不可用为false
+            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            }
+        });
+    }
+
+  
+
+    wx.ready(function() {
+       checkApi();
+       wx.onMenuShareAppMessage({
+			title: "{$info['share_title']}", 
+			desc: "{$info['share_content']}", // 分享描述
+			link: "{$_W['siteurl']}", // 分享链接
+			imgUrl: "{$info['image']}", // 分享图标
+			success: function () {
+				// 用户确认分享后执行的回调函数
+			},
+			cancel: function () {
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		 wx.onMenuShareWechat({
+			title: "{$info['share_title']}", 
+			desc: "{$info['share_content']}", // 分享描述
+			link: "{$_W['siteurl']}", // 分享链接
+			imgUrl: "{$info['image']}", // 分享图标
+			success: function () {
+				// 用户确认分享后执行的回调函数
+			},
+			cancel: function () {
+				// 用户取消分享后执行的回调函数
+			}
+		});
+		wx.onMenuShareTimeline({
+			title: "{$info['share_title']}", 
+			link: "{$_W['siteurl']}", // 分享链接
+			imgUrl: "{$info['image']}", // 分享图标
+			success: function () {
+				// 用户确认分享后执行的回调函数
+			},
+			cancel: function () {
+				// 用户取消分享后执行的回调函数
+			}
+		});
+
+    });
+
+    wx.error(function(res) {
+      // alert(res)
+    });
+</script>
+	
+</html>

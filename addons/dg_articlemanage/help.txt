@@ -1,0 +1,7 @@
+作者pc端配置：
+
+1.在dg_articlemanage文件下找到ziyuan文件夹
+
+2.然后将setarticle.php这个文件放在微擎的根目录web文件夹下面
+
+3.将setarticle.html这个文件放在根目录web/themes/default文件夹下面

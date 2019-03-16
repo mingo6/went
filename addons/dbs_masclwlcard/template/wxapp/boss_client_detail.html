@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>客户详情</title>
+	
+
+	<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+    <link rel="stylesheet" href="../addons/dbs_masclwlcard/template/wxapp/css/mescroll.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/client.css">
+	
+</head>
+<body>
+    <div style="position: fixed;width: 100%;height: 250px;z-index: 999;background-color: #ecf0f3;">
+        <div class="weui-flex header  ">
+            <div class="weui-flex__item row" style="flex: 2;justify-content: flex-start;">
+                <div class="placeholder" style="width: 50%;">
+                    <div class="avatar" style="height:5rem; width:5rem;">
+                        <img class="avatar-img client-logo" src="../images/avater_def.png" onclick='viewImg(this)' alt="">
+                    </div>
+                </div>
+                <div class="customer-info" style="width: 50%;">
+                    <div class="customer-name" title="客户名称" style="color:black"></div>
+                    <div class="infodetail a-client-edit" style="margin-bottom: 5px;color:rgb(75, 169, 241);font-size:12px;">
+                        资料详情
+                    </div>
+                    <div class="infodetail" style="margin-bottom: 5px;">
+                        <span style="color:#fa8933" class="NoContactCount">0</span>天未联系
+                    </div>
+                    <div class="infodetail">
+                        已跟进<span style="color:#fa8933" class="FollowUpCount">0</span>天
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex__item sw ">
+                <div class="about gailv" id="showProbability">
+                    0<span style="font-size:12px;">%</span>
+                </div>
+                <div style="width:66px;text-align:center;font-size:12px;">
+                    成交率
+                </div>
+            </div>
+        </div>
+ 
+        <div class="weui-flex" style="padding:0px;border-bottom:1px solid #dee1e4;position:relative;">
+            <div class="weui-flex__item navbar active_navbar justify-center">
+                <div class="placeholder showmsg" style="position:relative;">
+                    消息
+                </div>
+                <div class="border" style="display:block">
+                    <div class="outWindow" style="z-index:99;">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex__item navbar">
+                <div class="placeholder showfollow">记录</div>
+                <div class="border follows"></div>
+            </div>         
+            <div class="weui-flex__item navbar">
+                <div class="placeholder">画像</div>
+                <div class="border"></div>
+            </div> 
+            <div class="weui-flex__item navbar">
+                <div class="placeholder analysis">AI分析</div>
+                <div class="border"></div>
+            </div>           
+        </div>
+    </div>
+    <div class="weui-tab__panel" style="padding-top: 250px; width: 100%;">
+        <div style="display:block" name="page1">
+            <div class="tab hide">
+                <div class="weui-flex" style="background-color:#f5f5f5; color:#fc9143;font-size:16px;border-top:1px solid #dfdfdf;">
+                    <div class="weui-flex__item">
+                        <div class="placeholder1 a_im" style="text-align: center;">发消息</div>
+                    </div>
+                    <div class="weui-flex__item">
+                        <div class="placeholder1 a-follow" style="text-align:center;">跟进</div>
+                    </div>
+                </div>
+            </div>
+
+            <!--滑动区域-->
+            <div id="mescroll" class="mescroll">
+                <!--消息列表-->
+                <div class="actionrecord-list" style="margin-top:30px;margin-bottom: 200px;">
+                </div>
+                <div style="height:60px;"></div>
+            </div>
+        </div>
+        <div style="display:none" name="page2" class="page2">
+            <div class="tab hide">
+                <div class="weui-flex" style="background-color:#f5f5f5; color:#fc9143;font-size:16px;border-top:1px solid #dfdfdf;">
+                    <div class="weui-flex__item">
+                        <div class="placeholder1 a_im" style="text-align: center;">发消息</div>
+                    </div>
+                    <div class="weui-flex__item">
+                        <div class="placeholder1 a-follow" style="text-align:center;">跟进</div>
+                    </div>
+                </div>
+            </div>
+            <div id="mescroll_follow" class="mescroll">
+                <div class="follow_lists" style="margin-top:30px;margin-bottom:255px;"> </div>
+            </div>
+        </div>
+        <div name="page4" class="page4"></div>
+        <div style="display:none;width: 100%;" name="page3" class="page3">
+            <div class="weui-flex customer-check">
+                <div class="weui-flex__item">
+                    <div class="placeholder " style="text-align:center;">客户兴趣占比</div>
+                </div>
+            </div>
+            <div class="pie" id="container" style="width:350px;height:200px;margin-left: auto;margin-right: auto;">
+            </div>
+            <div class="weui-flex" style=";padding-top:0px;">
+                <div class="weui-flex__item">
+                    <div class="placeholder placeholder-other interests">
+                        <div class="dian" style="background-color: #ff5f1b;">
+                        </div>
+                        <div class="" style="color:#ff5f1b;font-size: 12px;">
+                            对我感兴趣
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder placeholder-other interests">
+                        <div class="dian" style="background-color: #ffab2c;">
+                        </div>
+                        <div class="" style="color:#ffab2c;font-size: 12px;">
+                            对产品感兴趣
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder placeholder-other interests">
+                        <div class="dian" style="background-color:#3fc3d2;">
+                        </div>
+                        <div class="" style="color:#3fc3d2;font-size: 12px;">
+                            对公司感兴趣
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex customer-check" style="border-top:20px solid #ecf0f3;">
+                <div class="weui-flex__item tc">
+                    <div class="placeholder-other">近15日客户活跃度</div>
+                </div>
+            </div>
+            <div id="main3" style="width:300px;height:300px;margin-left: auto;margin-right: auto;"></div>
+            <div class="weui-flex customer-check" style="border-top:20px solid #ecf0f3;">
+                <div class="weui-flex__item tc">
+                    <div class="placeholder-other">客户与我的互动</div>
+                </div>
+            </div>
+            <div id="main4" style="width: 300px;height:300px;margin-left: auto;margin-right: auto;"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../plugins/echarts/js/echarts.min.js"></script>
+    <script type="text/javascript" src="../plugins/weui/js/weui.min.js"></script>
+    <script src="../plugins/dropload/js/mescroll.min.js"></script>
+    <script type="text/javascript" src="../js/base.js"></script>
+    <script src="../js/client.js"></script>
+    <script type="text/javascript" src="../js/clientChart.js?v3_0909"></script>
+    <script type="text/javascript">
+    var dom = document.getElementById("container");
+    var followstate = getQueryString("followstate");
+    var mescroll = null, mescrollFollow = null;
+    var client_uid = 0;
+
+    $(function () {
+        GetCustomerDetail(); //客户信息
+        mescroll = getPager(loadActionRecord); //消息轨迹列表 分页      
+        loadBtn();
+        if (followstate == 1) {
+            $('.showfollow').click();
+        }
+        //load();
+    });
+
+    //加载轨迹消息
+    function loadActionRecord(pageObj) {
+        var clientId = getQueryString("clientid");
+        if (pageObj == null) pageObj = { num: 1 };
+        var _staffid = getQueryString("staffid") == "" ? staffId : getQueryString("staffid");
+        ajaxGet(siteApiList.ActionRecordList + "?staffid=" + _staffid + "&clientid=" + clientId + "&page=" + pageObj.num, function (data) {
+            if (!isJsonSuccess(data))
+                return;
+            mescroll.endSuccess(data.Data == null ? 0 : data.Data.List.length); //设置条数
+
+            if (isNoData(data.Data.List)) {
+                $('.actionrecord-list').append(getNoDataMsg(pageObj.num));
+                return;
+            }
+            var html = "";
+            var list = data.Data.List;
+            for (var i = 0; i < list.length; i++) {
+                var datestr = Date.parse(list[i].addtime.replace(/-/g, "/"));
+                datestr = dateFtt('yyyy/MM/dd', new Date(list[i].addtime.replace(/-/g, "/")));
+                html += '<div class="time-tit">' + datestr + '</div>';
+                for (j = 0; j < list[i].rtmList.length;j++)
+                    html += getItemHtml(list[i].rtmList[j], data.Data.Avater);
+            }
+            $(".actionrecord-list").append(html);
+        });
+    }
+
+    function dateFtt(fmt, date) { //author: meizz
+        var o = {
+            "y+": date.getFullYear(),
+            "M+": date.getMonth() + 1,                 //月份
+            "d+": date.getDate(),                    //日
+            "h+": date.getHours(),                   //小时
+            "m+": date.getMinutes(),                 //分
+            "s+": date.getSeconds(),                 //秒
+            "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+            "S": date.getMilliseconds()             //毫秒
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    function getItemHtml(item, avater) {
+        var html = "";
+        var title = getActionTitle(item.actionType, item.actionValue, 1);
+        html += "<div class='weui-cells'><a class='weui-cell weui-cell_access' href='javascript:;'>";
+        html += "<div class='weui-cell__hd'><div class='avatar'><img class='avatar-img' src='" + siteConfig.formatAvater(avater) + "' onclick='viewImg(this)'></div></div>"
+        html += "<div class='weui-cell__bd'><p style='margin-left:10px;'>" + title + "</p></div>"
+        html += "</a></div>"
+        return html;
+    }
+
+
+    //预览图片
+    function viewImg(obj) {
+        var src = obj.currentSrc;
+        if (src.indexOf("wx.qlogo.cn") > -1)
+            src = src.replace("/132", "/0");    //显示高清大图
+        var gallery = weui.gallery(src);
+        $('.weui-gallery__opr').css('display', 'none');
+    }
+
+    //图表自适应
+    $(window).resize(function() {
+        myChart3.resize();
+        myChart4.resize();
+    });
+
+    function loadBtn() {
+        var clientId = getQueryString("clientid");
+        var _staffid = getQueryString("staffid") == "" ? staffId : getQueryString("staffid");
+        //跳转到标签页面
+        $(".a-tag").click(function () {
+            toUrl("clientTag.html?clientid=" + clientId + "&staffId=" + _staffid);
+        })
+        $(".ph-boder").click(function () {
+            if ($(this).children().text() == "添加标签") {
+                toUrl("clientTag.html?clientid=" + clientId + "&staffId=" + _staffid);
+            }
+        })
+
+        var isBind = false;
+        $('.showfollow').click(function () {
+            //限制只加载一次
+            if (!isBind) {
+                $(".follow_lists").html("");
+                mescrollFollow = getPager(GetClientFollowList, "mescroll_follow"); //消息轨迹列表 分页
+            }
+            isBind = true;
+        });
+        //AI分析数据
+        $('.analysis').click(function () {
+        	load();
+        });
+        
+
+        //跳转到根进页面
+        $(".a-follow").click(function () {
+            toUrl(siteUrlList.FollowUp + "?clientid=" + clientId + "&staffId=" + _staffid);
+        });
+        //编辑客户资料
+        $(".a-client-edit").click(function () {
+            toUrl(siteUrlList.ClientEdit + "?clientid=" + clientId + "&staffId=" + _staffid);
+        });
+
+    	//tab切换
+        $('.navbar').on('click', function () {
+        	//时长统计跳转
+        	if ($(this).text().indexOf("画像") > -1) {
+        		toUrl("history.html?staffid=" + _staffid + "&uid=" + client_uid);
+        		return;
+        	}
+        	$('.navbar .border').css("display", "");
+        	$(this).children('.border').css('display', 'block');
+
+        	$(".navbar").removeClass('active_navbar');
+        	$(this).addClass('active_navbar');
+
+        	var index = $(this).index();
+        	$('.weui-tab__panel').children().eq(index).css('display', 'block').siblings().css('display', 'none');
+        });
+
+        //成交概率
+        $('#showProbability').on('click', function () {
+            var arr = new Array();
+            for (var i = 0; i <= 100; i++) {
+                arr[i] = { label: i + "%", value: i };
+            }
+            weui.picker(
+                arr, {
+                    onChange: function (result) {
+                        console.log(result);
+                    },
+                    onConfirm: function (result) {
+                        ChangeProbability(result);
+                    }
+                });
+        });
+
+        //互动聊天链接
+        $(".a_im").click(function () {
+            if (client_uid < 1) {
+                Alert("请选择聊天的客户")
+                return;
+            }
+            toUrl(siteUrlList.ImMessage + "?toid=" + client_uid + "&uid=" + userid);
+        });
+
+        if (_staffid == staffId)
+            $(".tab").show();
+    }
+    </script>
+</body>
+
+</html>

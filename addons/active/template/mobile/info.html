@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>活动详情</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">
+</head>
+<body>
+
+<div class="banner-wrapper">
+    <img src="/attachment/{$info['active_img']}">
+</div>
+<div class="activity-info">
+    <div class="card">
+        <p class="title">{$info['title']}</p>
+        <p class="subtitle">首届挖酒网葡萄酒外观设计大赛由北京挖酒网联合 澳大利亚太平洋酒业集团创办</p>
+        <p></p>
+        <div class="release-time">
+            <img src="../addons/{MODULE}/template/mobile/icon/time.png">
+            <span>{php echo date('m月d日 H:i',$info['start_time'])."-".date('m月d日 H:i',$info['end_time'])}</span>
+        </div>
+        <div class="release-time">
+            <img src="../addons/{MODULE}/template/mobile/icon/location.png">
+            <span>活动地址</span>
+        </div>
+        <div class="release-time">
+            <img src="../addons/{MODULE}/template/mobile/icon/person.png">
+            <span>6人参加</span>
+        </div>
+    </div>
+</div>
+
+<div class="activity-content">
+    <div class="line-title">
+        <span class="line"></span>
+        <span class="line-title-name">简介</span>
+        <div class="block-text">
+            <div class="title">日行5000步，手环3免费拿</div>
+            <div class="subtitle">研究表明，每天坚持健步走5000步可有效降低多种慢性疾病的发病率。五年老店、智能穿戴十大创新品牌之一——全程通旗舰店秉承这一理念 ，不断推出创新的运动辅助穿戴产品。为了激发更多人参与健步运动，本店推出了“日行5000步，手环免费拿”系列活动。目前，已成功举办17期，受益用户超过2万人。值此2018年旗舰机型——彩屏血压心率手环3上市之际，本店同步启动第18期免费活动。</div>
+        </div>
+    </div>
+    <div class="line-title">
+        <span class="line"></span>
+        <span class="line-title-name">活动产品</span>
+        <div class="video">
+            <video width="100%" src="http://v.yinyuetai.com/video/3264714" controls="controls"></video>
+            <p>1.H5彩屏（限量2000台，每个ID限购1台）</p>
+            <p>2.奖金169元/人</p>
+        </div>
+    </div>
+    <div class="line-title">
+        <span class="line"></span>
+        <span class="line-title-name">活动规则</span>
+        <div class="block-text">
+            <div class="title">日行5000步，手环3免费拿</div>
+            <div class="subtitle">1.活动时效：获得活动码后请在三天内至*宝搜索“全程通H5彩屏”或扫描页面底部二维码购买指定产品参加活动，逾期活动码自动作废。下单时，请备注活动码。确认收货时，请给五星好评。
+                2.兑奖要求：全年总步数大于169万步
+                3.兑奖凭证：请在规定的兑奖时间内联系在线客服，并提供以下凭证：活动码+五星好评截图+APP上总步数截图+支付宝账号
+                4.兑奖时间：请在购买产品次年同日前后5天内兑奖（例如2018年8月10日购买的用户，兑奖日为2019年8月5至15日），逾期视为自动放弃奖金。
+                注意事项：
+                参加活动前请仔细阅读活动细则，点击“参加活动”即视同理解并接受全部活动规则；活动期间如手环出现质量问题，请联系在线客服换新；活动码请自行截屏妥善保存，遗失不补；每人限领一份奖金，重领无效；如因限量原因未抢购到产品，请保留好活动码，等待通知参加下一期活动。</div>
+        </div>
+    </div>
+    <div class="QRcode">
+        <img src="{$code_url}">
+        <p>更多产品信息请扫描查看</p>
+    </div>
+    <div class="btn-auto">
+        <span onclick="goAttend({$info['id']})">我要参加</span>
+    </div>
+</div>
+
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>
+<script type="text/javascript">
+
+
+    function goAttend(id){
+        $.post("{php echo $this->createMobileUrl('info')}",{'id':id},function(res){
+            if (res.status==1){
+                alert(res.msg);
+            }else{
+                alert(res.msg);
+            }
+        },'json')
+    }
+</script>
+</body>
+</html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--{template './common/_header'}-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="active_info">-->
+
+    <!--<div>-->
+        <!--<img src="/attachment/{$info['active_img']}" alt="" style="height: 200px;width: 100%;">-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<h2>{$info['title']}</h2>-->
+        <!--<p>简介</p>-->
+        <!--<p>{php echo date('m月d日 H:i',$info['start_time'])."-".date('m月d日 H:i',$info['end_time'])}</p>-->
+        <!--<p>地址</p>-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<p>参与人数:{$info['attend_people_num']}</p>-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<h3>简介</h3>-->
+        <!--<div>{php echo htmlspecialchars_decode($info['content'])}</div>-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<h3>活动产品</h3>-->
+        <!--<div>内容</div>-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<h3>活动规则</h3>-->
+        <!--<div>内容</div>-->
+    <!--</div>-->
+
+
+    <!--<div>-->
+        <!--<button type="button" @click="goAttend({$info['id']})">我要参加</button>-->
+    <!--</div>-->
+<!--</div>-->
+<!--{template './common/_footer'}-->
+<!--<script type="text/javascript" src="../addons/{MODULE}/public/js/vue.min.js"></script>-->
+<!--<script type="text/javascript">-->
+    <!--window.onload = function () {-->
+        <!--var vm = new Vue({-->
+            <!--el: '.active_info',-->
+            <!--data: {-->
+
+            <!--},-->
+            <!--methods: {-->
+                <!--//参加活动-->
+                <!--goAttend:function(id){-->
+                    <!--$.post("{php echo $this->createMobileUrl('info')}",{'id':id},function(res){-->
+                        <!--if (res.status==1){-->
+                            <!--alert(res.msg);-->
+                        <!--}else{-->
+                            <!--alert(res.msg);-->
+                        <!--}-->
+                    <!--},'json')-->
+                <!--}-->
+            <!--}-->
+        <!--})-->
+    <!--}-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

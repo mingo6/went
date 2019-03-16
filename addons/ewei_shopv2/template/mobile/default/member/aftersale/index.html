@@ -1,0 +1,94 @@
+{template '_header'}
+<style>
+    .fui-list-media img{height:2.5rem;}
+</style>
+<div class='fui-page order-list-page'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">我的售后订单</div>
+        <div class="fui-header-right">
+            <a class="external" href="{php echo mobileUrl('member/aftersale/apply')}">申请售后</a>
+        </div>
+    </div>
+    <div id="tab" class="fui-tab fui-tab-danger">
+        <a data-tab="tab"  class="external {if $_GPC['status'] == ''}active{/if}" data-status=''>全部<span>({$allCount})</span></a>
+        <a data-tab="tab0" class="external {if $_GPC['status'] === $aftersale::STATUS_WAIT || $_GPC['status'] === strval($aftersale::STATUS_WAIT)}active{/if}"  data-status='{php echo $aftersale::STATUS_WAIT}'>待审核<span>({$waitCount})</span></a>
+        <a data-tab="tab1" class="external {if $_GPC['status'] == $aftersale::STATUS_MAINTENANCE}active{/if}"  data-status='{php echo $aftersale::STATUS_MAINTENANCE}'>维修中<span>({$maintenanceCount})</span></a>
+        <a data-tab="tab2" class="external {if $_GPC['status'] == $aftersale::STATUS_DELIVER_GOODS}active{/if}"  data-status='{php echo $aftersale::STATUS_DELIVER_GOODS}'>已发货<span>({$deliverGoodsCount})</span></a>
+        <a data-tab="tab3" class="external {if $_GPC['status'] == $aftersale::STATUS_COMPLETED}active{/if}"  data-status='{php echo $aftersale::STATUS_COMPLETED}'>已完成<span>({$completedCount})</span></a>
+    </div>
+
+    <div class='fui-content navbar order-list' >
+
+        <div class='fui-content-inner'>
+            <div class='content-empty' style='display:none;'>
+                <i class='icon icon-lights'></i><br/>暂时没有任何售后订单<br/><a href="{php echo mobileUrl('member/aftersale/apply')}" class='btn btn-default-o external apply-after-sale'>申请售后</a>
+            </div>
+            <div class='container'></div>
+            <div class='infinite-loading'><span class='fui-preloader'></span><span class='text'> 正在加载...</span></div>
+        </div>
+        {template '_copyright'}
+    </div>
+
+    <script id='tpl_order_index_list' type='text/html'>
+
+        <%each list as order%>
+        <div class='fui-list-group order-item' data-orderid="<%order.id%>" >
+            <a href="{php echo mobileUrl('member/aftersale/detail')}&id=<%order.id%>" data-nocache='true'>
+                <div class='fui-list-group-title'>
+                    快递号: <%order.express_numbers%>
+                    <span class='status <%order.statuscss%>'><%order.statusstr%></span>
+                </div>
+                <div class="fui-list goods-list">
+                    <div class="fui-list-inner">
+                        <div class="text goodstitle">商品名称：<%order.goods_name%></div>
+                        <div class="text goodstitle">商品型号：<%order.goods_model%></div>
+                    </div>
+                </div>
+                <!-- <div class='fui-list-group-title lineblock'>
+                    <span class='status'>共 <span class='text-danger'></span> 个商品 实付: <span class='text-danger'>&yen; </span></span>
+                </div> -->
+            </a>
+            <div class='fui-list-group-title lineblock opblock' style="height: auto;">
+        <span class='status'>
+
+        <%if order.status=={php echo $aftersale::STATUS_CANCEL} || order.status=={php echo $aftersale::STATUS_WAIT} || order.status=={php echo $aftersale::STATUS_REFUSE} || order.status=={php echo $aftersale::STATUS_COMPLETED}%>
+            <div class="btn btn-default btn-default-o aftersale-deleted" data-orderid="<%order.id%>">删除订单</div>
+        <%/if%>
+
+        <%if order.status=={php echo $aftersale::STATUS_DELIVER_GOODS}%>
+            <div class="btn btn-default btn-default-o aftersale-confirm" data-orderid="<%order.id%>">确认收货</div>
+        <%/if%>
+
+        <%if order.status=={php echo $aftersale::STATUS_WAIT}%>
+            <div class="btn btn-default btn-default-o aftersale-cancel" data-orderid="<%order.id%>">取消订单</div>
+            <!-- <div class="btn btn-default btn-default-o order-cancel">取消订单
+                <select data-orderid="<%order.id%>">
+
+                    <option value="">不取消了</option>
+                    <option value="我不想买了">我不想买了</option>
+                    <option value="信息填写错误，重新拍">信息填写错误，重新拍</option>
+                    <option value="同城见面交易">同城见面交易</option>
+                    <option value="其他原因">其他原因</option>
+                </select>
+            </div> -->
+        <%/if%>
+
+    <!-- <div class="btn btn-default btn-default-o order-finish" data-orderid="<%order.id%>">确认收货</div> -->
+
+        </span>
+            </div>
+        </div>
+        <%/each%>
+    </script>
+    {if com('verify')}
+    {template 'order/verify'}
+    {/if}
+    <script language='javascript'>require(['biz/member/aftersalelist'], function (modal) {
+        modal.init({fromDetail:false,status:"{$_GPC['status']}",merchid:{php echo intval($_GPC['merchid'])}});
+    });</script>
+</div>
+{php $this->footerMenus()}
+{template '_footer'}

@@ -1,0 +1,38 @@
+body{background-color:#F3F3F3;width:100%;height:100vh}
+.header{background-color:#fff;padding:15px 20px}
+.header img{float:right;width:23px;height:23px}
+.navbar{text-align:center;background-color:#fafafa;margin-top:15px;padding:15px 0}
+.active_navbar{color:#F2C507;padding-bottom:10px;display:inline-block;width:50%}
+.weui-flex__item{margin:0}
+.weui-cells{width:90%;margin:auto;border-radius:10px;background-color:#f4f8fb;padding:12px 12px;margin-bottom:20px}
+.time-tit{height:30px;width:130px;margin:20px auto;background-color:#d3d2d7;text-align:center;line-height:30px;border-radius:5px;color:#fff}
+.avatar{height:40px;width:40px;border-radius:50%}
+.avatar-img{height:100%;width:100%;border-radius:50%;}
+.weui-flex__item{position:relative}
+.border{width:30%;height:3px;background:#F2C507;position:absolute;bottom:0;left:35%;right:0;display:none}
+.weui-tab{position:fixed;bottom:0;left:0;right:0}
+.weui-flex{z-index:99}
+.weui-tab{z-index:-1}
+.tongji{height:50px;width:100%;margin-top:3px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;background-color:#fafafa;font-size:14px;color:#8b8b8b}
+.detail-info{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;background-color:#fff;margin-top:5px;padding:10px 10px 5px 10px}
+.detail-info-items{height:50%;width:50%;position:relative;display:flex;justify-content:center;align-items:center}
+.detail-info-items-img{width:100%;height:100%}
+.check{position:absolute;top:15%;left:45%;margin:auto;color:#fff}
+.weui-dialog__bd{display:flex;display:-webkit-box;display:-webkit-flex;flex-direction:row;justify-content:space-around;align-items:center}
+.bd_input{height:30px;width:150px;border:1px solid #bababa;border-radius:5px;display:flex;display:-webkit-box;display:-webkit-flex;justify-content:space-between;align-items:center}
+.bd_input img{height:20px;width:20px;margin-right:5px}
+.bd_span{padding:0 2px;display:flex;display:-webkit-box;display:-webkit-flex}
+.line{position:absolute;left:0;right:0;height:1px;border-top:1px solid #e5e5e5;color:#e5e5e5;-webkit-transform-origin:0 0;transform-origin:0 0;-webkit-transform:scaleY(.5);transform:scaleY(.5);left:15px;z-index:2}
+.weui-cell-box{position:relative}
+.box-pic{height:200px;width:375px;margin:0 auto 0 auto;border-bottom:1px solid #F2F2F2;display:none}
+.weui-tabbar{position:fixed}
+.color {color: #f8a152;}
+.choose-time{height:30px; padding-right:20px;}
+.detail-info .Check0, .Check1, .Check2, .Check3 { font-size:22px;}
+.chkhref p{color:#000;}
+.weui-cell-other{margin-top:5px}
+.weui-cell-other .chkhref {color: #f2c507;}
+.weui-cell-other .weui-cell__ft{color: #f2c507; font-size:22px; padding-right:5px;}
+.weui-cell-other .weui-cell { padding: 8px 15px;}
+/*时间-列表字体*/
+.mslist .weui-cell__bd { font-size:14px;}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>我</title>
+   <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <!--link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css"-->
+</head>
+<style type="text/css">
+body {background-color: #F3F3F3;width: 100%;overflow-x: hidden;}
+.container{padding-bottom: 100px;}
+.tabbar{position: fixed;bottom: 0;}
+.card_box{width: 90%;background-color: #f2c507;border-radius: 5px;margin-top: 15px;margin-left: auto;margin-right: auto;}
+.card_content{width: 90%;margin-left: auto;margin-right: auto;padding: 20px 0;}
+.title{display:flex;flex-direction: row;justify-content: space-between;align-items: flex-start;}
+.title span{overflow: hidden;text-overflow:ellipsis;white-space: nowrap; max-width:270px;}
+.title img{width: 45px;height: 45px;}
+
+.editor{width: 15px;height: 15px;padding-left: 10px;}
+.color_g{color: #616161;padding-top: 2px;}
+.card_desc{margin-top: 15px;}
+</style>
+
+<body>
+    <div class="container">
+	
+		<div class="card_box">
+        	<div class="card_content">
+        		<div class="title" style="position:relative">
+                    <img src="<?php echo tomedia($card_info['card_logo']); ?>" class="avater btn-editor" style="position:absolute; right:0px;border-radius:50%">
+
+	        	</div>
+	        	<div class="card_desc">
+	        		<h3 style="color: ##4F4F52;"><span class="name" title="名字">{$card_info['card_name']}</span></h3>              
+	        		<p class="color_g f12"><span class="position" title="职位">{$card_info['role_name']}</p>
+	        		<p class="color_g f12">电话：<span class="phone" title="电话">{$card_info['card_tel']}</span></p>
+	        	</div>
+        	</div>
+        </div>
+		
+		
+		<div class="weui-panel__bd" style="margin-top: 15px;">
+            <div class="weui-media-box weui-media-box_small-appmsg">
+	            <div class="weui-cells">
+
+                    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_edit')}">
+                        <div class="weui-cell__hd"><img src="../addons/dbs_masclwlcard/template/wxapp/images/bj.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-sign">修改资料</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+
+	            </div>
+            </div>
+        </div>
+		
+        <div class="weui-panel__bd" style="margin-top: 15px;">
+            <div class="weui-media-box weui-media-box_small-appmsg">
+	            <div class="weui-cells">
+					
+					<a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_ewm')}">
+                        <div class="weui-cell__hd"><img src="../addons/dbs_masclwlcard/template/wxapp/images/110.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-sign">我的二维码</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+					
+
+                    <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_photo')}">
+                        <div class="weui-cell__hd"><img src="../addons/dbs_masclwlcard/template/wxapp/images/zp.png" alt="" style="width:20px;margin-right:5px;display:block"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-photo">照片墙</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+					
+					 <a class="weui-cell weui-cell_access" href="{php echo $this->createMobileUrl('my_article')}">
+                        <div class="weui-cell__hd"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="f14 pl10 a-photo">软文推广</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+					
+	            </div>
+            </div>
+        </div>
+        
+
+
+       
+    </div>
+   <div class="weui-tabbar tabbar">
+	<a href="{php echo $this->createMobileUrl('staffer_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/9_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" >雷达</p>
+	</a>
+	<!--a class="weui-tabbar__item a_msg_list">
+		<span style="display: inline-block;position: relative;">
+			<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/12_no.png" alt="" class="weui-tabbar__icon">
+			<span class="weui-badge hide" style="position: absolute;top: -2px;right: -13px;">0</span>
+		</span>
+		<p class="weui-tabbar__label">消息</p>
+	</a-->
+	<a href="{php echo $this->createMobileUrl('client_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/14_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">客户</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('friend_index')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/16_no.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label">动态</p>
+	</a>
+	<a href="{php echo $this->createMobileUrl('home')}" class="weui-tabbar__item">
+		<img src="../addons/dbs_masclwlcard/template/wxapp/images/tabbar/18.png" alt="" class="weui-tabbar__icon">
+		<p class="weui-tabbar__label" style="color:#f2c507;">我</p>
+	</a>
+</div>
+
+
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+</body>
+</html>

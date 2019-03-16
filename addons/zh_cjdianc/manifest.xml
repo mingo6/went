@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.wezhicms.com" versionCode="0.6,0.7,0.8,1.0">
+	<application setting="false">
+		<name><![CDATA[超级外卖]]></name>
+		<identifie><![CDATA[zh_cjdianc]]></identifie>
+		<version><![CDATA[5.5.0]]></version>
+		<type><![CDATA[biz]]></type>
+		<ability><![CDATA[帮助餐饮企业降低成本、提高效率,实现顾客引流、会员沉淀、企业发展的经营目标。]]></ability>
+		<description><![CDATA[超级餐饮外卖小程序，专注于餐饮O2O的解决方案提供商,为餐厅提供整合线上线下资源整合、轻松实现O2O。本软件集点餐、收银、成本控制、管理、营销于一体的会营销的餐饮管理软件]]></description>
+		<author><![CDATA[武汉志汇科技]]></author>
+		<url><![CDATA[http://www.wezhicms.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports>
+		<item type="wxapp" />
+		</supports>
+	</platform>
+	<bindings>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[do_install.php]]></install>
+	<uninstall><![CDATA[do_uninstall.php]]></uninstall>
+	<upgrade><![CDATA[do_upgrade.php]]></upgrade>
+</manifest>

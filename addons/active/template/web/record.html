@@ -1,0 +1,76 @@
+{template '../../../addons/'.MODULE.'/template/web/common/myheader'}
+
+{if $_GPC['op'] == 'list'}
+	{if !empty( $list )}
+  	<table class="table" cellspacing="0"> 
+   	<thead class="thead"> 
+    	<tr> 
+     		<th class="table_cell title td_col_1"> 
+     			<label class="frm_checkbox_label" for="selectAll"> 
+     				<i class="icon_checkbox"></i> 
+     				<span class="lbl_content">id</span> 
+     				<input type="checkbox" class="frm_checkbox" id="selectAll" /> 
+     			</label>
+     		</th>
+			<th class="table_cell tl td_col_1">姓名</th>
+			<th class="table_cell tl td_col_1">电话</th>
+     		<th class="table_cell tl td_col_1">地址</th>
+			<th class="table_cell tl td_col_1">是否中奖</th>
+			<th class="table_cell tl td_col_1">奖品名称</th>
+     		<th class="table_cell tl td_col_1">时间</th>
+    	</tr> 
+   </thead> 
+   <tbody class="tbody" id="js_goods">
+   <form method="post">
+	   {loop $list $item}
+	    	<tr> 
+	     		<td class="table_cell title td_col_1"> 
+	      			<div class="goods_info">
+	      			 	<label class="frm_checkbox_label" > 
+	       					<i class="icon_checkbox"></i> 
+	       					<input type="checkbox" name="checkall[]" class="frm_checkbox" value="{$item['id']}" /> 
+	       					{$item['id']}
+	       				</label>
+	      			</div>
+	     		</td>
+				 <td class="table_cell price tl td_col_1">
+	    			{$item['real_name']}
+	     		</td>
+				 <td class="table_cell price tl td_col_1">
+	    			{$item['mobile']}
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			{$item['addr']}
+	     		</td>
+				 <td class="table_cell price tl td_col_1">
+	    			{$item['is_prize']}
+	     		</td>
+				 <td class="table_cell price tl td_col_1">
+	    			{$item['prize_name']}
+	     		</td>
+	     		<td class="table_cell price tl td_col_1">
+	    			<?php echo date('Y-m-d', $item['create_time'])?>
+	     		</td>
+			    <!-- <td class="table_cell oper last_child tr opclass td_col_2" style="position: relative;">
+			    	<a  href="{php echo $this->createWebUrl('prize',array('op'=>'edit','id'=>$item['id'],'page'=>$_GPC['page']))}" class="edit_listitem" >编辑</a>
+			    	<a href="{php echo $this->createWebUrl('prize',array('op'=>'delete','id'=>$item['id']))}" onclick="return confirm('删除不能恢复，确定要删除吗？');">删除</a>
+			    </td> -->
+	    	</tr>
+	    {/loop}
+   	</tbody>
+  	</table>
+	<div class="bottom_page item_cell_box">
+		<div class="tr dib item_cell_flex">
+			{$pager}
+		</div>
+	</div>
+		<input name="token" type="hidden" value="{$_W['token']}" />
+	</form>
+    {else}
+    	<div class="no_data">没有找到数据</div>
+    {/if}
+
+{/if}
+	
+	
+{template 'common/footer'}

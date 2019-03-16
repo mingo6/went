@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>AI分析</title>
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+</head>
+<style type="text/css">
+body {background-color: #F3F3F3;width: 100%;height: 100vh;overflow-x: hidden;}
+.header{background-color: #fff;padding: 15px 20px;display: flex;flex-direction: row;justify-content: space-between;align-items: center;}
+.header_left{width: 60%;display: flex;flex-direction: row;justify-content: flex-start;align-items: center;}
+.header_right{width: 40%;text-align: right;}
+.header img{width: 22px;height: 22px;padding-left: 5px;}
+.content{background-color: #fff;}
+.taps{margin-top: 5px;padding-bottom: 15px;border-bottom: 1px solid #E2E2E2;}
+.navbar{text-align: center;background-color: #fff;margin-top: 15px;padding: 15px 0 0 0;}
+.active_navbar{color: #FE7B03;border-bottom: 2px solid #FE7B03;padding-bottom: 10px;display: inline-block;}
+.actived_item{border:1px solid  #E2E2E2;color: #8A8A8A;width:80%;margin-left: auto;margin-right: auto;border-radius: 2px; }
+.active_item{border:1px solid #FE7B03;color: #FE7B03;}
+.department{width: 50%;display: inline-block;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.tappatrment{padding: 5px 5px;color: #FE7B03;border: 1px solid #FE7B03;}
+.user_box{border-bottom: 1px solid #ddd; width: 95%;padding: 20px 0;display: flex;justify-content: flex-start;align-items: center;float: right;}
+.logo{width: 25px;height: 20px;margin-right: 5px;}
+.user_img{border-radius: 50%;width: 45px;height: 45px;}
+.username{margin-left: 10px;margin-top: -5px;}
+.clear{clear: both;}
+.box{background-color: #fff;margin-top: 15px;}
+.item_two_content{width: 93%;margin-left: auto;margin-right: auto;display: flex;justify-content:flex-start;align-items: center;}
+.user_box_two{width: 50%;padding: 20px 0;display: flex;justify-content: center;align-items: center;}
+.user_box_three{width: 33.3%;padding: 20px 0;display: flex;justify-content: center;align-items: center;}
+</style>
+
+<body>
+    <div class="container">
+	
+        <div class="content">
+			<div class="weui-flex navbar">
+				<div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_index')}"><div class="placeholder">汇总</div></div>
+				<div class="weui-flex__item a-tab" data-url="{php echo $this->createMobileUrl('boss_ranking')}"><div class="placeholder">销售排行</div></div>
+				<div class="weui-flex__item" ><div class="placeholder active_navbar">AI分析</div></div>
+            </div>
+			
+            <div id="fisrtEchart">
+                <div class="user_box">
+                    <img class="logo" src="../addons/dbs_masclwlcard/template/wxapp/images/33.png" alt="">
+                    <img class="user_img" id="avater1" src="" alt="">
+                    <div class="username">
+                        <h4 class="weui-media-box__title" id="name1"></h4>
+                        <p class="weui-media-box__desc" id="position1"></p>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div>
+                    <div id="main1" style="width: 90%;height:220px;margin-left: auto;margin-right: auto;"></div>
+                </div>
+            </div>
+        </div>
+		
+        <div class="box">
+            <div id="twoEchart" style="display:none;">
+                <div class="item_two_content">
+                    <div class="user_box_two">
+                        <img class="logo" src="../addons/dbs_masclwlcard/template/wxapp/images/3.png" alt="">
+                        <img class="user_img" id="twoavater1" src="" alt="">
+                        <div class="username">
+                            <h4 class="weui-media-box__title" id="twoname1"></h4>
+                            <p class="weui-media-box__desc" id="twoposition1"></p>
+                        </div>
+                    </div>
+                    <div class="user_box_two">
+                        <img class="logo" src="../addons/dbs_masclwlcard/template/wxapp/images/2.png" alt="">
+                        <img class="user_img" id="twoavater2" src="" alt="">
+                        <div class="username">
+                            <h4 class="weui-media-box__title" id="twoname2"></h4>
+                            <p class="weui-media-box__desc" id="twoposition2"></p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="main2" style="width: 90%;height:220px;margin-left: auto;margin-right: auto;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box" id="thirdEchart" style="display:none">
+            <div id="threeItem">
+            </div>
+        </div>
+    </div>
+</body>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+<script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/echarts.min.js"></script>
+<script type="text/javascript">
+    var myChart;
+    
+    $(function () {
+     
+       loadData();
+        loadBtn();
+    })
+
+    $(window).resize(function () { //图表自适应
+        myChart.resize();
+    });
+
+		//跳转页面
+		function to_url(url) {
+			window.location.href = url;
+		}
+
+    function loadBtn() {   
+        //导航切换
+        $(".a-tab").click(function () {
+            var url = $(this).attr("data-url");
+			to_url(url)
+        })
+    }
+	
+ 
+    //加载AI数据
+    function loadData() {
+
+    	 $.post("{php echo $this->createMobileUrl('boss_getai_data')}", {}, function(data){ 
+            if (data.error>0) {
+				alert(data.msg);
+				return;
+			}
+				
+            var actionList = data.Data.ActionRecordList;    //操作轨迹列表
+            var staffList = data.Data.StaffList;            //员工列表
+            var sortList = new Array();
+
+            actionList = getSortData(actionList);           //原始数组排序(按actiontype 从小到大排序)
+            //循环每个员工，拼接员工数据
+            for (var i = 0; i < staffList.length; i++) {
+                var staff = staffList[i];
+                var staffData = getStaffData(actionList, staff);
+			
+                sortList.push(staffData);
+            }
+
+            //对拼接好的数据，排序
+            for (var i = 0; i < sortList.length; i++) {
+                for (var j = i+1; j < sortList.length; j++) {
+                    if (sortList[i].total < sortList[j].total) {
+                        var temp = sortList[i];
+                        sortList[i] = sortList[j];
+                        sortList[j] = temp;
+                    
+                    }
+                }
+            }
+            
+            //第一个雷达图
+            if(sortList[0]){
+                $("#avater1").attr("src",sortList[0].avater);
+                $("#name1").text(sortList[0].name);
+                $("#position1").text(sortList[0].position);
+                myChart = echarts.init(document.getElementById('main1'));
+                loadItemOption(1,sortList[0]);
+            }else{
+                $("#fisrtEchart").hide();
+            }
+            
+            //第二个雷达图
+             var list = [];
+            if(sortList[1]){
+                $("#twoavater1").attr("src",sortList[1].avater);
+                $("#twoname1").text(sortList[1].name);
+                $("#twoposition1").text(sortList[1].position);
+                list.push(sortList[1])
+            }
+            if(sortList[2]){
+                $("#twoavater2").attr("src",sortList[2].avater);
+                $("#twoname2").text(sortList[2].name);
+                $("#twoposition2").text(sortList[2].position);
+                list.push(sortList[2])
+            }
+            if (list.length > 0) {
+                $("#twoEchart").show()
+                myChart = echarts.init(document.getElementById('main2'));
+                loadItemOption(2, list);
+            }
+     
+           
+            //第三个类型
+            if (sortList.length > 3) {
+                $("#thirdEchart").show();
+                var listThree = sortList.slice(3);
+                var groups = [];//每三个一组
+                for(var j=0;j<listThree.length;j+=3){
+                    groups.push(listThree.slice(j,j+3));
+                }
+                var str = ""
+                for (var k = 0; k < groups.length; k++) {
+                    str += '<div class="item_two_content">'
+					
+                        if(groups[k][0]){
+                        str +='<div class="user_box_three">'+
+						'<img class="user_img" id="twoavater2" src="'+groups[k][0].avater+'" alt="">'+
+                            '<div class="username">'+
+                                '<h4 class="weui-media-box__title">'+ groups[k][0].name+'</h4>'+
+                                '<p class="weui-media-box__desc">'+ groups[k][0].position+'</p>'+
+                            '</div>'+
+                        '</div>'
+                        }
+                        if (groups[k][1]) {
+                        str +='<div class="user_box_three">'+
+							'<img class="user_img" id="twoavater2" src="'+groups[k][1].avater+'" alt="">'+
+                            '<div class="username">'+
+                                '<h4 class="weui-media-box__title">'+ groups[k][1].name+'</h4>'+
+                                '<p class="weui-media-box__desc">'+ groups[k][1].position+'</p>'+
+                            '</div>'+
+                        '</div>'
+                        }
+                        if (groups[k][2]) {
+                        str +='<div class="user_box_three">'+
+						'<img class="user_img" id="twoavater2" src="'+groups[k][2].avater+'" alt="">'+
+                            '<div class="username">'+
+                                '<h4 class="weui-media-box__title">'+ groups[k][2].name+'</h4>'+
+                                '<p class="weui-media-box__desc">'+ groups[k][2].position+'</p>'+
+                            '</div>'+
+                        '</div>'
+                        }
+                    str +='</div>'+
+                    '<div>'+
+                        '<div id="main' + (k+ 3) + '" style="width: 90%;height:70px;margin-left: auto;margin-right: auto;"></div>'+
+                    '</div>';
+                }
+                $("#threeItem").append(str);
+                for (var i = 0; i < groups.length; i++) {
+                    myChart = echarts.init(document.getElementById('main'+(i+3)));
+                    loadItemOption(3,groups[i]);
+                }
+
+            }
+
+        },"json");
+    }
+
+    //原始数据排序（从小到大排序）
+    function getSortData(list) {
+        for (var i = 0; i < list.length; i++) {
+            for (var j = i + 1; j < list.length; j++) {
+                if (list[i].actionType > list[j].actionType) {
+                    var temp = list[i];
+                    list[i] = list[j];
+                    list[j] = temp;
+                }
+            }
+        }
+        return list;
+    }
+
+    //从原始数据中，筛选出每个员工的雷达数据
+    function getStaffData(list, staffInfo) {
+        var max = 0;                //雷达数据最大值
+        var yData = new Array();    //Y轴数据
+        var xData = [0, 1,2, 3, 4, 5];   //类型 0 查看商品, 1 查看官网, 2 查看名片 , 3 增加的客户, 4 跟进客户, 5 客户互动(客户互动值) 
+       
+	    var _staffid = staffInfo.id;
+       
+        for (var i = 0; i < xData.length; i++) {
+            var total = 0;
+            var actionType = xData[i];
+            for (var j = 0; j < list.length; j++) {
+                var item = list[j];
+                //同一员工
+                if (item.card_id == _staffid) {
+                    //同一类型
+                    if (actionType == item.actionType) {
+							total =  parseInt(item.Total);
+                        if (parseInt(total) >  parseInt(max))
+                            max =  parseInt(total);
+
+                        break;
+                    }
+                }
+            }
+			
+            yData.push(parseInt(total));
+        }
+		
+		
+        var total = 0;  //汇总数值
+        for (var i = 0; i < yData.length; i++) {
+            total = parseInt(yData[i]) + parseInt(total);
+		
+        }
+		//alert(max);
+        //拼接数据
+        var staff = {
+            max: max,
+            value: yData,
+            total: total,
+            name: staffInfo.card_name,
+            position: staffInfo.role_name,
+            avater: staffInfo.card_logo
+        };
+        return staff;
+    }
+
+
+    /*
+    *图表显示
+    */
+
+    //加载对应的图表
+    function loadItemOption(type, data) {
+        option = {
+            title: {
+                text: ''
+            },
+            radar: [{
+                indicator: [
+                    { text: '', max: 30 },
+                    { text: '', max: 30 },
+                    { text: '', max: 30 },
+                    { text: '', max: 30 },
+                    { text: '', max: 30 },
+                    { text: '', max: 30 }
+                ],
+                center: ['15%', '50%'], //位置
+                radius: 30,
+                startAngle: 60,
+                name: {
+                    formatter: '{value}',
+                    textStyle: {
+                        color: '#FEB066'
+                    }
+                },
+                splitLine: { //梯形刻度线
+                    lineStyle: {
+                        color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                    }
+                },
+                splitArea: { //刻度区域
+                    areaStyle: {
+                        color: ["#fff"]
+                    }
+                },
+                axisLine: { //交叉刻度线
+                    lineStyle: {
+                        color: "#ddd"
+                    }
+                }
+            }],
+            series: [{
+                name: '雷达图',
+                type: 'radar',
+                symbol: "none", //是否显示小圆点
+                color: ["#FED69B"], //数据区域边框颜色
+                data: [{
+                    value: [30, 30, 20, 30, 30, 30],
+                    name: '',
+                    radarIndex: 0,
+                    areaStyle: {
+                        normal: {
+                            opacity: 0.9,
+                            color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                color: '#FFD8A2',
+                                offset: 0
+                            },
+                                {
+                                    color: '#FFAD61',
+                                    offset: 1
+                                }
+                            ])
+                        }
+                    }
+                }]
+            }]
+        }
+        myChart.setOption(option);
+        if (type == 1) {
+            myChart.setOption({
+                radar: [{
+                    indicator: [
+                        { text: '产品推广值', max: data.max },
+                        { text: '官网推广度', max: data.max },
+                        { text: '个人魅力值', max: data.max },
+                        { text: '获客能力值', max: data.max },
+                        { text: '销售主动性', max: data.max },
+                        { text: '客户互动值', max: data.max },
+                    ],
+                    center: ['50%', '50%'], //位置//类型 0 查看商品, 1 查看官网, 2 查看名片 , 3 增加的客户, 4 跟进客户, 5 客户互动(客户互动值)
+                    radius: 80,
+                }],
+                series: [{
+                    data: [{
+                        value:  data.value,
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                }]
+            });
+        } else if (type == 2) {
+            if(data.length == 1){
+                var option4 = chartFirstTwo(data);
+                myChart.setOption(option4);
+            }else{
+                var option5 = chartTwoSencont(data);
+                myChart.setOption(option5);
+            }
+        }
+        else{
+            if(data.length == 1){
+                var option1 = chartFirst(data);
+                myChart.setOption(option1);
+            }
+            else if(data.length == 2){
+                var option2 = chartTwo(data);
+                myChart.setOption(option2);
+            }else{
+                var option3 = chartThree(data);
+                myChart.setOption(option3);
+            }
+       }
+    }
+    function chartFirst(data) {
+        var max1 = data[0] == null ? 100 : data[0].max;
+        var value1 = data[0] == null ? [] : data[0].value;
+        var option = {
+            radar: [{
+                    indicator: [
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 }
+                    ],
+                    center: ['15%', '50%'], //位置
+                    radius: 30,
+                    startAngle: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                }
+            ],
+            series: [{
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    data: [{
+                        value: value1,
+                        name: '',
+                        radarIndex: 0,
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                }
+            ]
+        }
+        return option;
+    }
+
+    function chartTwo(data) {
+        var max1 = data[0] == null ? 100 : data[0].max;
+        var max2 = data[1] == null ? 100 : data[1].max;
+        var value1 = data[0] == null ? [] : data[0].value;
+        var value2 = data[1] == null ? [] : data[1].value;
+        var option = {
+            title: {
+                text: ''
+            },
+            radar: [{
+                    indicator: [
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 }
+                    ],
+                    center: ['15%', '50%'], //位置
+                    radius: 30,
+                    startAngle: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                },
+                {
+                    indicator: [
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 }
+                    ],
+                    center: ['50%', '50%'],
+                    radius: 30,
+                    startAngle: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                }
+            ],
+            series: [{
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    data: [{
+                        value: value1,
+                        name: '',
+                        radarIndex: 0,
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                },
+                {
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    radarIndex: 1,
+                    data: [{
+                        value: value2,
+                        name: '',
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                }
+            ]
+        }
+        return option;
+    }
+
+    function chartThree(data) {
+        var max1 = data[0] == null ? 100 : data[0].max;
+        var max2 = data[1] == null ? 100 : data[1].max;
+        var max3 = data[2] == null ? 100 : data[2].max;
+        var value1 = data[0] == null ? [] : data[0].value;
+        var value2 = data[1] == null ? [] : data[1].value;
+        var value3 = data[2] == null ? [] : data[2].value;
+
+        console.log(value2)
+        var option = {
+                title: {
+                    text: ''
+                },
+                radar: [{
+                        indicator: [
+                            { text: '', max: max1 },
+                            { text: '', max: max1 },
+                            { text: '', max: max1 },
+                            { text: '', max: max1 },
+                            { text: '', max: max1 },
+                            { text: '', max: max1 }
+                        ],
+                        center: ['15%', '50%'], //位置
+                        radius: 30,
+                        startAngle: 60,
+                        name: {
+                            formatter: '{value}',
+                            textStyle: {
+                                color: '#FEB066'
+                            }
+                        },
+                        splitLine: { //梯形刻度线
+                            lineStyle: {
+                                color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                            }
+                        },
+                        splitArea: { //刻度区域
+                            areaStyle: {
+                                color: ["#fff"]
+                            }
+                        },
+                        axisLine: { //交叉刻度线
+                            lineStyle: {
+                                color: "#ddd"
+                            }
+                        }
+                    },
+                    {
+                        indicator: [
+                            { text: '', max: max2 },
+                            { text: '', max: max2 },
+                            { text: '', max: max2 },
+                            { text: '', max: max2 },
+                            { text: '', max: max2 },
+                            { text: '', max: max2 }
+                        ],
+                        center: ['50%', '50%'],
+                        radius: 30,
+                        startAngle: 60,
+                        name: {
+                            formatter: '{value}',
+                            textStyle: {
+                                color: '#FEB066'
+                            }
+                        },
+                        splitLine: { //梯形刻度线
+                            lineStyle: {
+                                color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                            }
+                        },
+                        splitArea: { //刻度区域
+                            areaStyle: {
+                                color: ["#fff"]
+                            }
+                        },
+                        axisLine: { //交叉刻度线
+                            lineStyle: {
+                                color: "#ddd"
+                            }
+                        }
+                    },
+                    {
+                        indicator: [
+                            { text: '', max: max3 },
+                            { text: '', max: max3 },
+                            { text: '', max: max3 },
+                            { text: '', max: max3 },
+                            { text: '', max: max3 },
+                            { text: '', max: max3 }
+                        ],
+                        center: ['85%', '50%'],
+                        radius: 30,
+                        startAngle: 60,
+                        name: {
+                            formatter: '{value}',
+                            textStyle: {
+                                color: '#FEB066'
+                            }
+                        },
+                        splitLine: { //梯形刻度线
+                            lineStyle: {
+                                color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                            }
+                        },
+                        splitArea: { //刻度区域
+                            areaStyle: {
+                                color: ["#fff"]
+                            }
+                        },
+                        axisLine: { //交叉刻度线
+                            lineStyle: {
+                                color: "#ddd"
+                            }
+                        }
+                    }
+                ],
+                series: [{
+                        name: '雷达图',
+                        type: 'radar',
+                        symbol: "none", //是否显示小圆点
+                        color: ["#FED69B"], //数据区域边框颜色
+                        data: [{
+                            value: value1,
+                            name: '',
+                            radarIndex: 0,
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.9,
+                                    color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                            color: '#FFD8A2',
+                                            offset: 0
+                                        },
+                                        {
+                                            color: '#FFAD61',
+                                            offset: 1
+                                        }
+                                    ])
+                                }
+                            }
+                        }]
+                    },
+                    {
+                        name: '雷达图',
+                        type: 'radar',
+                        symbol: "none", //是否显示小圆点
+                        color: ["#FED69B"], //数据区域边框颜色
+                        radarIndex: 1,
+                        data: [{
+                            value: value2,
+                            name: '',
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.9,
+                                    color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                            color: '#FFD8A2',
+                                            offset: 0
+                                        },
+                                        {
+                                            color: '#FFAD61',
+                                            offset: 1
+                                        }
+                                    ])
+                                }
+                            }
+                        }]
+                    },
+                    {
+                        name: '雷达图',
+                        type: 'radar',
+                        symbol: "none", //是否显示小圆点
+                        color: ["#FED69B"], //数据区域边框颜色
+                        radarIndex: 2,
+                        data: [{
+                            value: value3,
+                            name: '',
+                            areaStyle: {
+                                normal: {
+                                    opacity: 0.9,
+                                    color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                            color: '#FFD8A2',
+                                            offset: 0
+                                        },
+                                        {
+                                            color: '#FFAD61',
+                                            offset: 1
+                                        }
+                                    ])
+                                }
+                            }
+                        }]
+                    }
+                ]
+            }
+        return option;
+    }
+
+    function chartFirstTwo(data) {
+        var max1 = data[0] == null ? 100 : data[0].max;
+        var value1 = data[0]== null ? [] : data[0].value;
+
+        var option = {
+            radar: [{
+                    indicator: [
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 }
+                    ],
+                    center: ['25%', '50%'],
+                    radius: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                }
+            ],
+            series: [{
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    data: [{
+                        value: value1,
+                        name: '',
+                        radarIndex: 0,
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                }
+            ]
+        }
+        return option;
+    }
+
+    function chartTwoSencont(data) {
+        var max1 = data[0] == null ? 100 : data[0].max;
+        var max2 = data[1] == null ? 100 : data[1].max;
+        var max3 = data[2] == null ? 100 : data[2].max;
+        var value1 = data[0] == null ? [] : data[0].value;
+        var value2 = data[1] == null ? [] : data[1].value;
+
+        var option = {
+            radar: [{
+                    indicator: [
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 },
+                        { text: '', max: max1 }
+                    ],
+                    center: ['25%', '50%'],
+                    radius: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                },
+                {
+                    indicator: [
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 },
+                        { text: '', max: max2 }
+                    ],
+                    center: ['75%', '50%'],
+                    radius: 60,
+                    startAngle: 60,
+                    name: {
+                        formatter: '{value}',
+                        textStyle: {
+                            color: '#FEB066'
+                        }
+                    },
+                    splitLine: { //梯形刻度线
+                        lineStyle: {
+                            color: ['#ddd', '#ddd', '#ddd', '#ddd', '#ddd']
+                        }
+                    },
+                    splitArea: { //刻度区域
+                        areaStyle: {
+                            color: ["#fff"]
+                        }
+                    },
+                    axisLine: { //交叉刻度线
+                        lineStyle: {
+                            color: "#ddd"
+                        }
+                    }
+                }
+            ],
+            series: [{
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    data: [{
+                        value: value1,
+                        name: '',
+                        radarIndex: 0,
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                },
+                {
+                    name: '雷达图',
+                    type: 'radar',
+                    symbol: "none", //是否显示小圆点
+                    color: ["#FED69B"], //数据区域边框颜色
+                    radarIndex: 1,
+                    data: [{
+                        value: value2,
+                        name: '',
+                        areaStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                color: new echarts.graphic.RadialGradient(1, 0.5, 1, [{
+                                        color: '#FFD8A2',
+                                        offset: 0
+                                    },
+                                    {
+                                        color: '#FFAD61',
+                                        offset: 1
+                                    }
+                                ])
+                            }
+                        }
+                    }]
+                }
+            ]
+        }
+        return option;
+    }
+</script>
+</html>

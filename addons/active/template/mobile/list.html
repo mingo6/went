@@ -1,0 +1,14 @@
+{loop $list $item}
+<a href="'+url+{$item['id']}+'">
+    <div class="list-item">
+        <img src="/attachment/{$item['active_img']}">
+        <p class="title">{$item['title']}</p>
+        <p class="subtitle ellipsis--1">{$item['title']}</p>
+
+        <div class="release-time">
+            <img src="../addons/{MODULE}/template/mobile/icon/time.png">'
+            <span>{php echo date('m月d日 H:i:s',$item['start_time'])}-{php echo date('m月d日 H:i:s',$item['end_time'])}</span>
+        </div>
+    </div>
+</a>
+{/loop}

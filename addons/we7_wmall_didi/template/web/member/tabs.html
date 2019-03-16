@@ -1,0 +1,63 @@
+<div class="second-sidebar-title">用户</div>
+<div class="nav slimscroll">
+	<div class="menu-header">概况</div>
+	<ul class="menu-item">
+		{ifp 'member.index'}
+			<li {if $_W['_action'] == 'index'}class="active"{/if}>
+				<a href="{php echo iurl('member/index');}">用户概况</a>
+			</li>
+		{/if}
+		{ifp 'member.list'}
+			<li {if $_W['_action'] == 'list'}class="active"{/if}>
+				<a href="{php echo iurl('member/list/list');}">用户列表</a>
+			</li>
+		{/if}
+		<!-- <li {if $_W['_action'] == 'groups'}class="active"{/if}>
+			<a href="{php echo iurl('member/groups')}">用户等级</a>
+		</li>
+		<li {if $_W['_action'] == 'region'}class="active"{/if}>
+			<a href="{php echo iurl('member/region')}">区域列表</a>
+		</li> -->
+<!--
+		<li {if $_W['_action'] == 'sync'}class="active"{/if}>
+		<a href="{php echo iurl('member/sync/index');}">同步用户数据</a>
+		</li>
+-->
+	</ul>
+	<div class="menu-header">用户信息</div>
+	<ul class="menu-item">
+		{ifp 'member.address'}
+			<li {if $_W['_action'] == 'address'}class="active"{/if}>
+				<a href="{php echo iurl('member/address');}">用户地址</a>
+			</li>
+		{/if}
+		{ifp 'member.coupon'}
+			<!-- <li {if $_W['_action'] == 'coupon'}class="active"{/if}>
+				<a href="{php echo iurl('member/coupon');}">用户代金券</a>
+			</li> -->
+		{/if}
+		{ifp 'member.redpacket'}
+			<!-- <li {if $_W['_action'] == 'redpacket'}class="active"{/if}>
+				<a href="{php echo iurl('member/redpacket');}">用户红包</a>
+			</li> -->
+		{/if}
+	</ul>
+	<div class="menu-header">财务</div>
+	<ul class="menu-item">
+		{ifp 'member.recharge'}
+			<li {if $_W['_action'] == 'recharge'}class="active"{/if}>
+				<a href="{php echo iurl('member/recharge');}">充值明细</a>
+			</li>
+		{/if}
+		{ifp 'member.recharge'}
+			<!-- <li {if $_W['_action'] == 'credit' && $_GPC['credit'] == 'credit1'}class="active"{/if}>
+				<a href="{php echo iurl('member/credit', array('credit' => 'credit1'));}">积分明细</a>
+			</li> -->
+		{/if}
+		{ifp 'member.recharge'}
+			<li {if $_W['_action'] == 'credit' && $_GPC['credit'] == 'credit2'}class="active"{/if}>
+				<a href="{php echo iurl('member/credit', array('credit' => 'credit2'));}">余额明细</a>
+			</li>
+		{/if}
+	</ul>
+</div>

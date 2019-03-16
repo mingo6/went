@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>活动详情</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../addons/{MODULE}/template/mobile/css/layout.css">
+</head>
+<body>
+<div class="container">
+    <div class="banner-wrapper">
+        <img src="/attachment/{$info['active_img']}">
+
+        <!--<div class="icon support"  style="{php echo empty($active_user_activity['havecode_time'])?'':'display:none;'}">-->
+        <div class="icon support"  style="display:none;">
+            <img onclick="support({$info['id']},{$ua})" src="../addons/{MODULE}/template/mobile/icon/support_default.png">
+            <img src="../addons/{MODULE}/template/mobile/icon/support.png">
+        </div>
+    </div>
+    <div class="activity-info">
+        <div class="card">
+            <p class="title">{$info['title']}</p>
+            <p class="subtitle">{$info['index_synopsis']}</p>
+            <p></p>
+            <div class="release-time">
+                <img src="../addons/{MODULE}/template/mobile/icon/time.png">
+                <span>{php echo date('m月d日 H:i',$info['start_time'])."-".date('m月d日 H:i',$info['end_time'])}</span>
+            </div>
+            <div class="release-time">
+                <img src="../addons/{MODULE}/template/mobile/icon/location.png">
+                <span>{$info['address']}</span>
+            </div>
+            <div class="release-time">
+                <img src="../addons/{MODULE}/template/mobile/icon/person.png">
+                <span>{php echo $info['is_sham_people_num']==1?$info['sham_people_num']:$info['attend_people_num']}人参加</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="activity-content">
+        <div class="support"  style="{php echo $is_my_active==0?'display:none;':''}">
+            <div class="user-avatar">
+                {loop $user_avatar $item}
+                <img style="margin-left: 0px;" src="{$item['avatar']}">
+                {/loop}
+            </div>
+            {if $disparity_num > 0}
+            <div class="support-num">已有<span>{$active_user_activity['fabulous_num']}</span>位好友为{$isHeOrMy}加油，还差<span>{$disparity_num}</span>个点赞{$isHeOrMy}就能得到活动码</div>
+            {elseif $disparity_num<=0}
+            <div class="support-num">已集赞完成！<span style="color: red;{php echo $is_my_active==1?'':'display:none;'}" onclick="showDialog()">查看活动码</span>
+                <!--<div class="icon" onclick="showDialog()" style="{php echo $is_my_active==1?'':'display:none;'}">-->
+                    <!--<img src="../addons/{MODULE}/template/mobile/icon/QRcode.png">-->
+                <!--</div>-->
+            </div>
+            {/if}
+
+        </div>
+        <div class="line-title">
+            <span class="line"></span>
+            <span class="line-title-name">简介</span>
+            <div class="block-text">
+                {$info['synopsis']}
+            </div>
+        </div>
+        <div class="line-title">
+            <span class="line"></span>
+            <span class="line-title-name">活动产品</span>
+            <div class="video">
+                {if empty($info['product_video_url'])}
+                {else}
+                <video width="100%" src="{$info['product_video_url']}" controls="controls"></video>
+                {/if}
+                {$info['product_introduce']}
+            </div>
+        </div>
+        <div class="line-title">
+            <span class="line"></span>
+            <span class="line-title-name">活动规则</span>
+            <div class="block-text">
+                {$info['rule']}
+            </div>
+        </div>
+        <!--<div class="QRcode">-->
+            <!--<img src="{$code_url}">-->
+            <!--<p>更多产品信息请扫描查看</p>-->
+        <!--</div>-->
+        <div class="btn-auto"  style="{php echo $is_my_active==0?'':'display:none;'}">
+            <span onclick="goAttend({$info['id']})">我要参加</span>
+        </div>
+    </div>
+
+    <div class="btn-group"  style="{php echo $is_my_active==1?'':'display:none;'}">
+        <div onclick="share()"><img src="../addons/{MODULE}/template/mobile/icon/share.png"><span>转发</span></div>
+        <!--<div><img src="../addons/{MODULE}/template/mobile/icon/Invitation.png"><span>邀请</span></div>-->
+    </div>
+
+    <div class="btn-group join"  style="{php echo $is_my_active==2?'':'display:none;'}">
+        <!--<div onclick="share()"><img src="../addons/{MODULE}/template/mobile/icon/share.png"><span>转发</span></div>-->
+        <div><span onclick="goAttend({$info['id']})" class="join-btn">我也要参加</span></div>
+        {if $isSupport==1}
+        <div><span class="join-btn"  style="background-color: #F0F0F0;">为他点赞</span></div>
+        {else}
+        <div><span onclick="support({$info['id']},{$ua})" class="join-btn">为他点赞</span></div>
+        {/if}
+    </div>
+
+    <div class="share-tips" onclick="hideShare()">
+        <div>请点击右上角进行转发</div>
+    </div>
+
+</div>
+
+
+<div class="dialog">
+    <div class="dialog-content">
+        <div class="use-time">
+            <p class="title">活动码</p>
+            {if $active_user_activity['is_code']==3}
+            <p>活动码已经发放完毕了！</p>
+            {else}
+                {if empty($active_user_activity['activity_code'])}
+                <p>您还未集够赞哦！</p>
+                {else}
+                <p class="value">{$active_user_activity['activity_code']}</p>
+                <p>获取时间：{php echo date("Y-m-d",$active_user_activity['havecode_time'])}</p>
+                    {if empty($active_user_activity['iscode_time'])}
+                    <p>未使用</p>
+                    {else}
+                    <p>使用时间：{php echo date("Y-m-d",$active_user_activity['iscode_time'])}</p>
+                    {/if}
+                {/if}
+            {/if}
+        </div>
+        <div class="close">
+            <img onclick="hideDialog()" src="../addons/{MODULE}/template/mobile/icon/close.png">
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/zepto.min.js"></script>
+<script type="text/javascript" src="../addons/{MODULE}/template/mobile/js/main_public.js"></script>
+<script type="text/javascript">
+
+    var isSupport = {$isSupport};
+    // // 已点赞
+    // if (isSupport==1){
+    //     $('.icon.support > img').hide();
+    //     $('.icon.support > img').eq(1).show();
+    // }
+    // // 未点赞
+    // else if(isSupport==2){
+    //     $('.icon.support > img').hide();
+    //     $('.icon.support > img').eq(0).show();
+    // }
+    // // 活动详情，不能点赞
+    // else{
+    //     $('.icon.support').hide();
+    // }
+
+    var isCode = {$iscode};
+    // 已集赞完成
+    if (isCode==1 || isCode==3){
+        $('.btn-group.join > div:last-child > span').css('background-color','#F0F0F0');
+        $('.btn-group.join > div:last-child > span').attr("onclick", "");
+    }
+
+    function support (id,ua) {
+        $.post("{php echo $this->createMobileUrl('info')}",{'id':id,'ua':ua},function(res){
+            if (res.status==1){
+                alert('点赞成功！');
+                $('.btn-group.join > div:last-child > span').css('background-color','#F0F0F0');
+                $('.btn-group.join > div:last-child > span').attr("onclick", "");
+            }else{
+                alert(res.msg);
+            }
+        },'json');
+    }
+    function showDialog () {
+        $('.dialog').show()
+        $('.container').addClass('prevent')
+        setTimeout(function () {
+            $('.dialog-content').addClass('show')
+        }, 20)
+    }
+    function hideDialog () {
+        $('.dialog-content').removeClass('show')
+        $('.container').removeClass('prevent')
+        setTimeout(function () {
+            $('.dialog').hide()
+        }, 250)
+    }
+    //参加活动
+    function goAttend(id){
+        $.post("{php echo $this->createMobileUrl('info')}",{'id':id},function(res){
+            if (res.status==1){
+                // var con;
+                // con = confirm(res.msg+"是否查看我的活动?"); //在页面上弹出对话框
+                // if(con==true){
+                //     window.location.href="{php echo $this->createMobileUrl('users')}";
+                // }
+                alert(res.msg);
+                window.location.href="{php echo $this->createMobileUrl('info')}&id="+{$info['id']};
+            }else if(res.status==3){
+                window.location.href="{php echo $this->createMobileUrl('info')}&id="+{$info['id']};
+            }else{
+                alert(res.msg);
+            }
+        },'json')
+    }
+
+    function share () { // 分享
+        $('.share-tips').show()
+        $('.container').addClass('prevent')
+    }
+    function hideShare () { // 隐藏分享
+        $('.share-tips').hide()
+        $('.container').removeClass('prevent')
+    }
+
+    // 自适应图片高度，设置top值
+    var src = $('.banner-wrapper > img').prop('src')
+    var imgObj = new Image ()
+    imgObj.src = src
+    var imgHeight = $(window).width() * imgObj.height / imgObj.width
+    $('.activity-info').css({ top: imgHeight - 30 + 'px' })
+
+
+    //自定义微信分享
+    wx.config({
+        debug: false,
+        appId: '{$signPackage["appId"]}',
+        timestamp: '{$signPackage["timestamp"]}',
+        nonceStr: '{$signPackage["nonceStr"]}',
+        signature: '{$signPackage["signature"]}',
+        jsApiList: [
+            'onMenuShareAppMessage',
+            'onMenuShareTimeline'
+        ]
+    });
+    wx.ready (function () {
+        // 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{$shareCon["title"]}', // 分享标题
+            desc: '{$shareCon["desc"]}', // 分享描述
+            link: '{$shareCon["link"]}', // 分享链接
+            imgUrl: '{$shareCon["imgUrl"]}', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: '{$shareCon["title"]}', // 分享标题
+            link: '{$shareCon["link"]}', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: '{$shareCon["imgUrl"]}', // 分享图标
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

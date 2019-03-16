@@ -1,0 +1,145 @@
+{template '_header'}
+<style type='text/css'>
+    .ordertable { width:100%;position: relative;margin-bottom:10px}
+    .ordertable tr td:first-child { width:100px;text-align: right }
+    .ordertable tr td {padding:10px 5px 0;vertical-align: top}
+    .ordertable1 tr td { text-align: right; }
+    table tr td{text-overflow: auto;word-wrap: break-word; white-space: normal;overflow: auto;}
+    .ops .btn { padding:5px 10px;}
+</style>
+<div class="page-heading"> <h2>售后详情</h2> </div>
+<form class="form-horizontal form" action="" method="post">
+    <input type="hidden" name="id" value="{$after_sale_info['id']}" />
+    <div  class='row order-container'>
+        <div class="order-container-left">
+            <div class='panel-body' >
+                <h4 class="m-t-none m-b">售后信息</h4>
+                <div class="form-group" style='padding:0 10px;'>
+                    <table class='ordertable' style='table-layout:fixed'>
+                        <tr>
+                            <td>商品名称：</td>
+                            <td>{$after_sale_info['goods_name']}</td>
+                        </tr>
+                        <tr>
+                            <td>商品型号：</td>
+                            <td>{$after_sale_info['goods_model']}</td>
+                        </tr>
+                        <tr>
+                            <td>快递名称：</td>
+                            <td>{$after_sale_info['express_name']}</td>
+                        </tr>
+                        <tr>
+                            <td>快递单号：</td>
+                            <td>{$after_sale_info['express_numbers']}</td>
+                        </tr>
+                        <tr>
+                            <td>会员名称：</td>
+                            <td>{$after_sale_info['nickname_wechat']}</td>
+                        </tr>
+                        <tr>
+                            <td>联系人姓名：</td>
+                            <td>{$after_sale_info['name']}</td>
+                        </tr>
+                        <tr>
+                            <td>联系人电话：</td>
+                            <td>{$after_sale_info['mobile']}</td>
+                        </tr>
+                        <tr>
+                            <td>图片：</td>
+                            <td>
+                                {if !empty($after_sale_info['image'])}
+                                    {loop $after_sale_info['image'] $image}
+                                        <img style="width:100px;" src="{php echo tomedia($image)}" />
+                                    {/loop}
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>备注：</td>
+                            <td>{$after_sale_info['remark']}</td>
+                        </tr>
+                        <tr>
+                            <td>下单时间：</td>
+                            <td>{php echo date('Y-m-d H:i:s',$after_sale_info['create_time'])}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-container-right" style="height:338px;" >
+            <div class='panel-body'>
+                <div class='row'>
+                    <div class='col-sm-3 control-label' style='padding-top:10px;'>售后状态: </div>
+                    <div class="col-sm-9 col-xs-12">
+                        <h3 class="form-control-static">
+                            {loop $applystatus $status}
+                                {if $status['id'] == $after_sale_info['status']}
+                                    {$status['name']}
+                                    {php break;}
+                                {/if}
+                            {/loop}
+                        </h3>
+                        <!-- <div class="form-control-static">关闭原因:</div> -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static ops">
+                            {if $after_sale_info['status'] == $aftersale::STATUS_WAIT}
+                                <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('order/aftersalelist/audit', array('id' => $after_sale_info['id'], 'status' => $aftersale::STATUS_MAINTENANCE))}">审核通过</a>       
+                            {/if}
+                            {if $after_sale_info['status'] == $aftersale::STATUS_MAINTENANCE}
+                                <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('order/aftersalelist/audit', array('id' => $after_sale_info['id'], 'status' => $aftersale::STATUS_DELIVER_GOODS))}">订单发货</a>       
+                            {/if}
+                            {if $after_sale_info['status'] == $aftersale::STATUS_DELIVER_GOODS}
+                                <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('order/aftersalelist/audit', array('id' => $after_sale_info['id'], 'status' => $aftersale::STATUS_COMPLETED))}">订单完成</a>       
+                            {/if}
+
+                            {if $after_sale_info['status'] != $aftersale::STATUS_COMPLETED && $after_sale_info['status'] != $aftersale::STATUS_CANCEL && $after_sale_info['status'] != $aftersale::STATUS_REFUSE}
+                                <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('order/aftersalelist/audit', array('id' => $after_sale_info['id'], 'status' => $aftersale::STATUS_CANCEL))}">取消订单</a>                            
+                                <a class="btn btn-primary btn-xs" data-toggle="ajaxPost" href="{php echo webUrl('order/aftersalelist/audit', array('id' => $after_sale_info['id'], 'status' => $aftersale::STATUS_REFUSE))}">拒绝订单</a>                            
+                            {/if}
+                            <!-- &nbsp;&nbsp;
+                            <a class='op'  data-toggle='ajaxModal' href="{php echo webUrl('order/op/changeprice',array('id'=>$after_sale_info['id']))}">订单改价</a>&nbsp;&nbsp;
+                            <a  data-toggle="ajaxModal" href="{php echo webUrl('order/op/remarksaler', array('id' => $after_sale_info['id']))}" >取消订单</a> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script language='javascript'>
+    $(function () {
+        $("#showdiymore1").click(function () {
+            $(".diymore1").show();
+            $(".diymore11").hide();
+        });
+
+        $("#showdiymore2").click(function () {
+            $(".diymore2").show();
+            $(".diymore22").hide();
+        });
+    });
+
+    function showDiyInfo(obj){
+        var data = $(obj).attr('data');
+        var id = "diyinfo_" + data;
+
+        var hide = $(obj).attr('hide');
+        if(hide=='1'){
+            $("#"+id).slideDown();
+        }
+        else{
+            $("#"+id).slideUp();
+        }
+        $(obj).attr('hide',hide=='1'?'0':'1');
+    }
+    document.getElementById('asd').className();
+</script>
+
+{template '_footer'}

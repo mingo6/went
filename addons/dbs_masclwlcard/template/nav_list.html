@@ -1,0 +1,77 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('website');}">基础设置</a></li>
+	<li><a href="{php echo $this->createWebUrl('adv');}">轮播图片</a></li>
+	<li><a href="{php echo $this->createWebUrl('adv_list');}">轮播列表</a></li>
+	
+	<li><a href="{php echo $this->createWebUrl('nav');}">导航图标</a></li>
+	<li  class="active"><a href="{php echo $this->createWebUrl('nav_list');}">导航列表</a></li>
+	
+	<li><a href="{php echo $this->createWebUrl('news');}">添加最新活动</a></li>
+	<li><a href="{php echo $this->createWebUrl('news_list');}">最新活动列表</a></li>
+</ul>
+	
+<div class="main">
+	<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+		<form action="" method="post"  id="form" class="form-horizontal" role="form">
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		  <input type="hidden" name="uniacid" value="{$_W['uniacid']}" />
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				
+					<tr>	
+						<th  class="select" style="width:5px;"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th>
+						<th style="width:30px;">标题</th>
+						<th style="width:30px;">图片</th>
+						<th style="width:20px; text-align:right;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $activity $item}
+					<tr>
+						<td style="width:5px;"><input type="checkbox" value="{$item['id']}" class="cbitem" name="id[]"></td>
+						<td style="width:30px;">{$item['title']}</td>
+						<td style="width:30px;"><img src="{php echo tomedia($item['images'])}" style="width:30px;height:30px;"></td>
+						
+						<td style="width:20px;text-align:right;">
+								<a href="{php echo $this->createWebUrl('nav', array('id' => $item['id']))}"
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="编辑">编辑
+								</a>
+
+								<a href="{php echo $this->createWebUrl('deletenav', array('id' => $item['id']))}" onclick="return confirm('此操作不可恢复，确认删除？');"
+									class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i>
+								</a>
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+					<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-13">
+						<input type="submit" name="submit" value="选中删除" class="btn btn-primary" />
+					  <input type="hidden" name="token" value="{$_W['token']}" />
+					</div>
+				  </div>
+			</form>
+		</div>
+	</div>
+</div>
+{$pager}
+{template 'common/footer'}
+
+<script type="text/javascript">
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").prop('checked')== false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+		
+	} else {	
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script>

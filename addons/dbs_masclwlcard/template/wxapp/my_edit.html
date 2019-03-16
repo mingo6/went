@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,height=device-height,maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>编辑信息</title>
+	<link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../addons/dbs_masclwlcard/template/wxapp/css/css.css">
+</head>
+
+<style type="text/css">
+ body{background-color:#F3F3F3;width:100%;height:100vh;overflow-x:hidden}
+.number{padding-top:10px;padding-bottom:10px}
+.number input{height:30px;border:none}
+.choose_country{border:1px solid #666;padding:2px 15px;margin-right:15px;color:#666}
+.choose_active{border:1px solid #FE7B03;color:#FE7B03}
+.color_h{color:#666}
+#selectdate{border:none}
+.save_btn{border-radius:5px;color:#fff;margin-top:25px;margin-bottom:25px;width:80%;margin-left:auto;margin-right:auto;background-color:#FE7B03;border:none}
+.hide{display:none}
+.cropper-bg {background-image: url();background-color: #000;}
+a:hover{color: #fff;}
+.rounded{border-radius: 0!important;}
+a{text-decoration:none!important;}
+
+
+</style>
+
+<style>
+ .input-box{margin-top:10px; padding-left:10px; padding-right:10px;background-color:#fff;}
+    .weui-input-1{ height:280px; background-color:#fff;width:100%; }
+
+</style>
+
+<body>
+
+  <div class="weui-cells weui-cells_form">
+
+    <div class="weui-cell weui-cell_select weui-cell_select-after number">
+      <div class="weui-cell__hd">
+        <label for="" pattern="[0-40]*" class="weui-label">手机号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input type="text" class="mobile" placeholder="请输入手机号" value="{$card_info['card_tel']}">
+      </div>
+    </div>
+
+
+  </div>
+  
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">微信</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input wxid" type="text" placeholder="请输入微信号"  value="{$card_info['weixinid']}"/>
+      </div>
+    </div>
+
+    <div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
+      <div class="weui-cell__bd">
+        <input class="weui-input email" type="text" placeholder="请输入邮箱" value="{$card_info['email']}"/>
+      </div>
+    </div>
+	
+	<div class="weui-cell">
+      <div class="weui-cell__hd"><label class="weui-label">主动消息</label></div>
+      <div class="weui-cell__bd">
+			<input class="weui-input" type="text" id="zd_msg" placeholder="主动消息" value="{$card_info['zd_msg']}"/>
+
+      </div>
+    </div>
+	
+  </div>
+  
+
+	
+  <div class="weui-cells weui-cells_form">
+        <!--标签列表-->
+        <div class="label-set mb25 label-list">
+            <div class="weui-cell__bd input-box" >
+                <textarea id="sign"  maxlength="500"  class="weui-input-1 content" placeholder="请填写个人简介" >{$card_info['card_instr']}</textarea>
+                <div id="signcount" style="float:right;margin-top:-20px;position:relative;"></div>
+            </div>
+        </div>
+	</div>
+  <div class="button-sp-area save_btn">
+    <a href="javascript:;" class="weui-btn btn-submit">保存</a>
+  </div>
+
+</body>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/jquery-2.1.4.min.js"></script>
+ <script type="text/javascript" src="../addons/dbs_masclwlcard/template/wxapp/js/weui.min.js"></script>
+
+<script type="text/javascript">
+
+
+  
+var flag = false;
+
+$(function() {
+    $(".btn-submit").click(function () {
+	
+		if(flag){
+			return false;
+		}
+	
+		
+		 var wxid = $('.wxid').val();
+		 var content = $('.content').val();
+		 var zd_msg = $('#zd_msg').val();
+		 var mobile = $('.mobile').val();
+		 var email = $('.email').val();
+	
+		 flag = true;
+        if (phone_1()==true&&email_1()==true) {
+
+			$.post("{php echo $this->createMobileUrl('my_save_card')}", {wxid:wxid,mobile:mobile,email:email,content:content,zd_msg:zd_msg}, function(data){
+
+				if (data.Code>0) {
+					alert(data.msg);
+                    flag = false;
+                    return;
+                }else{
+					to_url("{php echo $this->createMobileUrl('my_edit')}");
+				}
+				
+             },"json");
+        }else{
+			flag = false;
+		}
+        
+    })
+  });
+  	//跳转页面
+function to_url(url) {
+    window.location.href = url;
+}
+  function phone_1() {
+      var rule = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+      var mobile = $('.mobile').val();
+      if (mobile == "") {
+          alert("手机号不能为空");
+          return false;
+      } else if (!rule.test(mobile)) {
+          alert("手机格式不对，请重新输入");
+          return false;
+      } else { return true; }
+  }
+  
+  function email_1() {
+      var email = $('.email').val();
+      if (email == "") {
+          alert("邮箱不能为空");
+          return false;
+      }else if (!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+          alert("邮箱格式不正确！请重新输入");
+          return false;
+      } else {
+           return true;
+      }
+  }
+  
+  
+  
+  
+
+
+</script>
+
+</html>
